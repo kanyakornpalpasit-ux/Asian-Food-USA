@@ -377,6 +377,166 @@
     }
     .card-price-range .active-dollar { color: var(--gold); font-weight: 600; }
 
+    /* ─── CARD ENHANCEMENTS ──────────────────────── */
+
+    /* Open / Closed status */
+    .open-badge {
+      position: absolute; bottom: 44px; right: 12px;
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 100px;
+      backdrop-filter: blur(10px);
+    }
+    .open-badge.open   { background: rgba(86,200,122,0.22); border: 1px solid rgba(86,200,122,0.5); color: #56C87A; }
+    .open-badge.closed { background: rgba(255,68,68,0.18);  border: 1px solid rgba(255,68,68,0.45); color: #FF6060; }
+
+    /* Card action row */
+    .card-actions {
+      display: flex; gap: 6px;
+      padding: 10px 14px 14px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .ca-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+      font-size: 0.68rem; font-weight: 600;
+      padding: 7px 4px; border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-sub); cursor: pointer;
+      transition: all var(--transition); text-decoration: none;
+    }
+    .ca-btn:hover { border-color: var(--gold); color: var(--gold-lt); background: var(--gold-dim); }
+    .ca-btn.fav-active { border-color: #FF6B9D; color: #FF6B9D; background: rgba(255,107,157,0.1); }
+
+    /* Photo count on image */
+    .photo-count {
+      position: absolute; bottom: 12px; right: 12px;
+      font-size: 0.62rem; font-weight: 600;
+      background: rgba(8,8,15,0.72); border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-sub); padding: 3px 8px; border-radius: 100px;
+      backdrop-filter: blur(8px); cursor: pointer;
+      transition: all var(--transition);
+    }
+    .photo-count:hover { color: var(--text); border-color: rgba(255,255,255,0.35); }
+
+    /* ─── LIGHTBOX ───────────────────────────────── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 3000;
+      background: rgba(0,0,0,0.92); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lb-close {
+      position: absolute; top: 18px; right: 22px;
+      font-size: 1.6rem; cursor: pointer;
+      color: rgba(255,255,255,0.6); background: none; border: none;
+      transition: color var(--transition);
+    }
+    .lb-close:hover { color: #fff; }
+    .lb-header {
+      position: absolute; top: 18px; left: 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; color: #fff;
+      max-width: calc(100% - 100px);
+    }
+    .lb-header small { display: block; font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 400; margin-top: 2px; }
+    .lb-img-wrap {
+      width: min(700px, 92vw); aspect-ratio: 4/3; position: relative;
+      border-radius: 16px; overflow: hidden;
+    }
+    .lb-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 1.6rem; background: rgba(0,0,0,0.5); border: none;
+      color: #fff; cursor: pointer; padding: 10px 14px; border-radius: 100px;
+      transition: background var(--transition);
+    }
+    .lb-nav:hover { background: rgba(0,0,0,0.8); }
+    .lb-prev { left: -50px; }
+    .lb-next { right: -50px; }
+    .lb-dots { display: flex; gap: 8px; margin-top: 14px; }
+    .lb-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: background var(--transition); }
+    .lb-dot.active { background: var(--gold); }
+    @media (max-width: 600px) {
+      .lb-prev { left: -40px; font-size: 1.2rem; padding: 8px 10px; }
+      .lb-next { right: -40px; font-size: 1.2rem; padding: 8px 10px; }
+      .lb-header { font-size: 0.9rem; }
+    }
+
+    /* ─── WISHLIST PANEL ─────────────────────────── */
+    .wishlist-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    }
+    .wishlist-overlay.open { display: block; }
+    .wishlist-panel {
+      position: fixed; top: 0; right: -420px; bottom: 0; z-index: 2001;
+      width: min(420px, 100vw);
+      background: var(--bg-card);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      transition: right 0.32s cubic-bezier(.4,0,.2,1);
+    }
+    .wishlist-panel.open { right: 0; }
+    .wishlist-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .wishlist-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--gold);
+    }
+    .wishlist-close { font-size: 1.3rem; cursor: pointer; color: var(--text-sub); background: none; border: none; }
+    .wishlist-list { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .wishlist-empty { text-align: center; padding: 48px 20px; color: var(--text-dim); font-size: 0.88rem; }
+    .wishlist-empty .big { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+    .wl-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg-card2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .wl-item img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .wl-item-body { flex: 1; min-width: 0; }
+    .wl-item-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wl-item-meta { font-size: 0.7rem; color: var(--text-sub); }
+    .wl-remove { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.1rem; padding: 4px; transition: color var(--transition); flex-shrink: 0; }
+    .wl-remove:hover { color: #FF4444; }
+    .wl-maps { display: block; margin-top: 4px; font-size: 0.68rem; color: var(--gold); text-decoration: none; }
+    .wl-maps:hover { color: var(--gold-lt); }
+    .wishlist-footer { padding: 14px 20px; border-top: 1px solid var(--border); }
+    .wl-clear { width: 100%; padding: 10px; border-radius: 100px; background: transparent; border: 1px solid rgba(255,68,68,0.3); color: #FF6060; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all var(--transition); }
+    .wl-clear:hover { background: rgba(255,68,68,0.1); border-color: #FF4444; }
+
+    /* Wishlist nav button */
+    .wl-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 600; color: var(--text-sub);
+      background: none; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px; padding: 6px 14px; cursor: pointer;
+      transition: all var(--transition); position: relative;
+    }
+    .wl-nav-btn:hover { border-color: #FF6B9D; color: #FF6B9D; }
+    .wl-count-badge {
+      display: none; position: absolute; top: -5px; right: -5px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #FF6B9D; color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      align-items: center; justify-content: center;
+    }
+    .wl-count-badge.show { display: flex; }
+
+    /* ─── TOAST ──────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card2); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.82rem; font-weight: 500;
+      padding: 10px 22px; border-radius: 100px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      z-index: 9999; opacity: 0; pointer-events: none;
+      transition: all 0.28s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     /* ─── EMPTY STATE ─────────────────────────────── */
     .empty-state {
       text-align: center; padding: 80px 40px;
@@ -853,6 +1013,7 @@
     <a href="#">New Spots</a>
     <a href="#">About</a>
     <button class="match-btn" id="openMatchBtn">🍜 Food Match</button>
+    <button class="wl-nav-btn" id="openWishlist">❤ Saved<span class="wl-count-badge" id="wlBadge">0</span></button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -945,6 +1106,34 @@
   <h3>No restaurants found</h3>
   <p>Try adjusting your cuisine or rating filters.</p>
 </div>
+
+<!-- ────── LIGHTBOX ────── -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <div class="lb-header" id="lbTitle"></div>
+  <div class="lb-img-wrap">
+    <img id="lbImg" src="" alt=""/>
+    <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+    <button class="lb-nav lb-next" id="lbNext">›</button>
+  </div>
+  <div class="lb-dots" id="lbDots"></div>
+</div>
+
+<!-- ────── WISHLIST PANEL ────── -->
+<div class="wishlist-overlay" id="wishlistOverlay"></div>
+<div class="wishlist-panel" id="wishlistPanel">
+  <div class="wishlist-header">
+    <span class="wishlist-title">❤ My Wishlist</span>
+    <button class="wishlist-close" id="wishlistClose">✕</button>
+  </div>
+  <div class="wishlist-list" id="wishlistList"></div>
+  <div class="wishlist-footer">
+    <button class="wl-clear" id="wlClear">Clear all</button>
+  </div>
+</div>
+
+<!-- ────── TOAST ────── -->
+<div class="toast" id="toast"></div>
 
 <!-- ────── FOOD MATCH MODAL ────── -->
 <div class="swipe-overlay" id="swipeOverlay">
@@ -1948,8 +2137,12 @@ function renderCard(r) {
   card.dataset.cuisine = r.cuisine;
   card.dataset.ratingBand = band;
 
+  const status = getOpenStatus(r);
+  const typeBadge = {cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>',buffet:'<span class="type-badge buffet">🍱 Buffet</span>'}[getVenueType(r)] || '';
+  const favActive = isFav(r.id);
+
   card.innerHTML = `
-    <div class="card-img">
+    <div class="card-img" style="cursor:pointer" onclick="openLightbox(window._rMap[${r.id}])">
       <img src="${r.img}" alt="${r.name}" loading="lazy"
            onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'" />
       <div class="card-img-overlay"></div>
@@ -1961,7 +2154,9 @@ function renderCard(r) {
       <div class="card-rating-badge" style="color:${color}">
         <span class="star">★</span> ${r.rating.toFixed(1)}
       </div>
-      ${{cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>',buffet:'<span class="type-badge buffet">🍱 Buffet</span>'}[getVenueType(r)] || ''}
+      <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
+      ${typeBadge}
+      <span class="photo-count" onclick="event.stopPropagation();openLightbox(window._rMap[${r.id}])">📷 3 photos</span>
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -1981,6 +2176,18 @@ function renderCard(r) {
         <span class="card-address">📍 ${r.address}</span>
         <span class="card-price-range">${renderPriceLevel(r.priceLevel)}</span>
       </div>
+    </div>
+    <div class="card-actions">
+      <button class="ca-btn${favActive?' fav-active':''}" data-fav-id="${r.id}"
+        onclick="toggleFav(${r.id})" title="${favActive?'Remove from wishlist':'Save to wishlist'}">
+        ${favActive?'❤':'♡'} Save
+      </button>
+      <a class="ca-btn" href="${mapsUrl(r)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+        📍 Maps
+      </a>
+      <button class="ca-btn" onclick="shareRestaurant(window._rMap[${r.id}])">
+        ↗ Share
+      </button>
     </div>`;
 
   /* Mouse glow effect */
@@ -2101,6 +2308,173 @@ document.getElementById('typeChips').addEventListener('click', e => {
 /* ─────────────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────
+   OPEN / CLOSED STATUS
+───────────────────────────────────────────────────── */
+function getOpenStatus(r) {
+  const h = new Date().getHours();
+  const type = getVenueType(r);
+  let open, close;
+  if (type === 'cafe' || type === 'boba' || type === 'dessert' || type === 'icecream') { open = 8;  close = 22; }
+  else if (type === 'buffet')  { open = 11; close = 21; }
+  else if (r.priceLevel >= 4) { open = 17; close = 22; }
+  else if (r.priceLevel >= 3) { open = 11; close = 22; }
+  else                         { open = 10; close = 22; }
+  const isOpen = h >= open && h < close;
+  const fmt = n => `${n > 12 ? n - 12 : n === 0 ? 12 : n}${n >= 12 && n < 24 ? 'PM' : 'AM'}`;
+  return { isOpen, label: isOpen ? `Open · Closes ${fmt(close)}` : `Closed · Opens ${fmt(open)}` };
+}
+
+/* ─────────────────────────────────────────────────────
+   GOOGLE MAPS URL
+───────────────────────────────────────────────────── */
+function mapsUrl(r) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + ' ' + r.address)}`;
+}
+
+/* ─────────────────────────────────────────────────────
+   CUISINE PHOTO POOLS (3 per cuisine for lightbox)
+───────────────────────────────────────────────────── */
+const extraPhotos = {
+  chinese:     ['https://images.unsplash.com/photo-1563245372-f21724e3856d?w=800&q=80','https://images.unsplash.com/photo-1585032226651-673b9a9c3498?w=800&q=80','https://images.unsplash.com/photo-1547592166-23ac88417717?w=800&q=80'],
+  japanese:    ['https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80','https://images.unsplash.com/photo-1617196034033-8b95c63e4f79?w=800&q=80','https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=800&q=80'],
+  korean:      ['https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80','https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800&q=80','https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=800&q=80'],
+  thai:        ['https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=800&q=80','https://images.unsplash.com/photo-1559314809-0d155014e29e?w=800&q=80','https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80'],
+  vietnamese:  ['https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&q=80','https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800&q=80','https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=800&q=80'],
+  indian:      ['https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80','https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&q=80','https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&q=80'],
+  singaporean: ['https://images.unsplash.com/photo-1534482421-64566f976cfa?w=800&q=80','https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80','https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80'],
+  taiwanese:   ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80','https://images.unsplash.com/photo-1621417346980-7b3dc19b0abb?w=800&q=80','https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=800&q=80'],
+};
+function getPhotos(r) {
+  const pool = extraPhotos[r.cuisine] || extraPhotos.chinese;
+  return [r.img, ...pool.filter(p => p !== r.img)].slice(0, 3);
+}
+
+/* ─────────────────────────────────────────────────────
+   LIGHTBOX
+───────────────────────────────────────────────────── */
+(function() {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbDots = document.getElementById('lbDots');
+  let photos = [], cur = 0;
+
+  window.openLightbox = function(r, startIdx = 0) {
+    photos = getPhotos(r);
+    cur = startIdx;
+    lbTitle.innerHTML = `${r.name}<small>📍 ${r.address}</small>`;
+    lbDots.innerHTML = photos.map((_,i) => `<button class="lb-dot${i===cur?' active':''}" data-i="${i}"></button>`).join('');
+    lbImg.src = photos[cur];
+    lb.classList.add('open');
+  };
+
+  function setCur(i) {
+    cur = (i + photos.length) % photos.length;
+    lbImg.src = photos[cur];
+    lbDots.querySelectorAll('.lb-dot').forEach((d,j) => d.classList.toggle('active', j === cur));
+  }
+
+  document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('open'));
+  document.getElementById('lbPrev').addEventListener('click', () => setCur(cur - 1));
+  document.getElementById('lbNext').addEventListener('click', () => setCur(cur + 1));
+  lbDots.addEventListener('click', e => { const d = e.target.closest('.lb-dot'); if (d) setCur(+d.dataset.i); });
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  setCur(cur - 1);
+    if (e.key === 'ArrowRight') setCur(cur + 1);
+    if (e.key === 'Escape')     lb.classList.remove('open');
+  });
+})();
+
+/* ─────────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────────── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ─────────────────────────────────────────────────────
+   SHARE
+───────────────────────────────────────────────────── */
+async function shareRestaurant(r) {
+  const url = mapsUrl(r);
+  const text = `${r.name}\n★ ${r.rating} · ${r.signature}\n📍 ${r.address}`;
+  try {
+    if (navigator.share) { await navigator.share({ title: r.name, text, url }); }
+    else { await navigator.clipboard.writeText(`${text}\n${url}`); showToast('📋 Copied to clipboard!'); }
+  } catch {}
+}
+
+/* ─────────────────────────────────────────────────────
+   WISHLIST / FAVOURITES
+───────────────────────────────────────────────────── */
+let favIds = JSON.parse(localStorage.getItem('afusa_favs') || '[]');
+
+function saveFavs() { localStorage.setItem('afusa_favs', JSON.stringify(favIds)); }
+function isFav(id)  { return favIds.includes(id); }
+function toggleFav(id) {
+  if (isFav(id)) favIds = favIds.filter(f => f !== id);
+  else favIds.push(id);
+  saveFavs(); updateWlBadge(); renderWishlist();
+  document.querySelectorAll(`[data-fav-id="${id}"]`).forEach(btn => {
+    btn.classList.toggle('fav-active', isFav(id));
+    btn.title = isFav(id) ? 'Remove from wishlist' : 'Save to wishlist';
+    btn.textContent = isFav(id) ? '❤' : '♡';
+  });
+}
+function updateWlBadge() {
+  const b = document.getElementById('wlBadge');
+  b.textContent = favIds.length;
+  b.classList.toggle('show', favIds.length > 0);
+}
+function renderWishlist() {
+  const list = document.getElementById('wishlistList');
+  if (!favIds.length) {
+    list.innerHTML = '<div class="wishlist-empty"><span class="big">🍜</span>No saved spots yet.<br/>Tap ♡ on any card to save it.</div>';
+    return;
+  }
+  const items = favIds.map(id => restaurants.find(r => r.id === id)).filter(Boolean);
+  list.innerHTML = items.map(r => `
+    <div class="wl-item">
+      <img src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=60'">
+      <div class="wl-item-body">
+        <div class="wl-item-name">${r.name}</div>
+        <div class="wl-item-meta">★ ${r.rating} · ${'$'.repeat(r.priceLevel)} · ${r.cuisine.charAt(0).toUpperCase()+r.cuisine.slice(1)}</div>
+        <a class="wl-maps" href="${mapsUrl(r)}" target="_blank" rel="noopener">📍 Open in Google Maps</a>
+      </div>
+      <button class="wl-remove" onclick="toggleFav(${r.id})" title="Remove">✕</button>
+    </div>`).join('');
+}
+
+// Wishlist panel open/close
+(function() {
+  const overlay = document.getElementById('wishlistOverlay');
+  const panel   = document.getElementById('wishlistPanel');
+  function open()  { renderWishlist(); overlay.classList.add('open'); panel.classList.add('open'); }
+  function close() { overlay.classList.remove('open'); panel.classList.remove('open'); }
+  document.getElementById('openWishlist').addEventListener('click', open);
+  document.getElementById('wishlistClose').addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  document.getElementById('wlClear').addEventListener('click', () => {
+    if (!favIds.length) return;
+    if (!confirm('Remove all saved restaurants?')) return;
+    favIds = []; saveFavs(); updateWlBadge(); renderWishlist();
+    document.querySelectorAll('.ca-btn.fav-active').forEach(b => {
+      b.classList.remove('fav-active'); b.textContent = '♡'; b.title = 'Save to wishlist';
+    });
+  });
+})();
+
+/* Global restaurant lookup for inline onclick handlers */
+window._rMap = Object.fromEntries(restaurants.map(r => [r.id, r]));
+
+updateWlBadge();
 buildStats();
 render();
 

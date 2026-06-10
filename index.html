@@ -434,35 +434,126 @@
     @media (min-width: 769px) { .fab-match { display: none; } }
 
     /* ─── RESPONSIVE ───────────────────────────────── */
+
+    /* Large tablets / small laptops */
+    @media (max-width: 1200px) {
+      .cards-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    }
+
+    /* Tablets */
     @media (max-width: 1024px) {
       .nav { padding: 14px 24px; }
       .hero { padding: 60px 24px 40px; }
       .filter-bar, .grid-wrap, .results-bar { padding-left: 24px; padding-right: 24px; }
       .divider { margin-left: 24px; margin-right: 24px; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* Large phones / small tablets */
     @media (max-width: 768px) {
+      /* Nav */
+      .nav { padding: 12px 16px; flex-wrap: nowrap; gap: 8px; }
+      .nav-logo { font-size: 1.1rem; }
+      .nav-meta { font-size: 0.68rem; padding: 5px 10px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
+
+      /* Drawer — always in DOM, animate with opacity+translate */
+      .mobile-drawer { top: 53px; }
+
+      /* FAB */
       .fab-match { display: flex; }
-      .nav { padding: 12px 16px; }
-      .nav-logo { font-size: 1.15rem; }
-      .nav-meta { font-size: 0.7rem; padding: 5px 10px; }
-      .hero { padding: 40px 16px 30px; }
+
+      /* Hero */
+      .hero { padding: 36px 16px 28px; }
+      .hero-title { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+      .hero-sub { font-size: 0.9rem; margin-bottom: 24px; }
+      .hero-eyebrow { font-size: 0.65rem; }
+      .cuisine-stats { gap: 7px; }
+      .stat-pill { font-size: 0.7rem; padding: 5px 11px; }
+
+      /* Filters */
       .filter-bar, .grid-wrap, .results-bar { padding-left: 16px; padding-right: 16px; }
       .divider { margin-left: 16px; margin-right: 16px; }
-      .cards-grid { grid-template-columns: 1fr; }
-      /* swipe modal full-screen feel on mobile */
-      .swipe-arena { width: 92vw; height: 62vw; min-height: 320px; max-height: 460px; }
-      .criteria-screen { padding: 24px 16px; }
+      .chip { font-size: 0.74rem; padding: 6px 13px; }
+
+      /* Grid */
+      .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+
+      /* Cards */
+      .card-img { height: 160px; }
+      .card-body { padding: 14px; }
+      .card-name { font-size: 0.95rem; }
+
+      /* Footer */
+      .footer { padding: 28px 16px; font-size: 0.72rem; }
+
+      /* Empty state */
+      .empty-state { padding: 48px 16px; }
+
+      /* Swipe modal */
+      .swipe-overlay { justify-content: flex-start; padding-top: 60px; overflow-y: auto; }
+      .swipe-close { top: 16px; right: 16px; }
+      .criteria-screen { padding: 20px 16px 28px; max-width: 100%; }
       .criteria-screen h2 { font-size: 1.4rem; }
-      .results-screen { padding: 20px 16px; }
+      .criteria-screen p { font-size: 0.84rem; margin-bottom: 20px; }
+      .c-chip { font-size: 0.74rem; padding: 6px 13px; }
+      .swipe-screen { width: 100%; padding: 0 12px; }
+      .swipe-arena { width: 100%; height: auto; aspect-ratio: 3/4; max-width: 360px; max-height: 480px; }
+      .results-screen { max-width: 100%; padding: 20px 16px; }
+      .results-list { max-height: 50vh; }
     }
 
+    /* Phones */
     @media (max-width: 480px) {
-      .hero-title { font-size: 1.9rem; }
-      .swipe-hints { gap: 10px; }
-      .swipe-hint { font-size: 0.68rem; }
+      /* Nav — hide location pill on very small screens */
+      .nav-meta { display: none; }
+      .nav-logo { font-size: 1rem; }
+
+      /* Hero */
+      .hero-title { font-size: clamp(1.6rem, 8vw, 2rem); }
+      .hero-sub { font-size: 0.85rem; }
+
+      /* Grid — single column */
+      .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+      .card-img { height: 180px; }
+
+      /* Filters scroll horizontally instead of wrapping messy */
+      .filter-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .filter-chips::-webkit-scrollbar { display: none; }
+
+      /* Rating chips label — shorten */
+      .chip[data-rating="4"]::before { content: "⭐⭐⭐⭐ 4+"; }
+      .chip[data-rating="3"]::before { content: "⭐⭐⭐ 3+"; }
+
+      /* Swipe modal */
+      .swipe-arena { max-width: 100%; max-height: 420px; }
+      .swipe-btn { width: 52px; height: 52px; font-size: 1.4rem; }
+      .swipe-btn.undo { width: 40px; height: 40px; font-size: 1rem; }
+      .swipe-hints { gap: 8px; margin-bottom: 10px; }
+      .swipe-hint { font-size: 0.65rem; }
+      .swipe-hint .hint-icon { width: 22px; height: 22px; font-size: 0.75rem; }
+      .s-card-name { font-size: 1rem; }
+      .s-card-body { padding: 12px 14px; }
+      .criteria-screen { padding: 16px 12px 24px; }
+      .criteria-group-label { font-size: 0.62rem; }
+      .start-btn { font-size: 0.92rem; padding: 13px; }
+      .result-item img { width: 52px; height: 52px; }
+      .result-item-name { font-size: 0.85rem; }
+
+      /* FAB — slightly smaller */
+      .fab-match { font-size: 0.82rem; padding: 12px 18px; bottom: 18px; right: 14px; }
+    }
+
+    /* Very small phones (SE, Galaxy A series) */
+    @media (max-width: 360px) {
+      .nav-logo { font-size: 0.92rem; }
+      .hero-title { font-size: 1.5rem; }
+      .chip { font-size: 0.68rem; padding: 5px 11px; }
+      .swipe-arena { max-height: 360px; }
+      .swipe-btn { width: 46px; height: 46px; font-size: 1.2rem; }
+      .criteria-screen h2 { font-size: 1.2rem; }
+      .fab-match { font-size: 0.78rem; padding: 11px 15px; }
     }
 
     /* ─── FOOD MATCH BUTTON ─────────────────────── */

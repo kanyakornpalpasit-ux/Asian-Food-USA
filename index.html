@@ -2631,6 +2631,78 @@ function buildStats() {
 }
 
 /* ─────────────────────────────────────────────────────
+   PHOTO POOLS — unique image per restaurant
+───────────────────────────────────────────────────── */
+const PHOTO_POOLS = {
+  chinese: [
+    '1563245372-f21724e3856d','1547592166-23ac88417717','1553361371-9b22f78e8b1d',
+    '1585032226651-673b9a9c3498','1617196034183-421b4040ed20','1625943553852-781c6dd46faa',
+    '1544025162-d76694265947','1558618666-fcd25c85cd64','1504754524776-8f4f37790ca0',
+    '1534482421-64566f976cfa','1585937421612-70a008356fbe','1503764654157-72d979d9af2f',
+    '1621417346980-7b3dc19b0abb','1526318896980-cf78c088247c','1583032015879-e5022cb87c3b',
+    '1600335895229-6e75511892c8','1569050467447-ce54b3bbc37d','1582878826629-29b7ad1cdc43',
+    '1579584425555-c3ce17fd4351','1559314809-0d155014e29e',
+  ],
+  japanese: [
+    '1579584425555-c3ce17fd4351','1569050467447-ce54b3bbc37d','1611143669185-af224c5e3252',
+    '1617196034033-8b95c63e4f79','1544025162-d76694265947','1558618666-fcd25c85cd64',
+    '1547592166-23ac88417717','1553361371-9b22f78e8b1d','1563245372-f21724e3856d',
+    '1585032226651-673b9a9c3498','1504754524776-8f4f37790ca0','1534482421-64566f976cfa',
+    '1600335895229-6e75511892c8','1621417346980-7b3dc19b0abb','1526318896980-cf78c088247c',
+    '1617196034183-421b4040ed20','1582878826629-29b7ad1cdc43','1503764654157-72d979d9af2f',
+  ],
+  korean: [
+    '1526318896980-cf78c088247c','1590301157890-4810ed352733','1583032015879-e5022cb87c3b',
+    '1558618666-fcd25c85cd64','1544025162-d76694265947','1547592166-23ac88417717',
+    '1553361371-9b22f78e8b1d','1563245372-f21724e3856d','1585032226651-673b9a9c3498',
+    '1617196034183-421b4040ed20','1621417346980-7b3dc19b0abb','1600335895229-6e75511892c8',
+    '1504754524776-8f4f37790ca0','1534482421-64566f976cfa','1569050467447-ce54b3bbc37d',
+    '1579584425555-c3ce17fd4351',
+  ],
+  thai: [
+    '1559314809-0d155014e29e','1562565652-a0d8f0c59eb4','1565557623262-b51c2513a641',
+    '1553361371-9b22f78e8b1d','1503764654157-72d979d9af2f','1585032226651-673b9a9c3498',
+    '1547592166-23ac88417717','1558618666-fcd25c85cd64','1504754524776-8f4f37790ca0',
+    '1534482421-64566f976cfa','1600335895229-6e75511892c8','1617196034183-421b4040ed20',
+    '1582878826629-29b7ad1cdc43','1585937421612-70a008356fbe','1563245372-f21724e3856d',
+  ],
+  vietnamese: [
+    '1503764654157-72d979d9af2f','1529692236671-f1f6cf9683ba','1582878826629-29b7ad1cdc43',
+    '1600335895229-6e75511892c8','1553361371-9b22f78e8b1d','1547592166-23ac88417717',
+    '1558618666-fcd25c85cd64','1563245372-f21724e3856d','1585032226651-673b9a9c3498',
+    '1617196034183-421b4040ed20','1559314809-0d155014e29e','1504754524776-8f4f37790ca0',
+    '1565557623262-b51c2513a641','1534482421-64566f976cfa',
+  ],
+  indian: [
+    '1567620905732-2d1ec7ab7445','1574484284002-952d92456975','1585937421612-70a008356fbe',
+    '1596797038530-2c107229654b','1553361371-9b22f78e8b1d','1547592166-23ac88417717',
+    '1558618666-fcd25c85cd64','1585032226651-673b9a9c3498','1617196034183-421b4040ed20',
+    '1563245372-f21724e3856d','1544025162-d76694265947','1600335895229-6e75511892c8',
+  ],
+  singaporean: [
+    '1504754524776-8f4f37790ca0','1534482421-64566f976cfa','1544025162-d76694265947',
+    '1547592166-23ac88417717','1553361371-9b22f78e8b1d','1558618666-fcd25c85cd64',
+    '1563245372-f21724e3856d','1585032226651-673b9a9c3498','1585937421612-70a008356fbe',
+    '1617196034183-421b4040ed20','1503764654157-72d979d9af2f','1621417346980-7b3dc19b0abb',
+    '1600335895229-6e75511892c8','1582878826629-29b7ad1cdc43',
+  ],
+  taiwanese: [
+    '1621417346980-7b3dc19b0abb','1563245372-f21724e3856d','1579584425555-c3ce17fd4351',
+    '1547592166-23ac88417717','1553361371-9b22f78e8b1d','1558618666-fcd25c85cd64',
+    '1526318896980-cf78c088247c','1585032226651-673b9a9c3498','1617196034183-421b4040ed20',
+    '1544025162-d76694265947','1504754524776-8f4f37790ca0','1583032015879-e5022cb87c3b',
+    '1600335895229-6e75511892c8','1569050467447-ce54b3bbc37d',
+  ],
+};
+
+function getRestaurantPhoto(r) {
+  const pool = PHOTO_POOLS[r.cuisine] || PHOTO_POOLS.chinese;
+  // Use a multiplicative hash so adjacent IDs in the same cuisine get different photos
+  const hash = ((r.id * 40503 + 17) >>> 0) % pool.length;
+  return `https://images.unsplash.com/photo-${pool[hash]}?w=600&q=80`;
+}
+
+/* ─────────────────────────────────────────────────────
    RENDER CARD
 ───────────────────────────────────────────────────── */
 function renderCard(r) {
@@ -2648,7 +2720,7 @@ function renderCard(r) {
 
   card.innerHTML = `
     <div class="card-img" style="cursor:pointer" onclick="openLightbox(window._rMap[${r.id}])">
-      <img src="${r.img}" alt="${r.name}" loading="lazy"
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy"
            onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80'" />
       <div class="card-img-overlay"></div>
       <div class="card-badges">
@@ -2900,7 +2972,8 @@ const extraPhotos = {
 };
 function getPhotos(r) {
   const pool = extraPhotos[r.cuisine] || extraPhotos.chinese;
-  return [r.img, ...pool.filter(p => p !== r.img)].slice(0, 3);
+  const rPhoto = getRestaurantPhoto(r);
+  return [rPhoto, ...pool.filter(p => p !== rPhoto)].slice(0, 3);
 }
 
 /* ─────────────────────────────────────────────────────
@@ -2995,7 +3068,7 @@ function renderWishlist() {
   const items = favIds.map(id => restaurants.find(r => r.id === id)).filter(Boolean);
   list.innerHTML = items.map(r => `
     <div class="wl-item">
-      <img src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=60'">
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=60'">
       <div class="wl-item-body">
         <div class="wl-item-name">${r.name}</div>
         <div class="wl-item-meta">★ ${r.rating} · ${'$'.repeat(r.priceLevel)} · ${r.cuisine.charAt(0).toUpperCase()+r.cuisine.slice(1)}</div>
@@ -3154,7 +3227,7 @@ render();
     card.className = 's-card';
     card.dataset.id = r.id;
     card.innerHTML = `
-      <img src="${r.img}" alt="${r.name}" draggable="false">
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" draggable="false">
       <div class="stamp stamp-yes">Like ♥</div>
       <div class="stamp stamp-no">Skip ✕</div>
       <div class="s-card-body">
@@ -3256,7 +3329,7 @@ render();
       const item = document.createElement('div');
       item.className = 'result-item';
       item.innerHTML = `
-        <img src="${r.img}" alt="${r.name}">
+        <img src="${getRestaurantPhoto(r)}" alt="${r.name}">
         <div class="result-item-body">
           <div class="result-item-name">${r.name}</div>
           <div class="result-item-meta">★ ${r.rating} · ${r.signature} · ${'$'.repeat(r.priceLevel)}</div>
@@ -3421,7 +3494,7 @@ render();
       div.dataset.rid = r.id;
       div.innerHTML = `
         <div class="sc-img">
-          <img src="${r.img}" alt="${r.name}" loading="lazy"
+          <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy"
                onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70'">
           <div class="pick-num"></div>
         </div>

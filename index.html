@@ -3460,19 +3460,28 @@ render();
     updatePickCount();
   }
 
+  function goToRoute() {
+    try { buildRoute(); } catch(err) { console.error('buildRoute error:', err); }
+    showStep(4);
+  }
+
   function updatePickCount() {
     const n = crawlPicks.length;
     const btn = document.getElementById('crawlNext3');
-    document.getElementById('crawlPickCount').textContent = `${n} selected`;
-    btn.style.opacity = n < 3 ? '0.45' : '1';
-    btn.title = n < 3 ? `Pick ${3 - n} more stop${3 - n > 1 ? 's' : ''} to continue` : '';
+    const need = Math.max(0, 3 - n);
+    document.getElementById('crawlPickCount').textContent = n === 0
+      ? 'Tap cards to select'
+      : need > 0 ? `${n} selected — pick ${need} more` : `${n} selected ✓`;
+    btn.textContent = n >= 3 ? `Build Route (${n} stops) →` : `Build Route →`;
+    btn.style.opacity = n >= 3 ? '1' : '0.5';
+    // auto-advance once 3 stops are picked
+    if (n === 3) setTimeout(goToRoute, 300);
   }
 
   document.getElementById('crawlBack3').addEventListener('click', () => showStep(2));
   document.getElementById('crawlNext3').addEventListener('click', () => {
-    if (crawlPicks.length < 3) { showToast(`Pick ${3 - crawlPicks.length} more stop${3 - crawlPicks.length > 1 ? 's' : ''} first`); return; }
-    try { buildRoute(); } catch(err) { console.error(err); }
-    showStep(4);
+    if (crawlPicks.length < 1) { showToast('Pick at least 1 stop first'); return; }
+    goToRoute();
   });
 
   // ── Step 4: Route ──

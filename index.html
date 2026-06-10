@@ -377,6 +377,61 @@
     }
     .footer strong { color: var(--gold); }
 
+    /* ─── HAMBURGER ─────────────────────────────── */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; height: 2px; border-radius: 2px;
+      background: var(--text-sub); transition: all 0.28s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--gold); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--gold); }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      display: none;
+      position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+      background: rgba(8,8,15,0.97);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px 20px;
+      flex-direction: column; gap: 4px;
+      transform: translateY(-12px); opacity: 0;
+      transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+    .mobile-drawer.open {
+      display: flex; transform: translateY(0); opacity: 1;
+    }
+    .mobile-drawer a {
+      font-size: 0.95rem; font-weight: 500; color: var(--text-sub);
+      padding: 12px 4px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color var(--transition);
+    }
+    .mobile-drawer a:last-of-type { border-bottom: none; }
+    .mobile-drawer a:hover { color: var(--gold); }
+    .mobile-drawer .match-btn {
+      margin-top: 12px; width: 100%; justify-content: center;
+      font-size: 0.95rem; padding: 12px;
+    }
+
+    /* Floating Food Match button on mobile */
+    .fab-match {
+      display: none;
+      position: fixed; bottom: 24px; right: 20px; z-index: 200;
+      align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--gold), #b8960a);
+      color: #08080F; font-weight: 700; font-size: 0.9rem;
+      padding: 14px 22px; border-radius: 100px; border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 28px rgba(212,175,55,0.45);
+      transition: all var(--transition);
+    }
+    .fab-match:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(212,175,55,0.55); }
+
     /* ─── RESPONSIVE ───────────────────────────────── */
     @media (max-width: 1024px) {
       .nav { padding: 14px 24px; }
@@ -387,16 +442,26 @@
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .fab-match { display: flex; }
       .nav { padding: 12px 16px; }
       .nav-logo { font-size: 1.15rem; }
+      .nav-meta { font-size: 0.7rem; padding: 5px 10px; }
       .hero { padding: 40px 16px 30px; }
       .filter-bar, .grid-wrap, .results-bar { padding-left: 16px; padding-right: 16px; }
       .divider { margin-left: 16px; margin-right: 16px; }
       .cards-grid { grid-template-columns: 1fr; }
+      /* swipe modal full-screen feel on mobile */
+      .swipe-arena { width: 92vw; height: 62vw; min-height: 320px; max-height: 460px; }
+      .criteria-screen { padding: 24px 16px; }
+      .criteria-screen h2 { font-size: 1.4rem; }
+      .results-screen { padding: 20px 16px; }
     }
 
     @media (max-width: 480px) {
       .hero-title { font-size: 1.9rem; }
+      .swipe-hints { gap: 10px; }
+      .swipe-hint { font-size: 0.68rem; }
     }
 
     /* ─── FOOD MATCH BUTTON ─────────────────────── */
@@ -642,7 +707,22 @@
     <a href="#">About</a>
     <button class="match-btn" id="openMatchBtn">🍜 Food Match</button>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#">By State</a>
+  <a href="#">Top Rated</a>
+  <a href="#">New Spots</a>
+  <a href="#">About</a>
+  <button class="match-btn" id="openMatchBtnMobile">🍜 Food Match</button>
+</div>
+
+<!-- Floating Action Button (mobile) -->
+<button class="fab-match" id="openMatchBtnFab">🍜 Food Match</button>
 
 <!-- ────── HERO ────── -->
 <section class="hero">
@@ -1804,9 +1884,31 @@ render();
   let selCuisine = 'all', selRating = 0, selPrice = 0;
 
   // ── Open / close ──
-  document.getElementById('openMatchBtn').addEventListener('click', () => {
+  function openMatch() {
     overlay.classList.add('open');
     show(criteriaScr);
+    // close drawer if open
+    drawer.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+
+  document.getElementById('openMatchBtn').addEventListener('click', openMatch);
+  document.getElementById('openMatchBtnMobile').addEventListener('click', openMatch);
+  document.getElementById('openMatchBtnFab').addEventListener('click', openMatch);
+
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('mobileDrawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  // close drawer when tapping outside
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+    }
   });
   document.getElementById('swipeClose').addEventListener('click', closeModal);
   document.getElementById('resCloseBtn').addEventListener('click', closeModal);

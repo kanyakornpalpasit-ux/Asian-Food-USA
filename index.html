@@ -190,9 +190,11 @@
     .chip.r1.active  { background: rgba(255,68,68,0.15);   border-color: var(--r-1); color: var(--r-1); }
 
     /* Type chips */
-    .chip.type-cafe.active  { background: rgba(255,107,157,0.15); border-color: #FF6B9D; color: #FF6B9D; }
-    .chip.type-boba.active  { background: rgba(91,168,255,0.15);  border-color: #5BA8FF; color: #5BA8FF; }
-    .chip.type-rest.active  { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
+    .chip.type-cafe.active    { background: rgba(255,107,157,0.15); border-color: #FF6B9D; color: #FF6B9D; }
+    .chip.type-boba.active    { background: rgba(91,168,255,0.15);  border-color: #5BA8FF; color: #5BA8FF; }
+    .chip.type-rest.active    { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
+    .chip.type-dessert.active { background: rgba(201,126,224,0.15); border-color: #C97EE0; color: #C97EE0; }
+    .chip.type-ice.active     { background: rgba(38,203,224,0.15);  border-color: #26CBE0; color: #26CBE0; }
 
     /* Type badges on cards */
     .type-badge {
@@ -202,8 +204,10 @@
       padding: 3px 9px; border-radius: 100px;
       backdrop-filter: blur(8px);
     }
-    .type-badge.cafe { background: rgba(255,107,157,0.18); border: 1px solid rgba(255,107,157,0.45); color: #FF6B9D; }
-    .type-badge.boba { background: rgba(91,168,255,0.18);  border: 1px solid rgba(91,168,255,0.45);  color: #5BA8FF; }
+    .type-badge.cafe    { background: rgba(255,107,157,0.18); border: 1px solid rgba(255,107,157,0.45); color: #FF6B9D; }
+    .type-badge.boba    { background: rgba(91,168,255,0.18);  border: 1px solid rgba(91,168,255,0.45);  color: #5BA8FF; }
+    .type-badge.dessert { background: rgba(201,126,224,0.18); border: 1px solid rgba(201,126,224,0.45); color: #C97EE0; }
+    .type-badge.icecream{ background: rgba(38,203,224,0.18);  border: 1px solid rgba(38,203,224,0.45);  color: #26CBE0; }
 
     /* Divider */
     .divider {
@@ -908,6 +912,8 @@
       <button class="chip type-rest" data-type="restaurant">🥢 Restaurants</button>
       <button class="chip type-cafe" data-type="cafe">☕ Coffee &amp; Café</button>
       <button class="chip type-boba" data-type="boba">🧋 Boba &amp; Drinks</button>
+      <button class="chip type-dessert" data-type="dessert">🍧 Asian Desserts</button>
+      <button class="chip type-ice" data-type="icecream">🍦 Ice Cream</button>
     </div>
   </div>
   <div class="filter-section">
@@ -953,6 +959,8 @@
         <button class="c-chip" data-t="restaurant">🥢 Restaurants</button>
         <button class="c-chip" data-t="cafe">☕ Coffee &amp; Café</button>
         <button class="c-chip" data-t="boba">🧋 Boba &amp; Drinks</button>
+        <button class="c-chip" data-t="dessert">🍧 Asian Desserts</button>
+        <button class="c-chip" data-t="icecream">🍦 Ice Cream</button>
       </div>
     </div>
     <div class="criteria-group">
@@ -1925,7 +1933,7 @@ function renderCard(r) {
       <div class="card-rating-badge" style="color:${color}">
         <span class="star">★</span> ${r.rating.toFixed(1)}
       </div>
-      ${{cafe:'<span class="type-badge cafe">☕ Café</span>', boba:'<span class="type-badge boba">🧋 Boba</span>'}[getVenueType(r)] || ''}
+      ${{cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>'}[getVenueType(r)] || ''}
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -1974,11 +1982,19 @@ let activeCuisine = 'all';
 let activeRating  = 'all';
 let activeType    = 'all';
 
-/* Venue type detection */
+/* Venue type detection — order matters: most specific first */
 function getVenueType(r) {
   const n = r.name;
+  const sig = (r.signature || '');
+  // Ice cream: soft serve, gelato, or explicit ice cream in name/signature
+  if (/ice\s*cream|gelato/i.test(n) ||
+      /soft\s*serve|ice\s*cream|gelato/i.test(sig)) return 'icecream';
+  // Boba & drinks
   if (/boba|bubble|milk\s*tea|pearl\s*tea|pearl\s*milk|tiger\s*sugar|taro\s*tea|tea\s*bar|boba\s*lab|wo\s*bao\s*bao/i.test(n)) return 'boba';
-  if (/café|cafe|bakery|dessert|shaved\s*ice|snow\s*ice|mochi|bingsu|soft\s*serve|sul\s*&\s*beans|tea\s*house|pineapple\s*cake/i.test(n)) return 'cafe';
+  // Asian desserts: shaved ice, mochi, bingsu, snow ice, tofu pudding, tteok dessert, etc.
+  if (/dessert|mochi|daifuku|bingsu|shaved\s*ice|snow\s*ice|tofu\s*pudding|douhua|sul\s*&\s*beans|salty\s*egg\s*yolk|mango\s*snow/i.test(n)) return 'dessert';
+  // Coffee & café
+  if (/café|cafe|bakery|tea\s*house|pineapple\s*cake|tiong\s*bahru/i.test(n)) return 'cafe';
   return 'restaurant';
 }
 function isCafe(r) { return getVenueType(r) !== 'restaurant'; }
@@ -2005,7 +2021,7 @@ function render() {
     const section = filtered.filter(r => getRatingBand(r.rating) === band);
     if (!section.length) return;
 
-    const typeLabel = activeType === 'cafe' ? 'café' : activeType === 'boba' ? 'boba shop' : activeType === 'restaurant' ? 'restaurant' : 'place';
+    const typeLabel = {restaurant:'restaurant',cafe:'café',boba:'boba shop',dessert:'dessert shop',icecream:'ice cream shop'}[activeType] || 'place';
     const sec = document.createElement('div');
     sec.className = 'rating-section';
     sec.innerHTML = `

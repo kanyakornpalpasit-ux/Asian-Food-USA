@@ -195,6 +195,7 @@
     .chip.type-rest.active    { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
     .chip.type-dessert.active { background: rgba(201,126,224,0.15); border-color: #C97EE0; color: #C97EE0; }
     .chip.type-ice.active     { background: rgba(38,203,224,0.15);  border-color: #26CBE0; color: #26CBE0; }
+    .chip.type-buffet.active  { background: rgba(255,183,48,0.15);  border-color: var(--r-3); color: var(--r-3); }
 
     /* Type badges on cards */
     .type-badge {
@@ -208,6 +209,7 @@
     .type-badge.boba    { background: rgba(91,168,255,0.18);  border: 1px solid rgba(91,168,255,0.45);  color: #5BA8FF; }
     .type-badge.dessert { background: rgba(201,126,224,0.18); border: 1px solid rgba(201,126,224,0.45); color: #C97EE0; }
     .type-badge.icecream{ background: rgba(38,203,224,0.18);  border: 1px solid rgba(38,203,224,0.45);  color: #26CBE0; }
+    .type-badge.buffet  { background: rgba(255,183,48,0.18);  border: 1px solid rgba(255,183,48,0.45);  color: #FFB730; }
 
     /* Divider */
     .divider {
@@ -914,6 +916,7 @@
       <button class="chip type-boba" data-type="boba">🧋 Boba &amp; Drinks</button>
       <button class="chip type-dessert" data-type="dessert">🍧 Asian Desserts</button>
       <button class="chip type-ice" data-type="icecream">🍦 Ice Cream</button>
+      <button class="chip type-buffet" data-type="buffet">🍱 Buffet &amp; AYCE</button>
     </div>
   </div>
   <div class="filter-section">
@@ -961,6 +964,7 @@
         <button class="c-chip" data-t="boba">🧋 Boba &amp; Drinks</button>
         <button class="c-chip" data-t="dessert">🍧 Asian Desserts</button>
         <button class="c-chip" data-t="icecream">🍦 Ice Cream</button>
+        <button class="c-chip" data-t="buffet">🍱 Buffet &amp; AYCE</button>
       </div>
     </div>
     <div class="criteria-group">
@@ -1933,7 +1937,7 @@ function renderCard(r) {
       <div class="card-rating-badge" style="color:${color}">
         <span class="star">★</span> ${r.rating.toFixed(1)}
       </div>
-      ${{cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>'}[getVenueType(r)] || ''}
+      ${{cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>',buffet:'<span class="type-badge buffet">🍱 Buffet</span>'}[getVenueType(r)] || ''}
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -1984,15 +1988,18 @@ let activeType    = 'all';
 
 /* Venue type detection — order matters: most specific first */
 function getVenueType(r) {
-  const n = r.name;
+  const n   = r.name;
   const sig = (r.signature || '');
   // Ice cream: soft serve, gelato, or explicit ice cream in name/signature
   if (/ice\s*cream|gelato/i.test(n) ||
       /soft\s*serve|ice\s*cream|gelato/i.test(sig)) return 'icecream';
   // Boba & drinks
   if (/boba|bubble|milk\s*tea|pearl\s*tea|pearl\s*milk|tiger\s*sugar|taro\s*tea|tea\s*bar|boba\s*lab|wo\s*bao\s*bao/i.test(n)) return 'boba';
-  // Asian desserts: shaved ice, mochi, bingsu, snow ice, tofu pudding, tteok dessert, etc.
+  // Asian desserts
   if (/dessert|mochi|daifuku|bingsu|shaved\s*ice|snow\s*ice|tofu\s*pudding|douhua|sul\s*&\s*beans|salty\s*egg\s*yolk|mango\s*snow/i.test(n)) return 'dessert';
+  // Buffet (name OR signature contains buffet / AYCE)
+  if (/buffet|ayce|all.you.can.eat/i.test(n) ||
+      /ayce|buffet|all.you.can.eat/i.test(sig)) return 'buffet';
   // Coffee & café
   if (/café|cafe|bakery|tea\s*house|pineapple\s*cake|tiong\s*bahru/i.test(n)) return 'cafe';
   return 'restaurant';
@@ -2021,7 +2028,7 @@ function render() {
     const section = filtered.filter(r => getRatingBand(r.rating) === band);
     if (!section.length) return;
 
-    const typeLabel = {restaurant:'restaurant',cafe:'café',boba:'boba shop',dessert:'dessert shop',icecream:'ice cream shop'}[activeType] || 'place';
+    const typeLabel = {restaurant:'restaurant',cafe:'café',boba:'boba shop',dessert:'dessert shop',icecream:'ice cream shop',buffet:'buffet'}[activeType] || 'place';
     const sec = document.createElement('div');
     sec.className = 'rating-section';
     sec.innerHTML = `

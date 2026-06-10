@@ -3375,10 +3375,11 @@ render();
     document.querySelectorAll('[data-ca]').forEach(c => c.classList.remove('sel'));
     chip.classList.add('sel');
     crawlArea = chip.dataset.ca;
+    setTimeout(() => { try { buildSpotGrid(); } catch(err) { console.error(err); } showStep(3); }, 180);
   });
   document.getElementById('crawlBack2').addEventListener('click', () => showStep(1));
   document.getElementById('crawlNext2').addEventListener('click', () => {
-    buildSpotGrid();
+    try { buildSpotGrid(); } catch(err) { console.error(err); }
     showStep(3);
   });
 

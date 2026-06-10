@@ -767,6 +767,39 @@
     .res-btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text-sub); }
     .res-btn.ghost:hover { border-color: var(--gold); color: var(--gold); }
 
+    /* Swipe-again prompt */
+    .swipe-again-prompt {
+      width: 100%; margin-top: 24px;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 20px 18px;
+      text-align: center;
+    }
+    .sap-question {
+      font-size: 1rem; font-weight: 600; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .sap-buttons {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+    .sap-btn {
+      padding: 11px 24px; border-radius: 100px;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      transition: all var(--transition); border: none;
+    }
+    .sap-yes {
+      background: linear-gradient(135deg, var(--gold), #b8960a);
+      color: #08080F;
+    }
+    .sap-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.35); }
+    .sap-no {
+      background: transparent;
+      border: 1px solid var(--border) !important;
+      color: var(--text-sub);
+    }
+    .sap-no:hover { border-color: var(--gold) !important; color: var(--gold); }
+
     /* ─── Cursor animation on card ────────────────── */
     .card::before {
       content: '';
@@ -956,10 +989,17 @@
     <h2 id="resultsTitle">Your Matches 🎉</h2>
     <p id="resultsSubtitle"></p>
     <div class="results-list" id="resultsList"></div>
-    <div class="results-actions">
-      <button class="res-btn primary" id="resRestartBtn">Swipe Again</button>
-      <button class="res-btn ghost" id="resCloseBtn">Close</button>
+
+    <!-- Swipe-again prompt -->
+    <div class="swipe-again-prompt" id="swipeAgainPrompt">
+      <p class="sap-question">Want to swipe again?</p>
+      <div class="sap-buttons">
+        <button class="sap-btn sap-yes" id="sapYes">Yes, same preferences</button>
+        <button class="sap-btn sap-no"  id="sapNo">No, change filters</button>
+      </div>
     </div>
+
+    <button class="res-btn ghost" id="resCloseBtn" style="margin-top:8px">Close</button>
   </div>
 </div>
 
@@ -2191,9 +2231,26 @@ render();
     });
   }
 
-  document.getElementById('resRestartBtn').addEventListener('click', () => {
+  // "Yes, same preferences" — reshuffle the same filtered pool and swipe again
+  document.getElementById('sapYes').addEventListener('click', () => {
+    pool = restaurants.filter(r =>
+      (selCuisine === 'all' || r.cuisine === selCuisine) &&
+      r.rating >= selRating &&
+      (selPrice === 0 || r.priceLevel === selPrice)
+    );
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    pool = pool.slice(0, 20);
+    idx = 0; liked = []; history = [];
+    show(swipeScr);
+    renderCards();
+  });
+
+  // "No, change filters" — go back to criteria screen and reset chips
+  document.getElementById('sapNo').addEventListener('click', () => {
     selCuisine = 'all'; selRating = 0; selPrice = 0;
-    // reset criteria chips
     document.querySelectorAll('#cCuisineChips .c-chip').forEach((b,i) => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cRatingChips .c-chip').forEach((b,i)  => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cPriceChips .c-chip').forEach((b,i)   => b.classList.toggle('sel', i===0));

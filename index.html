@@ -191,19 +191,19 @@
 
     /* Type chips */
     .chip.type-cafe.active  { background: rgba(255,107,157,0.15); border-color: #FF6B9D; color: #FF6B9D; }
+    .chip.type-boba.active  { background: rgba(91,168,255,0.15);  border-color: #5BA8FF; color: #5BA8FF; }
     .chip.type-rest.active  { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
 
-    /* Café badge on cards */
-    .cafe-badge {
+    /* Type badges on cards */
+    .type-badge {
       position: absolute; bottom: 12px; left: 12px;
       font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
       text-transform: uppercase;
-      background: rgba(255,107,157,0.18);
-      border: 1px solid rgba(255,107,157,0.45);
-      color: #FF6B9D;
       padding: 3px 9px; border-radius: 100px;
       backdrop-filter: blur(8px);
     }
+    .type-badge.cafe { background: rgba(255,107,157,0.18); border: 1px solid rgba(255,107,157,0.45); color: #FF6B9D; }
+    .type-badge.boba { background: rgba(91,168,255,0.18);  border: 1px solid rgba(91,168,255,0.45);  color: #5BA8FF; }
 
     /* Divider */
     .divider {
@@ -906,7 +906,8 @@
     <div class="filter-chips" id="typeChips">
       <button class="chip active" data-type="all">🍽 All</button>
       <button class="chip type-rest" data-type="restaurant">🥢 Restaurants</button>
-      <button class="chip type-cafe" data-type="cafe">☕ Cafés &amp; Dessert</button>
+      <button class="chip type-cafe" data-type="cafe">☕ Coffee &amp; Café</button>
+      <button class="chip type-boba" data-type="boba">🧋 Boba &amp; Drinks</button>
     </div>
   </div>
   <div class="filter-section">
@@ -950,7 +951,8 @@
       <div class="criteria-chips" id="cTypeChips">
         <button class="c-chip sel" data-t="all">🍽 All</button>
         <button class="c-chip" data-t="restaurant">🥢 Restaurants</button>
-        <button class="c-chip" data-t="cafe">☕ Cafés &amp; Dessert</button>
+        <button class="c-chip" data-t="cafe">☕ Coffee &amp; Café</button>
+        <button class="c-chip" data-t="boba">🧋 Boba &amp; Drinks</button>
       </div>
     </div>
     <div class="criteria-group">
@@ -1923,7 +1925,7 @@ function renderCard(r) {
       <div class="card-rating-badge" style="color:${color}">
         <span class="star">★</span> ${r.rating.toFixed(1)}
       </div>
-      ${isCafe(r) ? '<span class="cafe-badge">☕ Café</span>' : ''}
+      ${{cafe:'<span class="type-badge cafe">☕ Café</span>', boba:'<span class="type-badge boba">🧋 Boba</span>'}[getVenueType(r)] || ''}
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -1972,10 +1974,14 @@ let activeCuisine = 'all';
 let activeRating  = 'all';
 let activeType    = 'all';
 
-/* Auto-detect cafés by name keywords */
-function isCafe(r) {
-  return /café|cafe|bakery|boba|bubble\s*tea|dessert|shaved\s*ice|snow\s*ice|mochi|bingsu|milk\s*tea|tea\s*house|tea\s*bar|soft\s*serve|tiger\s*sugar|sul\s*&\s*beans|pearl\s*tea|pearl\s*milk/i.test(r.name);
+/* Venue type detection */
+function getVenueType(r) {
+  const n = r.name;
+  if (/boba|bubble|milk\s*tea|pearl\s*tea|pearl\s*milk|tiger\s*sugar|taro\s*tea|tea\s*bar|boba\s*lab|wo\s*bao\s*bao/i.test(n)) return 'boba';
+  if (/café|cafe|bakery|dessert|shaved\s*ice|snow\s*ice|mochi|bingsu|soft\s*serve|sul\s*&\s*beans|tea\s*house|pineapple\s*cake/i.test(n)) return 'cafe';
+  return 'restaurant';
 }
+function isCafe(r) { return getVenueType(r) !== 'restaurant'; }
 
 function render() {
   const wrap = document.getElementById('gridWrap');
@@ -1984,9 +1990,7 @@ function render() {
   const filtered = restaurants.filter(r => {
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
-    const typeOk    = activeType === 'all'
-                    || (activeType === 'cafe' && isCafe(r))
-                    || (activeType === 'restaurant' && !isCafe(r));
+    const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
     return cuisineOk && ratingOk && typeOk;
   });
 
@@ -2001,7 +2005,7 @@ function render() {
     const section = filtered.filter(r => getRatingBand(r.rating) === band);
     if (!section.length) return;
 
-    const typeLabel = activeType === 'cafe' ? 'café' : activeType === 'restaurant' ? 'restaurant' : 'place';
+    const typeLabel = activeType === 'cafe' ? 'café' : activeType === 'boba' ? 'boba shop' : activeType === 'restaurant' ? 'restaurant' : 'place';
     const sec = document.createElement('div');
     sec.className = 'rating-section';
     sec.innerHTML = `
@@ -2131,7 +2135,7 @@ render();
       (selCuisine === 'all' || r.cuisine === selCuisine) &&
       r.rating >= selRating &&
       (selPrice === 0 || r.priceLevel === selPrice) &&
-      (selType === 'all' || (selType === 'cafe' && isCafe(r)) || (selType === 'restaurant' && !isCafe(r)))
+      (selType === 'all' || getVenueType(r) === selType)
     );
     // shuffle
     for (let i = pool.length - 1; i > 0; i--) {

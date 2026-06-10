@@ -349,19 +349,20 @@
 
     .card-signature {
       display: flex; align-items: flex-start; gap: 8px;
-      background: rgba(212,175,55,0.06);
-      border: 1px solid rgba(212,175,55,0.12);
+      background: rgba(212,175,55,0.07);
+      border: 1px solid rgba(212,175,55,0.22);
       border-radius: var(--radius-sm);
       padding: 10px 12px; margin-bottom: 12px;
+      position: relative;
     }
-    .card-signature .sig-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .card-signature .sig-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
     .card-signature-label {
-      font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 2px;
+      font-size: 0.58rem; font-weight: 800;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 3px;
     }
     .card-signature-dish {
-      font-size: 0.78rem; font-weight: 500; color: var(--text);
+      font-size: 0.82rem; font-weight: 600; color: var(--text);
       line-height: 1.4;
     }
 
@@ -2670,9 +2671,9 @@ function renderCard(r) {
         <span class="card-price" style="color:${color}">${r.priceDesc}</span>
       </div>
       <div class="card-signature">
-        <span class="sig-icon">✦</span>
+        <span class="sig-icon">🔥</span>
         <div>
-          <div class="card-signature-label">Signature</div>
+          <div class="card-signature-label">Must Order</div>
           <div class="card-signature-dish">${r.signature}</div>
         </div>
       </div>

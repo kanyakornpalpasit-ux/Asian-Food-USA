@@ -189,6 +189,22 @@
     .chip.r2.active  { background: rgba(255,112,67,0.15);  border-color: var(--r-2); color: var(--r-2); }
     .chip.r1.active  { background: rgba(255,68,68,0.15);   border-color: var(--r-1); color: var(--r-1); }
 
+    /* Type chips */
+    .chip.type-cafe.active  { background: rgba(255,107,157,0.15); border-color: #FF6B9D; color: #FF6B9D; }
+    .chip.type-rest.active  { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
+
+    /* Café badge on cards */
+    .cafe-badge {
+      position: absolute; bottom: 12px; left: 12px;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255,107,157,0.18);
+      border: 1px solid rgba(255,107,157,0.45);
+      color: #FF6B9D;
+      padding: 3px 9px; border-radius: 100px;
+      backdrop-filter: blur(8px);
+    }
+
     /* Divider */
     .divider {
       height: 1px;
@@ -886,6 +902,14 @@
     </div>
   </div>
   <div class="filter-section">
+    <div class="filter-label">Type</div>
+    <div class="filter-chips" id="typeChips">
+      <button class="chip active" data-type="all">🍽 All</button>
+      <button class="chip type-rest" data-type="restaurant">🥢 Restaurants</button>
+      <button class="chip type-cafe" data-type="cafe">☕ Cafés &amp; Dessert</button>
+    </div>
+  </div>
+  <div class="filter-section">
     <div class="filter-label">Google Maps Rating</div>
     <div class="filter-chips" id="ratingChips">
       <button class="chip active" data-rating="all">⭐ All Ratings</button>
@@ -921,6 +945,14 @@
     <h2>🍜 Food Match</h2>
     <p>Set your preferences and swipe right on restaurants you love, left on ones you skip.</p>
 
+    <div class="criteria-group">
+      <div class="criteria-group-label">Type</div>
+      <div class="criteria-chips" id="cTypeChips">
+        <button class="c-chip sel" data-t="all">🍽 All</button>
+        <button class="c-chip" data-t="restaurant">🥢 Restaurants</button>
+        <button class="c-chip" data-t="cafe">☕ Cafés &amp; Dessert</button>
+      </div>
+    </div>
     <div class="criteria-group">
       <div class="criteria-group-label">Cuisine Type</div>
       <div class="criteria-chips" id="cCuisineChips">
@@ -1891,6 +1923,7 @@ function renderCard(r) {
       <div class="card-rating-badge" style="color:${color}">
         <span class="star">★</span> ${r.rating.toFixed(1)}
       </div>
+      ${isCafe(r) ? '<span class="cafe-badge">☕ Café</span>' : ''}
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -1937,6 +1970,12 @@ const ratingBands = [
 ───────────────────────────────────────────────────── */
 let activeCuisine = 'all';
 let activeRating  = 'all';
+let activeType    = 'all';
+
+/* Auto-detect cafés by name keywords */
+function isCafe(r) {
+  return /café|cafe|bakery|boba|bubble\s*tea|dessert|shaved\s*ice|snow\s*ice|mochi|bingsu|milk\s*tea|tea\s*house|tea\s*bar|soft\s*serve|tiger\s*sugar|sul\s*&\s*beans|pearl\s*tea|pearl\s*milk/i.test(r.name);
+}
 
 function render() {
   const wrap = document.getElementById('gridWrap');
@@ -1945,7 +1984,10 @@ function render() {
   const filtered = restaurants.filter(r => {
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
-    return cuisineOk && ratingOk;
+    const typeOk    = activeType === 'all'
+                    || (activeType === 'cafe' && isCafe(r))
+                    || (activeType === 'restaurant' && !isCafe(r));
+    return cuisineOk && ratingOk && typeOk;
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;
@@ -1959,12 +2001,13 @@ function render() {
     const section = filtered.filter(r => getRatingBand(r.rating) === band);
     if (!section.length) return;
 
+    const typeLabel = activeType === 'cafe' ? 'café' : activeType === 'restaurant' ? 'restaurant' : 'place';
     const sec = document.createElement('div');
     sec.className = 'rating-section';
     sec.innerHTML = `
       <div class="rating-section-header">
         <span class="rating-badge ${cls}">${label}</span>
-        <span class="rating-section-count">${section.length} restaurant${section.length > 1 ? 's' : ''}</span>
+        <span class="rating-section-count">${section.length} ${typeLabel}${section.length > 1 ? 's' : ''}</span>
       </div>
       <div class="cards-grid"></div>`;
 
@@ -1995,6 +2038,15 @@ document.getElementById('ratingChips').addEventListener('click', e => {
   render();
 });
 
+document.getElementById('typeChips').addEventListener('click', e => {
+  const btn = e.target.closest('[data-type]');
+  if (!btn) return;
+  document.querySelectorAll('[data-type]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeType = btn.dataset.type;
+  render();
+});
+
 /* ─────────────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────────────── */
@@ -2013,7 +2065,7 @@ render();
   const progressEl   = document.getElementById('swipeProgress');
 
   let pool = [], idx = 0, liked = [], history = [];
-  let selCuisine = 'all', selRating = 0, selPrice = 0;
+  let selCuisine = 'all', selRating = 0, selPrice = 0, selType = 'all';
 
   // ── Open / close ──
   function openMatch() {
@@ -2068,6 +2120,7 @@ render();
       onSelect(btn.dataset[dataAttr]);
     });
   }
+  bindChips('cTypeChips',    't', v => selType    = v);
   bindChips('cCuisineChips', 'c', v => selCuisine = v);
   bindChips('cRatingChips',  'r', v => selRating  = Number(v));
   bindChips('cPriceChips',   'p', v => selPrice   = Number(v));
@@ -2077,7 +2130,8 @@ render();
     pool = restaurants.filter(r =>
       (selCuisine === 'all' || r.cuisine === selCuisine) &&
       r.rating >= selRating &&
-      (selPrice === 0 || r.priceLevel === selPrice)
+      (selPrice === 0 || r.priceLevel === selPrice) &&
+      (selType === 'all' || (selType === 'cafe' && isCafe(r)) || (selType === 'restaurant' && !isCafe(r)))
     );
     // shuffle
     for (let i = pool.length - 1; i > 0; i--) {
@@ -2251,7 +2305,8 @@ render();
 
   // "No, change filters" — go back to criteria screen and reset chips
   document.getElementById('sapNo').addEventListener('click', () => {
-    selCuisine = 'all'; selRating = 0; selPrice = 0;
+    selCuisine = 'all'; selRating = 0; selPrice = 0; selType = 'all';
+    document.querySelectorAll('#cTypeChips .c-chip').forEach((b,i)    => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cCuisineChips .c-chip').forEach((b,i) => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cRatingChips .c-chip').forEach((b,i)  => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cPriceChips .c-chip').forEach((b,i)   => b.classList.toggle('sel', i===0));

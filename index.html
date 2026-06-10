@@ -2631,42 +2631,38 @@ function buildStats() {
 }
 
 /* ─────────────────────────────────────────────────────
-   PHOTO — unique image per restaurant via keyword seed
+   PHOTO — one unique photo per restaurant
+   loremflickr.com lock={id} guarantees a different
+   but consistent image for every restaurant ID.
 ───────────────────────────────────────────────────── */
-const CUISINE_KEYWORDS = {
-  chinese:     'chinese food dim sum noodles',
-  japanese:    'japanese sushi ramen food',
-  korean:      'korean bbq food bulgogi',
-  thai:        'thai food curry pad thai',
-  vietnamese:  'vietnamese pho food banh mi',
-  indian:      'indian food curry biryani',
-  singaporean: 'singapore food hawker laksa',
-  taiwanese:   'taiwanese food beef noodle',
+const CUISINE_FLICKR = {
+  chinese:     'chinese,food,dim-sum',
+  japanese:    'japanese,food,sushi,ramen',
+  korean:      'korean,food,bbq',
+  thai:        'thai,food,curry',
+  vietnamese:  'vietnamese,food,pho',
+  indian:      'indian,food,curry',
+  singaporean: 'singapore,food,hawker',
+  taiwanese:   'taiwanese,food',
 };
 
-// Fallback pool (used if source.unsplash.com fails) — verified working IDs
-const FALLBACK_POOL = [
-  '1563245372-f21724e3856d','1547592166-23ac88417717','1553361371-9b22f78e8b1d',
-  '1585032226651-673b9a9c3498','1617196034183-421b4040ed20','1625943553852-781c6dd46faa',
-  '1544025162-d76694265947','1558618666-fcd25c85cd64','1504754524776-8f4f37790ca0',
-  '1534482421-64566f976cfa','1585937421612-70a008356fbe','1503764654157-72d979d9af2f',
-  '1621417346980-7b3dc19b0abb','1526318896980-cf78c088247c','1583032015879-e5022cb87c3b',
-  '1600335895229-6e75511892c8','1569050467447-ce54b3bbc37d','1582878826629-29b7ad1cdc43',
-  '1579584425555-c3ce17fd4351','1559314809-0d155014e29e','1567620905732-2d1ec7ab7445',
-  '1574484284002-952d92456975','1596797038530-2c107229654b','1590301157890-4810ed352733',
-  '1611143669185-af224c5e3252','1617196034033-8b95c63e4f79','1529692236671-f1f6cf9683ba',
-  '1562565652-a0d8f0c59eb4','1565557623262-b51c2513a641',
-];
-
 function getRestaurantPhoto(r) {
-  const kw = encodeURIComponent(CUISINE_KEYWORDS[r.cuisine] || 'asian food restaurant');
-  // source.unsplash.com returns a different photo for each unique sig value
-  return `https://source.unsplash.com/featured/600x400/?${kw}&sig=${r.id}`;
+  const kw = CUISINE_FLICKR[r.cuisine] || 'asian,food,restaurant';
+  return `https://loremflickr.com/600/400/${kw}?lock=${r.id}`;
 }
 
 function getRestaurantPhotoFallback(id) {
-  const idx = ((id * 40503 + 17) >>> 0) % FALLBACK_POOL.length;
-  return `https://images.unsplash.com/photo-${FALLBACK_POOL[idx]}?w=600&q=80`;
+  // Verified Unsplash IDs used only when loremflickr is unreachable
+  const pool = [
+    '1563245372-f21724e3856d','1547592166-23ac88417717','1553361371-9b22f78e8b1d',
+    '1585032226651-673b9a9c3498','1617196034183-421b4040ed20','1625943553852-781c6dd46faa',
+    '1544025162-d76694265947','1558618666-fcd25c85cd64','1504754524776-8f4f37790ca0',
+    '1534482421-64566f976cfa','1585937421612-70a008356fbe','1503764654157-72d979d9af2f',
+    '1621417346980-7b3dc19b0abb','1526318896980-cf78c088247c','1583032015879-e5022cb87c3b',
+    '1600335895229-6e75511892c8','1569050467447-ce54b3bbc37d','1582878826629-29b7ad1cdc43',
+    '1579584425555-c3ce17fd4351','1559314809-0d155014e29e',
+  ];
+  return `https://images.unsplash.com/photo-${pool[((id * 40503 + 17) >>> 0) % pool.length]}?w=600&q=80`;
 }
 
 /* ─────────────────────────────────────────────────────

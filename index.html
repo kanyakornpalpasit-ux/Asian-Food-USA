@@ -982,6 +982,42 @@
     }
     .sap-no:hover { border-color: var(--gold) !important; color: var(--gold); }
 
+    /* ─── AREA FILTER ───────────────────────────── */
+    .chip.area-cinco.active    { background: rgba(212,175,55,0.18);  border-color: var(--gold);  color: var(--gold-lt); }
+    .chip.area-mills.active    { background: rgba(255,112,67,0.15);  border-color: #FF7043;      color: #FF9070; }
+    .chip.area-downtown.active { background: rgba(38,203,224,0.15);  border-color: #26CBE0;      color: #5DDDE8; }
+    .chip.area-sw.active       { background: rgba(201,126,224,0.15); border-color: #C97EE0;      color: #D99EF0; }
+    .chip.area-west.active     { background: rgba(86,200,122,0.15);  border-color: var(--r-4);   color: var(--r-4); }
+
+    /* Area tag on card footer */
+    .card-area-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.62rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .card-area-tag.cinco    { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);  color: var(--gold); }
+    .card-area-tag.mills    { background: rgba(255,112,67,0.12); border: 1px solid rgba(255,112,67,0.3);  color: #FF7043; }
+    .card-area-tag.downtown { background: rgba(38,203,224,0.12); border: 1px solid rgba(38,203,224,0.3);  color: #26CBE0; }
+    .card-area-tag.sw       { background: rgba(201,126,224,0.12);border: 1px solid rgba(201,126,224,0.3); color: #C97EE0; }
+    .card-area-tag.west     { background: rgba(86,200,122,0.12); border: 1px solid rgba(86,200,122,0.3);  color: #56C87A; }
+
+    /* Area info bar (below hero) */
+    .area-info-bar {
+      display: none;
+      align-items: flex-start; gap: 12px;
+      margin: 0 40px 20px;
+      padding: 14px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .area-info-bar.show { display: flex; }
+    .area-info-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .area-info-body h4 { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .area-info-body p  { font-size: 0.78rem; color: var(--text-sub); line-height: 1.5; }
+    @media (max-width: 768px) { .area-info-bar { margin: 0 16px 16px; } }
+
     /* ─── Cursor animation on card ────────────────── */
     .card::before {
       content: '';
@@ -1055,6 +1091,17 @@
 <!-- ────── FILTERS ────── -->
 <div class="filter-bar" id="filterBar">
   <div class="filter-section">
+    <div class="filter-label">📍 Area</div>
+    <div class="filter-chips" id="areaChips">
+      <button class="chip active" data-area="all">🗺 All Areas</button>
+      <button class="chip area-cinco" data-area="cinco">🏡 Cinco Ranch / SE Katy</button>
+      <button class="chip area-mills" data-area="mills">🛍 Katy Mills / NW Katy</button>
+      <button class="chip area-downtown" data-area="downtown">🏛 Historic Downtown</button>
+      <button class="chip area-sw" data-area="sw">🛣 SW Katy · Mason Rd</button>
+      <button class="chip area-west" data-area="west">🌿 West Katy / Elyson</button>
+    </div>
+  </div>
+  <div class="filter-section">
     <div class="filter-label">Cuisine Type</div>
     <div class="filter-chips" id="cuisineChips">
       <button class="chip active" data-cuisine="all">🍽 All Cuisines</button>
@@ -1093,6 +1140,15 @@
 </div>
 
 <div class="divider"></div>
+
+<!-- ────── AREA INFO BAR ────── -->
+<div class="area-info-bar" id="areaInfoBar">
+  <div class="area-info-icon" id="areaInfoIcon">🗺</div>
+  <div class="area-info-body">
+    <h4 id="areaInfoTitle"></h4>
+    <p id="areaInfoDesc"></p>
+  </div>
+</div>
 
 <!-- ────── RESULTS BAR ────── -->
 <div class="results-bar">
@@ -1188,6 +1244,18 @@
         <button class="c-chip" data-p="2">$$ Mid-Range</button>
         <button class="c-chip" data-p="3">$$$ Upscale</button>
         <button class="c-chip" data-p="4">$$$$ Fine Dining</button>
+      </div>
+    </div>
+
+    <div class="criteria-group">
+      <div class="criteria-group-label">📍 Area</div>
+      <div class="criteria-chips" id="cAreaChips">
+        <button class="c-chip sel" data-a="all">🗺 Anywhere</button>
+        <button class="c-chip" data-a="cinco">🏡 Cinco Ranch / SE</button>
+        <button class="c-chip" data-a="mills">🛍 Katy Mills / NW</button>
+        <button class="c-chip" data-a="downtown">🏛 Historic Downtown</button>
+        <button class="c-chip" data-a="sw">🛣 SW Katy · Mason Rd</button>
+        <button class="c-chip" data-a="west">🌿 West Katy / Elyson</button>
       </div>
     </div>
 
@@ -2176,6 +2244,7 @@ function renderCard(r) {
         <span class="card-address">📍 ${r.address}</span>
         <span class="card-price-range">${renderPriceLevel(r.priceLevel)}</span>
       </div>
+      <div style="margin-top:6px">${renderAreaTag(r)}</div>
     </div>
     <div class="card-actions">
       <button class="ca-btn${favActive?' fav-active':''}" data-fav-id="${r.id}"
@@ -2216,6 +2285,32 @@ const ratingBands = [
 let activeCuisine = 'all';
 let activeRating  = 'all';
 let activeType    = 'all';
+let activeArea    = 'all';
+
+/* Area detection from address string */
+const AREA_INFO = {
+  cinco:    { icon:'🏡', label:'Cinco Ranch / SE Katy',   desc:'Westheimer Pkwy, Kingsland Blvd, LaCenterra & the Cinco Ranch master-planned community.' },
+  mills:    { icon:'🛍', label:'Katy Mills / NW Katy',    desc:'Katy Mills Mall corridor, Katy Freeway (I-10), Pin Oak Rd & W Airport Blvd.' },
+  downtown: { icon:'🏛', label:'Historic Downtown Katy',  desc:'Texas Pkwy, Hwy 90, Old Town Katy & Katy Fort Bend Rd — the original heart of the city.' },
+  sw:       { icon:'🛣', label:'SW Katy · Mason Rd',      desc:'S Mason Rd corridor, Spring Green Blvd, S Fry Rd, S Peek Rd & Commercial Center Blvd.' },
+  west:     { icon:'🌿', label:'West Katy / Elyson',      desc:'Franz Rd, N Fry Rd, N Barker Cypress Rd, N Mason Rd & the growing Elyson community.' },
+};
+
+function getArea(r) {
+  const a = (r.address || '').toLowerCase();
+  if (/cinco\s*ranch|kingsland|colonial\s*pkwy|westheimer\s*pkwy|lacenterra/.test(a)) return 'cinco';
+  if (/katy\s*mills|katy\s*fwy|katy\s*freeway|pin\s*oak\s*rd|w\s*airport\s*blvd/.test(a)) return 'mills';
+  if (/texas\s*pkwy|hwy\s*90|highway\s*90|katy\s*fort\s*bend|texas\s*ave.*katy/.test(a)) return 'downtown';
+  if (/s\s*mason\s*rd|s\.\s*mason|spring\s*green|s\s*fry\s*rd|s\s*peek\s*rd|commercial\s*center\s*blvd|gaston\s*rd/.test(a)) return 'sw';
+  if (/franz\s*rd|n\s*fry\s*rd|n\s*barker\s*cypress|n\s*mason\s*rd|w\s*grand\s*pkwy\s*n/.test(a)) return 'west';
+  return 'cinco'; // default fallback — most restaurants are in Cinco Ranch area
+}
+
+function renderAreaTag(r) {
+  const area = getArea(r);
+  const info = AREA_INFO[area];
+  return `<span class="card-area-tag ${area}">${info.icon} ${info.label}</span>`;
+}
 
 /* Venue type detection — order matters: most specific first */
 function getVenueType(r) {
@@ -2245,7 +2340,8 @@ function render() {
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
     const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
-    return cuisineOk && ratingOk && typeOk;
+    const areaOk    = activeArea   === 'all' || getArea(r) === activeArea;
+    return cuisineOk && ratingOk && typeOk && areaOk;
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;
@@ -2302,6 +2398,26 @@ document.getElementById('typeChips').addEventListener('click', e => {
   document.querySelectorAll('[data-type]').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeType = btn.dataset.type;
+  render();
+});
+
+document.getElementById('areaChips').addEventListener('click', e => {
+  const btn = e.target.closest('[data-area]');
+  if (!btn) return;
+  document.querySelectorAll('[data-area]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeArea = btn.dataset.area;
+  // update area info bar
+  const bar = document.getElementById('areaInfoBar');
+  if (activeArea === 'all') {
+    bar.classList.remove('show');
+  } else {
+    const info = AREA_INFO[activeArea];
+    document.getElementById('areaInfoIcon').textContent  = info.icon;
+    document.getElementById('areaInfoTitle').textContent = info.label;
+    document.getElementById('areaInfoDesc').textContent  = info.desc;
+    bar.classList.add('show');
+  }
   render();
 });
 
@@ -2490,7 +2606,7 @@ render();
   const progressEl   = document.getElementById('swipeProgress');
 
   let pool = [], idx = 0, liked = [], history = [];
-  let selCuisine = 'all', selRating = 0, selPrice = 0, selType = 'all';
+  let selCuisine = 'all', selRating = 0, selPrice = 0, selType = 'all', selArea = 'all';
 
   // ── Open / close ──
   function openMatch() {
@@ -2549,6 +2665,7 @@ render();
   bindChips('cCuisineChips', 'c', v => selCuisine = v);
   bindChips('cRatingChips',  'r', v => selRating  = Number(v));
   bindChips('cPriceChips',   'p', v => selPrice   = Number(v));
+  bindChips('cAreaChips',    'a', v => selArea     = v);
 
   // ── Start ──
   document.getElementById('startSwipeBtn').addEventListener('click', () => {
@@ -2556,7 +2673,8 @@ render();
       (selCuisine === 'all' || r.cuisine === selCuisine) &&
       r.rating >= selRating &&
       (selPrice === 0 || r.priceLevel === selPrice) &&
-      (selType === 'all' || getVenueType(r) === selType)
+      (selType === 'all' || getVenueType(r) === selType) &&
+      (selArea  === 'all' || getArea(r) === selArea)
     );
     // shuffle
     for (let i = pool.length - 1; i > 0; i--) {
@@ -2730,11 +2848,12 @@ render();
 
   // "No, change filters" — go back to criteria screen and reset chips
   document.getElementById('sapNo').addEventListener('click', () => {
-    selCuisine = 'all'; selRating = 0; selPrice = 0; selType = 'all';
+    selCuisine = 'all'; selRating = 0; selPrice = 0; selType = 'all'; selArea = 'all';
     document.querySelectorAll('#cTypeChips .c-chip').forEach((b,i)    => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cCuisineChips .c-chip').forEach((b,i) => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cRatingChips .c-chip').forEach((b,i)  => b.classList.toggle('sel', i===0));
     document.querySelectorAll('#cPriceChips .c-chip').forEach((b,i)   => b.classList.toggle('sel', i===0));
+    document.querySelectorAll('#cAreaChips .c-chip').forEach((b,i)    => b.classList.toggle('sel', i===0));
     show(criteriaScr);
   });
 })();

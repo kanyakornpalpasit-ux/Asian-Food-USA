@@ -1591,7 +1591,7 @@
         <div class="spot-grid" id="spotGrid"></div>
         <div class="crawl-nav">
           <button class="crawl-nav-back" id="crawlBack3">← Back</button>
-          <button class="crawl-nav-next" id="crawlNext3" disabled>Build Route →</button>
+          <button class="crawl-nav-next" id="crawlNext3">Build Route →</button>
         </div>
       </div>
 
@@ -3462,13 +3462,16 @@ render();
 
   function updatePickCount() {
     const n = crawlPicks.length;
+    const btn = document.getElementById('crawlNext3');
     document.getElementById('crawlPickCount').textContent = `${n} selected`;
-    document.getElementById('crawlNext3').disabled = n < 3;
+    btn.style.opacity = n < 3 ? '0.45' : '1';
+    btn.title = n < 3 ? `Pick ${3 - n} more stop${3 - n > 1 ? 's' : ''} to continue` : '';
   }
 
   document.getElementById('crawlBack3').addEventListener('click', () => showStep(2));
   document.getElementById('crawlNext3').addEventListener('click', () => {
-    buildRoute();
+    if (crawlPicks.length < 3) { showToast(`Pick ${3 - crawlPicks.length} more stop${3 - crawlPicks.length > 1 ? 's' : ''} first`); return; }
+    try { buildRoute(); } catch(err) { console.error(err); }
     showStep(4);
   });
 

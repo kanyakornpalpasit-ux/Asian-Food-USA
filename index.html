@@ -420,7 +420,7 @@
 
     /* Floating Food Match button on mobile */
     .fab-match {
-      display: none;
+      display: flex;
       position: fixed; bottom: 24px; right: 20px; z-index: 200;
       align-items: center; gap: 8px;
       background: linear-gradient(135deg, var(--gold), #b8960a);
@@ -431,6 +431,7 @@
       transition: all var(--transition);
     }
     .fab-match:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(212,175,55,0.55); }
+    @media (min-width: 769px) { .fab-match { display: none; } }
 
     /* ─── RESPONSIVE ───────────────────────────────── */
     @media (max-width: 1024px) {

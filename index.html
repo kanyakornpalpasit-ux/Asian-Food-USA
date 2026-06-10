@@ -2705,8 +2705,8 @@ function renderCard(r) {
 
   card.innerHTML = `
     <div class="card-img" style="cursor:pointer" onclick="openLightbox(window._rMap[${r.id}])">
-      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy"
-           onerror="this.src=getRestaurantPhotoFallback(0);this.onerror=null" />
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" data-gp="${r.id}"
+           onerror="this.src=getRestaurantPhotoFallback(${r.id});this.onerror=null" />
       <div class="card-img-overlay"></div>
       <div class="card-badges">
         <span class="cuisine-badge" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.color}40;">
@@ -3053,7 +3053,7 @@ function renderWishlist() {
   const items = favIds.map(id => restaurants.find(r => r.id === id)).filter(Boolean);
   list.innerHTML = items.map(r => `
     <div class="wl-item">
-      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=60'">
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" data-gp="${r.id}" onerror="this.src=getRestaurantPhotoFallback(${r.id});this.onerror=null">
       <div class="wl-item-body">
         <div class="wl-item-name">${r.name}</div>
         <div class="wl-item-meta">★ ${r.rating} · ${'$'.repeat(r.priceLevel)} · ${r.cuisine.charAt(0).toUpperCase()+r.cuisine.slice(1)}</div>
@@ -3085,9 +3085,107 @@ function renderWishlist() {
 /* Global restaurant lookup for inline onclick handlers */
 window._rMap = Object.fromEntries(restaurants.map(r => [r.id, r]));
 
+/* ─────────────────────────────────────────────────────
+   GOOGLE PLACES PHOTOS
+   ① Go to https://console.cloud.google.com
+   ② Create a project → Enable "Places API"
+   ③ Go to Credentials → Create API Key
+   ④ (Optional but recommended) Restrict the key to
+      your GitHub Pages URL under "HTTP referrers"
+   ⑤ Paste your key in the string below
+───────────────────────────────────────────────────── */
+const GPLACES_KEY = ''; // ← paste your Google API key here
+
+const GP_CACHE_KEY = 'afusa_gphoto_v1';
+let _gps = null;   // PlacesService instance
+let _gpReady = false;
+const _gpPending = new Set();
+
+function _gpCache() {
+  try { return JSON.parse(localStorage.getItem(GP_CACHE_KEY) || '{}'); } catch { return {}; }
+}
+function _gpSave(id, url) {
+  try { const c = _gpCache(); c[id] = url; localStorage.setItem(GP_CACHE_KEY, JSON.stringify(c)); } catch {}
+}
+
+// Called by Google Maps SDK once loaded
+window._initGP = function() {
+  _gps = new google.maps.places.PlacesService(document.createElement('div'));
+  _gpReady = true;
+  // Trigger any cards already in viewport that were waiting
+  document.querySelectorAll('img[data-gp]').forEach(img => _gpObserve(img));
+};
+
+// Only fetch photo when the card scrolls into view
+const _gpObserver = typeof IntersectionObserver !== 'undefined'
+  ? new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        _gpObserver.unobserve(e.target);
+        _gpFetch(parseInt(e.target.dataset.gp), e.target);
+      });
+    }, { rootMargin: '400px' })
+  : null;
+
+function _gpObserve(img) {
+  if (!GPLACES_KEY || !img) return;
+  const id = parseInt(img.dataset.gp);
+  const cached = _gpCache()[id];
+  if (cached) { _gpApply(id, cached); return; }
+  if (_gpReady && _gpObserver) _gpObserver.observe(img);
+}
+
+function _gpApply(id, url) {
+  document.querySelectorAll(`img[data-gp="${id}"]`).forEach(el => {
+    if (el.src === url) return;
+    el.style.opacity = '0';
+    el.src = url;
+    el.onload = () => { el.style.transition = 'opacity 0.4s'; el.style.opacity = '1'; };
+    el.onerror = null; // disable fallback once we have a real URL
+  });
+}
+
+function _gpFetch(id, _imgEl) {
+  if (_gpPending.has(id) || !_gps) return;
+  _gpPending.add(id);
+  const r = window._rMap[id];
+  if (!r) return;
+  _gps.findPlaceFromText(
+    { query: `${r.name} Katy TX`, fields: ['photos'] },
+    (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK && results?.[0]?.photos?.[0]) {
+        const url = results[0].photos[0].getUrl({ maxWidth: 600, maxHeight: 400 });
+        _gpSave(id, url);
+        _gpApply(id, url);
+      }
+    }
+  );
+}
+
+// Scan all rendered img[data-gp] and register with observer
+function _gpScanPage() {
+  if (!GPLACES_KEY) return;
+  const cache = _gpCache();
+  document.querySelectorAll('img[data-gp]:not([data-gp-obs])').forEach(img => {
+    img.dataset.gpObs = '1';
+    const id = parseInt(img.dataset.gp);
+    if (cache[id]) { _gpApply(id, cache[id]); return; }
+    if (_gpReady && _gpObserver) _gpObserver.observe(img);
+  });
+}
+
+// Dynamically inject the Google Maps SDK
+if (GPLACES_KEY) {
+  const s = document.createElement('script');
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${GPLACES_KEY}&libraries=places&callback=_initGP`;
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+}
+
 updateWlBadge();
 buildStats();
 render();
+_gpScanPage();
 
 /* ─────────────────────────────────────────────────────
    FOOD MATCH — TINDER SWIPE FEATURE
@@ -3212,7 +3310,7 @@ render();
     card.className = 's-card';
     card.dataset.id = r.id;
     card.innerHTML = `
-      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" draggable="false">
+      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" draggable="false" data-gp="${r.id}">
       <div class="stamp stamp-yes">Like ♥</div>
       <div class="stamp stamp-no">Skip ✕</div>
       <div class="s-card-body">
@@ -3314,7 +3412,7 @@ render();
       const item = document.createElement('div');
       item.className = 'result-item';
       item.innerHTML = `
-        <img src="${getRestaurantPhoto(r)}" alt="${r.name}">
+        <img src="${getRestaurantPhoto(r)}" alt="${r.name}" data-gp="${r.id}">
         <div class="result-item-body">
           <div class="result-item-name">${r.name}</div>
           <div class="result-item-meta">★ ${r.rating} · ${r.signature} · ${'$'.repeat(r.priceLevel)}</div>
@@ -3479,8 +3577,8 @@ render();
       div.dataset.rid = r.id;
       div.innerHTML = `
         <div class="sc-img">
-          <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy"
-               onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70'">
+          <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" data-gp="${r.id}"
+               onerror="this.src=getRestaurantPhotoFallback(${r.id});this.onerror=null">
           <div class="pick-num"></div>
         </div>
         <div class="sc-body">

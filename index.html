@@ -2646,7 +2646,27 @@ const CUISINE_FLICKR = {
   taiwanese:   'taiwanese,food',
 };
 
+// Hand-curated photos for specific restaurants (id → full URL)
+const CUSTOM_PHOTOS = {
+  10: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',  // Gyu-Kaku: Japanese BBQ/yakiniku
+  11: 'https://images.unsplash.com/photo-1583032015879-e5022cb87c3b?w=600&q=80', // Tofu Village: Korean stew
+  17: 'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80', // Pho Binh by Night: pho bowl
+  18: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80', // Thanh Nien: Vietnamese
+  20: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80', // Himalaya: Indian curry
+  21: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80', // Indika Modern Indian
+  33: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80',    // Tim Ho Wan: dim sum bao
+  34: 'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=600&q=80', // Shanghai No.1: Chinese seafood
+  35: 'https://images.unsplash.com/photo-1547592166-23ac88417717?w=600&q=80',    // Katy Seafood Harbour: hot pot/seafood
+  60: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80', // Uchi Westside: sushi
+  68: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80', // CoCo Ichibanya: Japanese curry
+  69: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',    // Matsuri Udon: Japanese noodles
+  73: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80', // Gyoza Bar: Japanese dumplings/ramen
+  89: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&q=80', // Porkchop BBQ Korean: Korean BBQ
+  90: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&q=80', // Jungsik West: Korean fine dining
+};
+
 function getRestaurantPhoto(r) {
+  if (CUSTOM_PHOTOS[r.id]) return CUSTOM_PHOTOS[r.id];
   const kw = CUISINE_FLICKR[r.cuisine] || 'asian,food,restaurant';
   return `https://loremflickr.com/600/400/${kw}?lock=${r.id}`;
 }

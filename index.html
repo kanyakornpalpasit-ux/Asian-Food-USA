@@ -2231,18 +2231,19 @@ render();
     });
   }
 
-  // "Yes, same preferences" — reshuffle the same filtered pool and swipe again
+  // "Yes, same preferences" — swipe only through the restaurants liked in round 1
   document.getElementById('sapYes').addEventListener('click', () => {
-    pool = restaurants.filter(r =>
-      (selCuisine === 'all' || r.cuisine === selCuisine) &&
-      r.rating >= selRating &&
-      (selPrice === 0 || r.priceLevel === selPrice)
-    );
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
+    const prevLiked = [...liked];
+    if (!prevLiked.length) {
+      alert("You didn't like any restaurants in the last round! Try again with different filters.");
+      return;
     }
-    pool = pool.slice(0, 20);
+    // shuffle the liked list so order feels fresh
+    for (let i = prevLiked.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [prevLiked[i], prevLiked[j]] = [prevLiked[j], prevLiked[i]];
+    }
+    pool = prevLiked;
     idx = 0; liked = []; history = [];
     show(swipeScr);
     renderCards();

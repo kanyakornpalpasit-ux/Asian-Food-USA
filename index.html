@@ -1562,9 +1562,7 @@
             <div class="pc-desc">Pick any stops in any order — total freedom</div>
           </button>
         </div>
-        <div class="crawl-nav">
-          <button class="crawl-nav-next" id="crawlNext1" disabled>Next: Pick Area →</button>
-        </div>
+        <p style="font-size:0.74rem;color:var(--text-dim);margin-top:14px;text-align:center">Tap a theme to continue →</p>
       </div>
 
       <!-- ── STEP 2: Area ── -->
@@ -3367,9 +3365,8 @@ render();
     document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('sel'));
     card.classList.add('sel');
     crawlPreset = card.dataset.preset;
-    document.getElementById('crawlNext1').disabled = false;
+    setTimeout(() => showStep(2), 180); // brief visual feedback before advancing
   });
-  document.getElementById('crawlNext1').addEventListener('click', () => showStep(2));
 
   // ── Step 2: Area ──
   document.getElementById('crawlAreaChips').addEventListener('click', e => {

@@ -61,13 +61,44 @@
     ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
 
     /* ─── NAV ────────────────────────────────────── */
+    /* ─── CUSTOM CURSOR ──────────────────────────── */
+    *, *::before, *::after { cursor: none !important; }
+    .cur-dot {
+      position: fixed; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold); pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.08s, background 0.2s, width 0.2s, height 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cur-ring {
+      position: fixed; width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid rgba(212,175,55,0.7); pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94),
+                  width 0.25s, height 0.25s, border-color 0.2s, opacity 0.2s;
+    }
+    .cur-ring.hovering { width: 56px; height: 56px; border-color: var(--gold); opacity: 0.6; }
+    .cur-ring.clicking { width: 28px; height: 28px; border-color: #ef4444; }
+    @media (hover: none) { .cur-dot, .cur-ring { display: none; } *, *::before, *::after { cursor: auto !important; } }
+
+    /* ─── AMBIENT MOUSE GLOW ─────────────────────── */
+    .mouse-glow {
+      position: fixed; width: 500px; height: 500px;
+      border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
+      transform: translate(-50%,-50%);
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+      will-change: transform;
+    }
+
     .nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 40px;
-      background: rgba(8,8,15,0.92);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      background: rgba(8,8,15,0.75);
+      backdrop-filter: blur(28px) saturate(180%);
+      border-bottom: 1px solid rgba(212,175,55,0.12);
+      box-shadow: 0 1px 40px rgba(0,0,0,0.4);
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
@@ -95,15 +126,42 @@
     /* ─── HERO ────────────────────────────────────── */
     .hero {
       position: relative;
-      padding: 80px 40px 60px;
+      padding: 100px 40px 80px;
       overflow: hidden;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 800px 500px at 60% 50%, rgba(212,175,55,0.07), transparent),
-        radial-gradient(ellipse 600px 400px at 10% 80%, rgba(86,200,122,0.05), transparent),
-        radial-gradient(ellipse 500px 300px at 90% 10%, rgba(255,107,157,0.05), transparent);
+        radial-gradient(ellipse 900px 600px at 60% 50%, rgba(212,175,55,0.10), transparent),
+        radial-gradient(ellipse 600px 400px at 10% 80%, rgba(86,200,122,0.07), transparent),
+        radial-gradient(ellipse 500px 300px at 90% 10%, rgba(255,107,157,0.07), transparent);
+    }
+    /* Floating food emoji particles */
+    .hero-particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .hero-particle {
+      position: absolute; font-size: 1.6rem; opacity: 0;
+      animation: particleFly linear infinite;
+      filter: blur(0.5px);
+    }
+    @keyframes particleFly {
+      0%   { transform: translateY(110%) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.12; }
+      100% { transform: translateY(-20%) rotate(360deg); opacity: 0; }
+    }
+    /* Parallax depth layers */
+    .hero-content { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
+    /* Glowing orbs */
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; z-index: 0; animation: orbFloat ease-in-out infinite alternate;
+    }
+    .hero-orb-1 { width: 400px; height: 400px; background: rgba(212,175,55,0.12); top: -100px; right: 10%; animation-duration: 8s; }
+    .hero-orb-2 { width: 300px; height: 300px; background: rgba(239,68,68,0.08);  bottom: -50px; left: 5%;  animation-duration: 11s; }
+    .hero-orb-3 { width: 250px; height: 250px; background: rgba(34,197,94,0.07);  top: 30%;  right: 30%; animation-duration: 14s; }
+    @keyframes orbFloat {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.15); }
     }
     .hero-content { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
     .hero-eyebrow {
@@ -427,15 +485,31 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: all var(--transition);
       cursor: pointer;
       position: relative;
+      transform-style: preserve-3d;
+      transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      will-change: transform;
+      /* scroll reveal start state */
+      opacity: 0; translate: 0 40px;
+      transition: opacity 0.6s ease, translate 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+    }
+    .card.revealed {
+      opacity: 1; translate: 0 0;
     }
     .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(212,175,55,0.4);
-      box-shadow: var(--shadow), 0 0 30px rgba(212,175,55,0.08);
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: var(--shadow), 0 20px 60px rgba(212,175,55,0.15), 0 0 0 1px rgba(212,175,55,0.1);
     }
+    /* shimmer glare on card */
+    .card::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 10;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.08) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: var(--radius);
+    }
+    .card:hover::before { opacity: 1; }
 
     .card-img {
       position: relative;
@@ -1527,9 +1601,18 @@
 </div>
 
 
+<!-- ────── CURSOR ────── -->
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+<div class="mouse-glow" id="mouseGlow"></div>
+
 <!-- ────── HERO ────── -->
 <section class="hero">
   <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-particles" id="heroParticles"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">
       <span class="live-dot"></span>
@@ -3394,6 +3477,142 @@ document.addEventListener('keydown', e => {
     if (!crawlPicks.length) return;
     const q = crawlPicks.map(r => encodeURIComponent(r.name + ' ' + r.address)).join('/');
     window.open(`https://www.google.com/maps/dir/${q}`, '_blank', 'noopener');
+  });
+
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════
+     AWARD-WINNING 3D INTERACTIVE EFFECTS
+════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  /* ── 1. CUSTOM CURSOR ─────────────────────────── */
+  const dot  = document.getElementById('curDot');
+  const ring = document.getElementById('curRing');
+  if (!dot || !ring) return;
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    // ambient glow follows mouse
+    const glow = document.getElementById('mouseGlow');
+    if (glow) { glow.style.left = mx + 'px'; glow.style.top = my + 'px'; }
+  });
+  // smooth ring follow
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+  document.addEventListener('mousedown', () => { ring.classList.add('clicking'); dot.style.transform = 'translate(-50%,-50%) scale(1.8)'; });
+  document.addEventListener('mouseup',   () => { ring.classList.remove('clicking'); dot.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  document.querySelectorAll('a,button,.card,.chip').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+
+  /* ── 2. HERO FLOATING PARTICLES ──────────────── */
+  const emojis = ['🍜','🍣','🥢','🍱','🍛','🥟','🍚','🧋','🍤','🌮','🥩','🍗','🦀','🍙','🫕','🍝'];
+  const container = document.getElementById('heroParticles');
+  if (container) {
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'hero-particle';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        font-size: ${0.9 + Math.random() * 1.6}rem;
+        animation-duration: ${8 + Math.random() * 14}s;
+        animation-delay: ${-Math.random() * 14}s;
+        opacity: 0;
+      `;
+      container.appendChild(p);
+    }
+  }
+
+  /* ── 3. SCROLL REVEAL ─────────────────────────── */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // stagger delay based on position in grid
+        const siblings = [...entry.target.parentElement.children];
+        const idx = siblings.indexOf(entry.target);
+        entry.target.style.transitionDelay = (idx % 4) * 0.07 + 's';
+        entry.target.classList.add('revealed');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  function observeCards() {
+    document.querySelectorAll('.card:not(.revealed)').forEach(c => revealObs.observe(c));
+  }
+  observeCards();
+  // re-observe after filter re-renders
+  const gridWrap = document.getElementById('gridWrap');
+  if (gridWrap) new MutationObserver(observeCards).observe(gridWrap, { childList: true, subtree: true });
+
+  /* ── 4. CARD 3D TILT + SHIMMER ────────────────── */
+  function applyCardTilt(card) {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 16}deg) rotateX(${-y * 12}deg) translateZ(16px) scale(1.03)`;
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateZ(0) scale(1)';
+    });
+  }
+  // apply to existing + future cards
+  document.querySelectorAll('.card').forEach(applyCardTilt);
+  if (gridWrap) new MutationObserver(() => {
+    document.querySelectorAll('.card:not([data-tilt])').forEach(c => { c.dataset.tilt = '1'; applyCardTilt(c); });
+  }).observe(gridWrap, { childList: true, subtree: true });
+
+  /* ── 5. HERO PARALLAX ON SCROLL ──────────────── */
+  const hero = document.querySelector('.hero');
+  const heroContent = document.querySelector('.hero-content');
+  const orbs = document.querySelectorAll('.hero-orb');
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    if (heroContent) heroContent.style.transform = `translateY(${sy * 0.28}px)`;
+    orbs.forEach((o, i) => {
+      o.style.transform = `translateY(${sy * (0.12 + i * 0.06)}px)`;
+    });
+  }, { passive: true });
+
+  /* ── 6. NAV LOGO MAGNETIC EFFECT ─────────────── */
+  const logo = document.querySelector('.nav-logo');
+  if (logo) {
+    logo.addEventListener('mousemove', e => {
+      const r = logo.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width  / 2) * 0.3;
+      const y = (e.clientY - r.top  - r.height / 2) * 0.3;
+      logo.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    logo.addEventListener('mouseleave', () => { logo.style.transform = ''; });
+  }
+
+  /* ── 7. CHIP HOVER RIPPLE ─────────────────────── */
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', e => {
+      const r = document.createElement('span');
+      r.className = 'ripple';
+      const rect = chip.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;position:absolute;border-radius:50%;background:rgba(255,255,255,0.2);transform:scale(0);animation:rippleAnim 0.5s linear;pointer-events:none;`;
+      chip.style.position = 'relative'; chip.style.overflow = 'hidden';
+      chip.appendChild(r);
+      r.addEventListener('animationend', () => r.remove());
+    });
   });
 
 })();

@@ -228,6 +228,35 @@
     }
     .results-count span { color: var(--gold); font-weight: 600; }
 
+    /* ─── QUICK ACTION ROW ────────────────────────── */
+    .quick-actions-row {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px;
+    }
+    .quick-action-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-weight: 700; font-size: 0.83rem; letter-spacing: 0.2px;
+      border: none; border-radius: 50px; padding: 9px 20px;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+    }
+    .quick-action-btn:hover { transform: translateY(-2px); }
+    .quick-action-btn:active { transform: translateY(0); }
+    .surprise-qa {
+      background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff;
+      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
+    }
+    .surprise-qa:hover { box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
+    .match-qa {
+      background: linear-gradient(135deg, var(--gold-dk), var(--gold)); color: #111;
+      box-shadow: 0 2px 12px rgba(212,175,55,0.3);
+    }
+    .match-qa:hover { box-shadow: 0 4px 20px rgba(212,175,55,0.5); }
+    .crawl-qa {
+      background: linear-gradient(135deg, #0e7490, #26CBE0); color: #fff;
+      box-shadow: 0 2px 12px rgba(38,203,224,0.25);
+    }
+    .crawl-qa:hover { box-shadow: 0 4px 20px rgba(38,203,224,0.4); }
+
     /* ─── SURPRISE ME ─────────────────────────────── */
     .surprise-btn {
       display: flex; align-items: center; gap: 6px;
@@ -1463,6 +1492,12 @@
 
 <!-- ────── FILTERS ────── -->
 <div class="filter-bar" id="filterBar">
+  <!-- ── Quick Action Buttons ── -->
+  <div class="filter-section quick-actions-row">
+    <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">🎲 Surprise Me</button>
+    <button class="quick-action-btn match-qa" id="openMatchBtnFilter">🍜 Food Match</button>
+    <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter">🗺 Food Crawl</button>
+  </div>
   <div class="filter-section">
     <div class="filter-label">📍 Area</div>
     <div class="filter-chips" id="areaChips">
@@ -1526,7 +1561,6 @@
 <!-- ────── RESULTS BAR ────── -->
 <div class="results-bar">
   <div class="results-count">Showing <span id="countDisplay">0</span> restaurants in <strong>Katy, TX</strong></div>
-  <button class="surprise-btn" id="surpriseBtn" onclick="surpriseMe()">🎲 Surprise Me</button>
 </div>
 
 <!-- ────── SURPRISE MODAL ────── -->
@@ -2700,6 +2734,7 @@ _gpScanPage();
   document.getElementById('openMatchBtn').addEventListener('click', openMatch);
   document.getElementById('openMatchBtnMobile').addEventListener('click', openMatch);
   document.getElementById('openMatchBtnFab').addEventListener('click', openMatch);
+  document.getElementById('openMatchBtnFilter').addEventListener('click', openMatch);
 
   // Hamburger toggle
   const hamburger = document.getElementById('hamburger');
@@ -3042,7 +3077,7 @@ document.addEventListener('keydown', e => {
   overlay.addEventListener('click', e => { if (e.target === overlay) closeCrawl(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeCrawl(); });
 
-  ['openCrawlBtn','openCrawlBtnMobile','openCrawlBtnFab'].forEach(id => {
+  ['openCrawlBtn','openCrawlBtnMobile','openCrawlBtnFab','openCrawlBtnFilter'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', openCrawl);
   });
 

@@ -229,33 +229,93 @@
     .results-count span { color: var(--gold); font-weight: 600; }
 
     /* ─── QUICK ACTION ROW ────────────────────────── */
+    /* ─── QUICK ACTION ROW — 3D interactive ──────── */
     .quick-actions-row {
-      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px;
+      display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 8px;
+      perspective: 600px;
+    }
+    .qa-wrap {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.12s ease;
     }
     .quick-action-btn {
-      display: flex; align-items: center; gap: 6px;
-      font-weight: 700; font-size: 0.83rem; letter-spacing: 0.2px;
-      border: none; border-radius: 50px; padding: 9px 20px;
-      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 7px;
+      font-weight: 800; font-size: 0.85rem; letter-spacing: 0.4px;
+      border: none; border-radius: 14px; padding: 11px 22px;
+      cursor: pointer; white-space: nowrap; position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.12s cubic-bezier(0.25,0.46,0.45,0.94),
+                  box-shadow 0.12s ease, filter 0.12s ease;
+      /* top face */
+      z-index: 1;
     }
-    .quick-action-btn:hover { transform: translateY(-2px); }
-    .quick-action-btn:active { transform: translateY(0); }
+    /* 3D bottom edge — gives the "depth" illusion */
+    .quick-action-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 14px;
+      transform: translateZ(-6px) translateY(6px);
+      filter: brightness(0.5);
+      z-index: -1;
+    }
+    /* pressed state */
+    .quick-action-btn:active {
+      transform: translateY(4px) scale(0.97) !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4) !important;
+      filter: brightness(0.9);
+    }
+    /* ripple */
+    .quick-action-btn .ripple {
+      position: absolute; border-radius: 50%;
+      transform: scale(0); background: rgba(255,255,255,0.35);
+      animation: rippleAnim 0.5s linear;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+    /* idle float animation */
+    @keyframes floatBtn {
+      0%,100% { transform: translateY(0) rotateX(0deg); }
+      50%      { transform: translateY(-4px) rotateX(4deg); }
+    }
     .surprise-qa {
-      background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff;
-      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
+      background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 40%, #ef4444 100%);
+      color: #fff;
+      box-shadow: 0 6px 0 #92230e, 0 8px 20px rgba(245,100,11,0.45);
+      animation: floatBtn 3.2s ease-in-out infinite;
     }
-    .surprise-qa:hover { box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
+    .surprise-qa::after { background: linear-gradient(160deg, #fbbf24, #ef4444); }
+    .surprise-qa:hover {
+      transform: translateY(-5px) rotateX(8deg) scale(1.04);
+      box-shadow: 0 10px 0 #92230e, 0 14px 32px rgba(245,100,11,0.6);
+      filter: brightness(1.08);
+    }
     .match-qa {
-      background: linear-gradient(135deg, #b91c1c, #f43f5e); color: #fff;
-      box-shadow: 0 2px 12px rgba(244,63,94,0.35);
+      background: linear-gradient(160deg, #f87171 0%, #dc2626 40%, #9f1239 100%);
+      color: #fff;
+      box-shadow: 0 6px 0 #5b0e1e, 0 8px 20px rgba(220,38,38,0.45);
+      animation: floatBtn 3.8s ease-in-out infinite 0.4s;
     }
-    .match-qa:hover { box-shadow: 0 4px 20px rgba(244,63,94,0.55); }
+    .match-qa::after { background: linear-gradient(160deg, #f87171, #9f1239); }
+    .match-qa:hover {
+      transform: translateY(-5px) rotateX(8deg) scale(1.04);
+      box-shadow: 0 10px 0 #5b0e1e, 0 14px 32px rgba(220,38,38,0.6);
+      filter: brightness(1.08);
+    }
     .crawl-qa {
-      background: linear-gradient(135deg, #166534, #22c55e); color: #fff;
-      box-shadow: 0 2px 12px rgba(34,197,94,0.25);
+      background: linear-gradient(160deg, #4ade80 0%, #16a34a 40%, #14532d 100%);
+      color: #fff;
+      box-shadow: 0 6px 0 #052e16, 0 8px 20px rgba(22,163,74,0.4);
+      animation: floatBtn 4.4s ease-in-out infinite 0.8s;
     }
-    .crawl-qa:hover { box-shadow: 0 4px 20px rgba(34,197,94,0.45); }
+    .crawl-qa::after { background: linear-gradient(160deg, #4ade80, #14532d); }
+    .crawl-qa:hover {
+      transform: translateY(-5px) rotateX(8deg) scale(1.04);
+      box-shadow: 0 10px 0 #052e16, 0 14px 32px rgba(22,163,74,0.55);
+      filter: brightness(1.08);
+    }
 
     /* ─── SURPRISE ME ─────────────────────────────── */
     .surprise-btn {
@@ -1491,9 +1551,15 @@
 <div class="filter-bar" id="filterBar">
   <!-- ── Quick Action Buttons ── -->
   <div class="filter-section quick-actions-row">
-    <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">🎲 Surprise Me</button>
-    <button class="quick-action-btn match-qa" id="openMatchBtnFilter">🍜 Food Match</button>
-    <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter">🗺 Food Crawl</button>
+    <div class="qa-wrap">
+      <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">🎲 Surprise Me</button>
+    </div>
+    <div class="qa-wrap">
+      <button class="quick-action-btn match-qa" id="openMatchBtnFilter">🍜 Food Match</button>
+    </div>
+    <div class="qa-wrap">
+      <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter">🗺 Food Crawl</button>
+    </div>
   </div>
   <div class="filter-section">
     <div class="filter-label">📍 Area</div>
@@ -2968,6 +3034,35 @@ _gpScanPage();
     show(criteriaScr);
   });
 })();
+
+/* ─────────────────────────────────────────────────────
+   3D BUTTON RIPPLE + TILT
+───────────────────────────────────────────────────── */
+document.querySelectorAll('.quick-action-btn').forEach(btn => {
+  // Ripple on click
+  btn.addEventListener('click', function(e) {
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    btn.appendChild(r);
+    r.addEventListener('animationend', () => r.remove());
+  });
+
+  // Mouse-tilt 3D effect
+  btn.addEventListener('mousemove', function(e) {
+    const rect = btn.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
+    btn.style.transform = `translateY(-5px) rotateX(${-y*14}deg) rotateY(${x*14}deg) scale(1.04)`;
+    btn.style.animation = 'none';
+  });
+  btn.addEventListener('mouseleave', function() {
+    btn.style.transform = '';
+    btn.style.animation = '';
+  });
+});
 
 /* ─────────────────────────────────────────────────────
    SURPRISE ME

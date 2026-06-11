@@ -375,72 +375,168 @@
       filter: brightness(1.08);
     }
 
-    /* ─── SURPRISE ME ─────────────────────────────── */
-    .surprise-btn {
-      display: flex; align-items: center; gap: 6px;
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: #fff; font-weight: 700; font-size: 0.85rem;
-      border: none; border-radius: 50px; padding: 8px 18px;
-      cursor: pointer; letter-spacing: 0.3px;
-      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .surprise-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
-    .surprise-btn:active { transform: translateY(0); }
-
-    .surprise-overlay {
+    /* ─── CASINO DICE MODAL ───────────────────────── */
+    .casino-overlay {
       display: none; position: fixed; inset: 0; z-index: 1000;
-      background: rgba(0,0,0,0.72); backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
       align-items: center; justify-content: center; padding: 20px;
     }
-    .surprise-overlay.open { display: flex; }
+    .casino-overlay.open { display: flex; }
 
-    .surprise-modal {
-      background: var(--card-bg); border-radius: 20px;
-      max-width: 460px; width: 100%; padding: 28px 28px 24px;
-      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      animation: surprisePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    .casino-modal {
+      background: radial-gradient(ellipse at top, #1a0a00 0%, #0d0d0d 60%);
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 24px; max-width: 480px; width: 100%;
+      padding: 28px 24px 24px; position: relative;
+      box-shadow: 0 0 0 1px rgba(212,175,55,0.1),
+                  0 30px 80px rgba(0,0,0,0.8),
+                  inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: casinoPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
     }
-    @keyframes surprisePop {
-      from { transform: scale(0.8) translateY(20px); opacity: 0; }
+    @keyframes casinoPop {
+      from { transform: scale(0.6) rotateX(20deg); opacity: 0; }
+      to   { transform: scale(1) rotateX(0); opacity: 1; }
+    }
+    /* casino felt pattern */
+    .casino-modal::before {
+      content: ''; position: absolute; inset: 0; border-radius: 24px; z-index: 0;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 8px);
+    }
+    .casino-modal > * { position: relative; z-index: 1; }
+
+    .casino-close {
+      position: absolute; top: 14px; right: 16px; z-index: 10;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-sub); font-size: 1rem; cursor: pointer;
+      padding: 4px 10px; border-radius: 8px; transition: all 0.15s;
+    }
+    .casino-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* neon sign */
+    .casino-neon {
+      text-align: center; font-size: 1rem; font-weight: 900;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: #ffd700; margin-bottom: 20px;
+      text-shadow: 0 0 6px #ffd700, 0 0 12px #ffd700, 0 0 24px #ff8c00, 0 0 40px #ff4500;
+      animation: neonFlicker 3s infinite;
+    }
+    @keyframes neonFlicker {
+      0%,19%,21%,23%,55%,57%,100% { text-shadow: 0 0 6px #ffd700, 0 0 12px #ffd700, 0 0 24px #ff8c00, 0 0 40px #ff4500; opacity: 1; }
+      20%,22%,56%                 { text-shadow: none; opacity: 0.7; }
+    }
+
+    /* casino table */
+    .casino-dice-screen { text-align: center; }
+    .casino-table {
+      background: radial-gradient(ellipse, #0b3d1f 0%, #072912 100%);
+      border: 3px solid #8B6914; border-radius: 50%;
+      width: 220px; height: 220px; margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 6px #5a4010, 0 0 40px rgba(212,175,55,0.25), inset 0 0 40px rgba(0,0,0,0.5);
+      position: relative; perspective: 600px;
+    }
+    .casino-shadow {
+      position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 20px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); filter: blur(8px);
+    }
+
+    /* 3D DICE */
+    .dice-scene { width: 80px; height: 80px; perspective: 400px; cursor: pointer; }
+    .dice {
+      width: 80px; height: 80px;
+      transform-style: preserve-3d;
+      transform: rotateX(-20deg) rotateY(20deg);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .dice.rolling {
+      animation: diceRoll 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes diceRoll {
+      0%   { transform: rotateX(-20deg) rotateY(20deg) translateY(0); }
+      15%  { transform: rotateX(200deg) rotateY(340deg) translateY(-40px); }
+      35%  { transform: rotateX(480deg) rotateY(720deg) translateY(-20px); }
+      55%  { transform: rotateX(700deg) rotateY(1060deg) translateY(-10px); }
+      70%  { transform: rotateX(820deg) rotateY(1280deg) translateY(-4px); }
+      85%  { transform: rotateX(900deg) rotateY(1420deg) translateY(-1px); }
+      100% { transform: rotateX(var(--rx,900deg)) rotateY(var(--ry,1440deg)) translateY(0); }
+    }
+    .face {
+      position: absolute; width: 80px; height: 80px;
+      border-radius: 14px; font-size: 2.2rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid rgba(255,255,255,0.15);
+      backface-visibility: hidden;
+    }
+    .face.front  { background: linear-gradient(135deg,#c0392b,#8B0000); transform: translateZ(40px); box-shadow: inset 0 0 20px rgba(0,0,0,0.3); }
+    .face.back   { background: linear-gradient(135deg,#1a237e,#0d47a1); transform: rotateY(180deg) translateZ(40px); }
+    .face.right  { background: linear-gradient(135deg,#1b5e20,#2e7d32); transform: rotateY(90deg) translateZ(40px); }
+    .face.left   { background: linear-gradient(135deg,#4a148c,#6a1b9a); transform: rotateY(-90deg) translateZ(40px); }
+    .face.top    { background: linear-gradient(135deg,#e65100,#bf360c); transform: rotateX(90deg) translateZ(40px); }
+    .face.bottom { background: linear-gradient(135deg,#006064,#00838f); transform: rotateX(-90deg) translateZ(40px); }
+
+    /* idle bounce */
+    @keyframes diceIdle {
+      0%,100% { transform: rotateX(-20deg) rotateY(20deg) translateY(0); }
+      50%     { transform: rotateX(-15deg) rotateY(28deg) translateY(-6px); }
+    }
+    .dice.idle { animation: diceIdle 2.4s ease-in-out infinite; }
+
+    .casino-hint {
+      color: rgba(212,175,55,0.7); font-size: 0.78rem; letter-spacing: 0.1em;
+      text-transform: uppercase; margin: 0 0 8px; font-weight: 600;
+      animation: hintPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes hintPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+
+    /* sparks / confetti */
+    .casino-sparks { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
+    .spark {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      animation: sparkFly 0.8s ease-out forwards;
+    }
+    @keyframes sparkFly {
+      0%   { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--sx),var(--sy)) scale(0); opacity: 0; }
+    }
+
+    /* reveal */
+    .casino-reveal { animation: revealIn 0.5s cubic-bezier(0.34,1.3,0.64,1); }
+    @keyframes revealIn {
+      from { transform: scale(0.85) translateY(20px); opacity: 0; }
       to   { transform: scale(1) translateY(0); opacity: 1; }
     }
-    .surprise-close {
-      position: absolute; top: 14px; right: 16px;
-      background: none; border: none; color: var(--text-sub);
-      font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
-      border-radius: 6px; transition: background 0.15s;
+    .casino-winner-banner {
+      text-align: center; font-size: 1.1rem; font-weight: 900;
+      letter-spacing: 0.15em; color: #ffd700; margin-bottom: 14px;
+      text-shadow: 0 0 8px #ffd700, 0 0 20px #ff8c00;
+      animation: winnerPulse 1s ease-in-out infinite alternate;
     }
-    .surprise-close:hover { background: rgba(255,255,255,0.08); }
-
-    .surprise-header { text-align: center; margin-bottom: 20px; }
-    .surprise-emoji { font-size: 2.4rem; display: block; margin-bottom: 6px; }
-    .surprise-title { font-size: 1.4rem; font-weight: 800; margin: 0 0 4px; color: var(--text-main); }
-    .surprise-sub { font-size: 0.78rem; color: var(--text-sub); margin: 0; }
+    @keyframes winnerPulse { from{text-shadow:0 0 8px #ffd700,0 0 20px #ff8c00} to{text-shadow:0 0 16px #ffd700,0 0 40px #ff4500,0 0 60px #ff0} }
 
     .surprise-card {
       background: rgba(255,255,255,0.04); border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
     }
-    .surprise-card-img {
-      width: 100%; height: 180px; object-fit: cover; display: block;
-    }
+    .surprise-card-img { width:100%; height:180px; object-fit:cover; display:block; }
     .surprise-card-body { padding: 16px; }
-    .surprise-card-name { font-size: 1.15rem; font-weight: 800; margin: 0 0 6px; color: var(--text-main); }
-    .surprise-card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 0.8rem; color: var(--text-sub); }
-    .surprise-card-sig { font-size: 0.82rem; color: var(--gold); margin-bottom: 8px; }
-    .surprise-card-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 10px; }
-    .surprise-card-addr { font-size: 0.78rem; color: var(--text-sub); }
+    .surprise-card-name { font-size:1.15rem; font-weight:800; margin:0 0 6px; color:var(--text-main); }
+    .surprise-card-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px; font-size:0.8rem; color:var(--text-sub); }
+    .surprise-card-sig  { font-size:0.82rem; color:var(--gold); margin-bottom:8px; }
+    .surprise-card-desc { font-size:0.8rem; color:var(--text-sub); line-height:1.5; margin-bottom:10px; }
+    .surprise-card-addr { font-size:0.78rem; color:var(--text-sub); }
 
-    .surprise-actions { display: flex; justify-content: center; margin-top: 18px; }
-    .surprise-reroll {
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: #fff; font-weight: 700; font-size: 0.85rem;
-      border: none; border-radius: 50px; padding: 10px 24px;
-      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
+    .casino-btns { display:flex; justify-content:center; margin-top:16px; }
+    .casino-roll-again {
+      background: linear-gradient(135deg, #b8860b, #ffd700, #b8860b);
+      color: #1a0a00; font-weight: 900; font-size: 0.9rem; letter-spacing: 0.05em;
+      border: none; border-radius: 50px; padding: 12px 32px;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .surprise-reroll:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
+    .casino-roll-again:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 30px rgba(255,215,0,0.6); }
 
     /* ─── GRID ────────────────────────────────────── */
     .grid-wrap {
@@ -983,6 +1079,172 @@
       background: rgba(212,175,55,0.28);
       transform: translateY(-1px);
       box-shadow: 0 4px 20px rgba(212,175,55,0.2);
+    }
+
+    /* ─── KATY HOLOGRAPHIC MAP ───────────────────── */
+    .katy-map-section { padding-bottom: 8px; }
+    .map-title-row { display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+    .map-title-text { font-size:0.95rem; font-weight:800; color:var(--text-main); }
+    .map-subtitle { font-size:0.72rem; color:var(--text-sub); font-weight:400; }
+
+    .holo-map-outer {
+      perspective: 1100px;
+      width: 100%; max-width: 580px;
+      margin-bottom: 4px;
+    }
+    .holo-map-inner {
+      position: relative;
+      transform: rotateX(32deg) rotateZ(-0.5deg);
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 30px 70px rgba(0,0,0,0.85),
+        0 0 0 1px rgba(212,175,55,0.12),
+        0 0 60px rgba(212,175,55,0.06);
+      background: #04040e;
+    }
+
+    /* holographic grid floor */
+    .holo-grid-floor {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(212,175,55,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      animation: gridShift 8s linear infinite;
+    }
+    @keyframes gridShift {
+      from { background-position: 0 0, 0 0; }
+      to   { background-position: 0 32px, 32px 0; }
+    }
+
+    /* scan line sweep */
+    .holo-scan {
+      position: absolute; left: 0; right: 0; height: 3px; z-index: 10;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), rgba(255,255,255,0.3), rgba(212,175,55,0.5), transparent);
+      animation: scanSweep 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes scanSweep {
+      0%   { top: -4px; opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 0.6; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* SVG layer */
+    .holo-svg { width: 100%; display: block; position: relative; z-index: 1; }
+
+    /* extrusion walls */
+    .zone-wall { pointer-events: none; }
+    .zone-wall-west     { fill: rgba(40,100,55,0.6); }
+    .zone-wall-mills    { fill: rgba(130,50,25,0.6); }
+    .zone-wall-sw       { fill: rgba(100,50,120,0.6); }
+    .zone-wall-cinco    { fill: rgba(120,95,10,0.6); }
+    .zone-wall-downtown { fill: rgba(15,100,120,0.6); }
+
+    /* top face fill */
+    .hz-fill { cursor: pointer; transition: all 0.25s ease; }
+    .hz-fill-west     { fill: rgba(86,200,122,0.14); }
+    .hz-fill-mills    { fill: rgba(255,112,67,0.14); }
+    .hz-fill-sw       { fill: rgba(201,126,224,0.14); }
+    .hz-fill-cinco    { fill: rgba(212,175,55,0.16); }
+    .hz-fill-downtown { fill: rgba(38,203,224,0.14); }
+
+    /* animated neon border */
+    .hz-border {
+      fill: none; stroke-width: 1.5; pointer-events: none;
+      stroke-dasharray: 8 4;
+      animation: dashFlow 3s linear infinite;
+    }
+    @keyframes dashFlow { to { stroke-dashoffset: -36; } }
+    .hz-border-west     { stroke: rgba(86,200,122,0.7); }
+    .hz-border-mills    { stroke: rgba(255,112,67,0.7); }
+    .hz-border-sw       { stroke: rgba(201,126,224,0.7); }
+    .hz-border-cinco    { stroke: rgba(212,175,55,0.85); }
+    .hz-border-downtown { stroke: rgba(38,203,224,0.7); }
+
+    /* shimmer overlay */
+    .hz-shimmer {
+      fill: url(#shimmerGrad); opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    /* invisible hit area */
+    .hz-hit { fill: transparent; cursor: pointer; }
+
+    /* text */
+    .hz-emoji { font-size: 20px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+    .hz-name  { font-size: 10.5px; font-weight: 700; text-anchor: middle; fill: rgba(255,255,255,0.88); font-family: sans-serif; pointer-events: none; }
+    .hz-sub   { font-size: 8px; text-anchor: middle; fill: rgba(255,255,255,0.42); font-family: sans-serif; pointer-events: none; }
+    .hz-count { font-size: 9px; text-anchor: middle; fill: rgba(212,175,55,0.9); font-family: sans-serif; font-weight: 700; pointer-events: none; }
+
+    /* HOVER state */
+    .holo-zone:hover .hz-fill-west,
+    .holo-zone.zone-active .hz-fill-west     { fill: rgba(86,200,122,0.32); filter: url(#glow-green); }
+    .holo-zone:hover .hz-fill-mills,
+    .holo-zone.zone-active .hz-fill-mills    { fill: rgba(255,112,67,0.32); filter: url(#glow-orange); }
+    .holo-zone:hover .hz-fill-sw,
+    .holo-zone.zone-active .hz-fill-sw       { fill: rgba(201,126,224,0.32); filter: url(#glow-purple); }
+    .holo-zone:hover .hz-fill-cinco,
+    .holo-zone.zone-active .hz-fill-cinco    { fill: rgba(212,175,55,0.38); filter: url(#glow-gold); }
+    .holo-zone:hover .hz-fill-downtown,
+    .holo-zone.zone-active .hz-fill-downtown { fill: rgba(38,203,224,0.32); filter: url(#glow-teal); }
+
+    .holo-zone:hover .hz-shimmer,
+    .holo-zone.zone-active .hz-shimmer { opacity: 0.07; }
+
+    /* ACTIVE: border becomes solid + brighter + fast dash */
+    .holo-zone.zone-active .hz-border { stroke-width: 2.5; animation-duration: 1.2s; opacity: 1; }
+    .holo-zone.zone-active .hz-border-west     { stroke: #56C87A; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-mills    { stroke: #FF7043; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-sw       { stroke: #C97EE0; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-cinco    { stroke: #D4AF37; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-downtown { stroke: #26CBE0; filter: url(#softglow); }
+
+    /* ACTIVE: walls glow */
+    .holo-zone.zone-active ~ .zone-wall { /* handled by JS class on SVG */ }
+
+    /* floating pins */
+    .holo-pins { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+    .holo-pin {
+      position: absolute; transform: translate(-50%, -100%);
+      display: flex; flex-direction: column; align-items: center;
+      opacity: 0.75; transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      animation: pinFloat 3s ease-in-out infinite;
+    }
+    .holo-pin:nth-child(2) { animation-delay: -0.6s; }
+    .holo-pin:nth-child(3) { animation-delay: -1.2s; }
+    .holo-pin:nth-child(4) { animation-delay: -1.8s; }
+    .holo-pin:nth-child(5) { animation-delay: -2.4s; }
+    @keyframes pinFloat {
+      0%,100% { transform: translate(-50%,-100%) translateY(0); }
+      50%      { transform: translate(-50%,-100%) translateY(-5px); }
+    }
+    .holo-pin-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    }
+    .holo-pin-line {
+      width: 1px; height: 14px;
+      background: linear-gradient(to bottom, currentColor, transparent);
+    }
+    .holo-pin.active { opacity: 1; transform: translate(-50%,-100%) scale(1.4); }
+
+    /* active pill label */
+    .holo-active-pill {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(212,175,55,0.08));
+      border: 1px solid rgba(212,175,55,0.4);
+      color: #D4AF37; font-size: 0.76rem; font-weight: 800;
+      padding: 5px 18px; border-radius: 30px; letter-spacing: 0.1em;
+      pointer-events: none; white-space: nowrap; z-index: 8;
+      text-shadow: 0 0 12px rgba(212,175,55,0.6);
+      box-shadow: 0 0 20px rgba(212,175,55,0.15);
+      transition: all 0.3s ease;
     }
 
     /* ─── SWIPE MODAL ────────────────────────────── */
@@ -1581,8 +1843,8 @@
     <a href="#">Top Rated</a>
     <a href="#">New Spots</a>
     <a href="#">About</a>
-    <button class="match-btn" id="openMatchBtn">🍜 Food Match</button>
-    <button class="crawl-btn" id="openCrawlBtn">🗺 Food Crawl</button>
+    <button class="match-btn" id="openMatchBtn" onclick="openMatch()">🍜 Food Match</button>
+    <button class="crawl-btn" id="openCrawlBtn" onclick="openCrawl()">🗺 Food Crawl</button>
     <button class="wl-nav-btn" id="openWishlist">❤ Saved<span class="wl-count-badge" id="wlBadge">0</span></button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -1638,12 +1900,167 @@
       <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">🎲 Surprise Me</button>
     </div>
     <div class="qa-wrap">
-      <button class="quick-action-btn match-qa" id="openMatchBtnFilter">🍜 Food Match</button>
+      <button class="quick-action-btn match-qa" id="openMatchBtnFilter" onclick="openMatch()">🍜 Food Match</button>
     </div>
     <div class="qa-wrap">
-      <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter">🗺 Food Crawl</button>
+      <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter" onclick="openCrawl()">🗺 Food Crawl</button>
     </div>
   </div>
+  <!-- ── KATY HOLOGRAPHIC MAP ── -->
+  <div class="filter-section katy-map-section">
+    <div class="filter-label map-title-row">
+      <span class="map-title-text">🗺 Katy District Map</span>
+      <span class="map-subtitle">click a district · hover to explore</span>
+    </div>
+    <div class="holo-map-outer" id="katyMapWrap">
+      <div class="holo-map-inner" id="katyMapStage">
+        <!-- grid floor -->
+        <div class="holo-grid-floor"></div>
+        <!-- scan line -->
+        <div class="holo-scan"></div>
+
+        <svg class="holo-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- glow filter per color -->
+            <filter id="glow-green" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feFlood flood-color="#56C87A" flood-opacity="0.7" result="color"/>
+              <feComposite in="color" in2="blur" operator="in" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-orange" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feFlood flood-color="#FF7043" flood-opacity="0.7" result="color"/>
+              <feComposite in="color" in2="blur" operator="in" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-purple" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feFlood flood-color="#C97EE0" flood-opacity="0.7" result="color"/>
+              <feComposite in="color" in2="blur" operator="in" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-gold" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feFlood flood-color="#D4AF37" flood-opacity="0.8" result="color"/>
+              <feComposite in="color" in2="blur" operator="in" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-teal" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feFlood flood-color="#26CBE0" flood-opacity="0.7" result="color"/>
+              <feComposite in="color" in2="blur" operator="in" result="glow"/>
+              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <!-- animated dash for borders -->
+            <filter id="softglow">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ══ EXTRUSION WALLS (drawn first, behind everything) ══ -->
+          <!-- West walls: bottom edge (0,145→180,145) and right slant (180,145→210,140→200,0) -->
+          <polygon class="zone-wall zone-wall-west"  points="0,145 180,145 180,162 0,162"/>
+          <polygon class="zone-wall zone-wall-west"  points="180,145 210,140 210,157 180,162" opacity="0.7"/>
+          <!-- Mills walls: bottom edge (520,145→330,145→310,130→210,140) -->
+          <polygon class="zone-wall zone-wall-mills" points="520,145 330,145 330,162 520,162"/>
+          <polygon class="zone-wall zone-wall-mills" points="330,145 310,130 310,147 330,162" opacity="0.7"/>
+          <!-- SW walls: bottom edge (160,340→0,340) -->
+          <polygon class="zone-wall zone-wall-sw"    points="160,340 0,340 0,357 160,357"/>
+          <!-- Cinco walls: bottom edge (340,340→160,340) -->
+          <polygon class="zone-wall zone-wall-cinco" points="340,340 160,340 160,357 340,357"/>
+          <!-- Downtown walls: bottom edge (520,340→340,340), right side (520,145→520,340) -->
+          <polygon class="zone-wall zone-wall-downtown" points="520,340 340,340 340,357 520,357"/>
+          <polygon class="zone-wall zone-wall-downtown" points="520,145 520,340 537,340 537,145" opacity="0.8"/>
+
+          <!-- ══ ZONE TOP FACES ══ -->
+
+          <!-- WEST KATY -->
+          <g class="map-zone holo-zone" id="hz-west" data-zone="west" tabindex="0">
+            <polygon class="hz-fill hz-fill-west" points="0,0 200,0 210,140 180,145 0,145"/>
+            <polygon class="hz-border hz-border-west" points="0,0 200,0 210,140 180,145 0,145"/>
+            <polygon class="hz-shimmer" points="0,0 200,0 210,140 180,145 0,145"/>
+            <text class="hz-emoji" x="90" y="55">🌿</text>
+            <text class="hz-name"  x="90" y="80">West Katy</text>
+            <text class="hz-sub"   x="90" y="96">Elyson</text>
+            <text class="hz-count" id="zc-west" x="90" y="117">— spots</text>
+            <polygon class="hz-hit" points="0,0 200,0 210,140 180,145 0,145"/>
+          </g>
+
+          <!-- KATY MILLS / NW -->
+          <g class="map-zone holo-zone" id="hz-mills" data-zone="mills" tabindex="0">
+            <polygon class="hz-fill hz-fill-mills" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
+            <polygon class="hz-border hz-border-mills" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
+            <polygon class="hz-shimmer" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
+            <text class="hz-emoji" x="390" y="55">🛍</text>
+            <text class="hz-name"  x="390" y="80">Katy Mills</text>
+            <text class="hz-sub"   x="390" y="96">NW Katy · I-10</text>
+            <text class="hz-count" id="zc-mills" x="390" y="117">— spots</text>
+            <polygon class="hz-hit" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
+          </g>
+
+          <!-- SW KATY -->
+          <g class="map-zone holo-zone" id="hz-sw" data-zone="sw" tabindex="0">
+            <polygon class="hz-fill hz-fill-sw" points="0,145 180,145 200,240 160,340 0,340"/>
+            <polygon class="hz-border hz-border-sw" points="0,145 180,145 200,240 160,340 0,340"/>
+            <polygon class="hz-shimmer" points="0,145 180,145 200,240 160,340 0,340"/>
+            <text class="hz-emoji" x="82" y="215">🛣</text>
+            <text class="hz-name"  x="82" y="240">SW Katy</text>
+            <text class="hz-sub"   x="82" y="256">Mason Rd</text>
+            <text class="hz-count" id="zc-sw" x="82" y="277">— spots</text>
+            <polygon class="hz-hit" points="0,145 180,145 200,240 160,340 0,340"/>
+          </g>
+
+          <!-- CINCO RANCH / SE -->
+          <g class="map-zone holo-zone" id="hz-cinco" data-zone="cinco" tabindex="0">
+            <polygon class="hz-fill hz-fill-cinco" points="180,145 330,145 340,340 160,340 200,240"/>
+            <polygon class="hz-border hz-border-cinco" points="180,145 330,145 340,340 160,340 200,240"/>
+            <polygon class="hz-shimmer" points="180,145 330,145 340,340 160,340 200,240"/>
+            <text class="hz-emoji" x="252" y="215">🏡</text>
+            <text class="hz-name"  x="252" y="240">Cinco Ranch</text>
+            <text class="hz-sub"   x="252" y="256">SE Katy · Asian Town</text>
+            <text class="hz-count" id="zc-cinco" x="252" y="277">— spots</text>
+            <polygon class="hz-hit" points="180,145 330,145 340,340 160,340 200,240"/>
+          </g>
+
+          <!-- HISTORIC DOWNTOWN -->
+          <g class="map-zone holo-zone" id="hz-downtown" data-zone="downtown" tabindex="0">
+            <polygon class="hz-fill hz-fill-downtown" points="330,145 560,145 560,340 340,340"/>
+            <polygon class="hz-border hz-border-downtown" points="330,145 560,145 560,340 340,340"/>
+            <polygon class="hz-shimmer" points="330,145 560,145 560,340 340,340"/>
+            <text class="hz-emoji" x="445" y="215">🏛</text>
+            <text class="hz-name"  x="445" y="240">Downtown</text>
+            <text class="hz-sub"   x="445" y="256">Historic Katy</text>
+            <text class="hz-count" id="zc-downtown" x="445" y="277">— spots</text>
+            <polygon class="hz-hit" points="330,145 560,145 560,340 340,340"/>
+          </g>
+
+          <!-- I-10 freeway -->
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,180,0.25)" stroke-width="4"/>
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+          <text x="8" y="139" fill="rgba(255,255,180,0.5)" font-size="8.5" font-family="sans-serif" font-weight="600">I-10</text>
+          <!-- TX-99 Grand Pkwy -->
+          <line x1="320" y1="0" x2="340" y2="360" stroke="rgba(255,200,100,0.2)" stroke-width="3"/>
+          <text x="322" y="12" fill="rgba(255,200,100,0.45)" font-size="8" font-family="sans-serif">TX-99</text>
+
+          <!-- Compass -->
+          <g transform="translate(534,26)">
+            <circle cx="0" cy="0" r="16" fill="rgba(0,0,0,0.55)" stroke="rgba(212,175,55,0.4)" stroke-width="1"/>
+            <text x="0" y="-4" text-anchor="middle" dominant-baseline="middle" fill="#D4AF37" font-size="9" font-family="sans-serif" font-weight="700">N</text>
+            <polygon points="0,-12 3,-4 -3,-4" fill="#D4AF37" opacity="0.8"/>
+            <polygon points="0,12 3,4 -3,4" fill="rgba(212,175,55,0.3)"/>
+          </g>
+        </svg>
+
+        <!-- floating district pins -->
+        <div class="holo-pins" id="holoPins"></div>
+        <!-- active label -->
+        <div class="holo-active-pill" id="mapActiveLabel">✦ All Katy ✦</div>
+      </div>
+    </div>
+  </div>
+
   <div class="filter-section">
     <div class="filter-label">📍 Area</div>
     <div class="filter-chips" id="areaChips">
@@ -1709,18 +2126,40 @@
   <div class="results-count">Showing <span id="countDisplay">0</span> restaurants in <strong>Katy, TX</strong></div>
 </div>
 
-<!-- ────── SURPRISE MODAL ────── -->
-<div class="surprise-overlay" id="surpriseOverlay" onclick="closeSurprise(event)">
-  <div class="surprise-modal" id="surpriseModal">
-    <button class="surprise-close" onclick="closeSurprise()">✕</button>
-    <div class="surprise-header">
-      <span class="surprise-emoji">🎲</span>
-      <h2 class="surprise-title">Tonight's Pick!</h2>
-      <p class="surprise-sub">Based on your current filters</p>
+<!-- ────── CASINO DICE MODAL ────── -->
+<div class="casino-overlay" id="surpriseOverlay" onclick="closeSurprise(event)">
+  <div class="casino-modal" id="surpriseModal">
+    <button class="casino-close" onclick="closeSurprise()">✕</button>
+
+    <!-- neon sign -->
+    <div class="casino-neon">🎰 LUCKY ROLL 🎰</div>
+
+    <!-- dice screen -->
+    <div class="casino-dice-screen" id="casinoDiceScreen">
+      <div class="casino-table">
+        <div class="dice-scene" id="diceScene" onclick="rollTheDice()" style="cursor:pointer">
+          <div class="dice" id="theDice">
+            <div class="face front">🍜</div>
+            <div class="face back">🍣</div>
+            <div class="face right">🥢</div>
+            <div class="face left">🍱</div>
+            <div class="face top">🌶</div>
+            <div class="face bottom">🧋</div>
+          </div>
+        </div>
+        <div class="casino-shadow"></div>
+      </div>
+      <p class="casino-hint">Click the dice to roll!</p>
+      <div class="casino-sparks" id="casinoSparks"></div>
     </div>
-    <div class="surprise-card" id="surpriseCard"></div>
-    <div class="surprise-actions">
-      <button class="surprise-reroll" onclick="surpriseMe()">🎲 Pick Another</button>
+
+    <!-- reveal screen (hidden until roll done) -->
+    <div class="casino-reveal" id="casinoReveal" style="display:none">
+      <div class="casino-winner-banner" id="casinoWinnerBanner">🏆 TONIGHT'S PICK! 🏆</div>
+      <div class="surprise-card" id="surpriseCard"></div>
+      <div class="casino-btns">
+        <button class="casino-roll-again" onclick="surpriseMe()">🎲 Roll Again</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2877,9 +3316,10 @@ _gpScanPage();
     hamburger.classList.remove('open');
   }
 
-  document.getElementById('openMatchBtn').addEventListener('click', openMatch);
-  document.getElementById('openMatchBtnMobile').addEventListener('click', openMatch);
-  document.getElementById('openMatchBtnFilter').addEventListener('click', openMatch);
+  window._matchOpenFn = openMatch;
+  document.getElementById('openMatchBtn')?.addEventListener('click', openMatch);
+  document.getElementById('openMatchBtnMobile')?.addEventListener('click', openMatch);
+  document.getElementById('openMatchBtnFilter')?.addEventListener('click', openMatch);
 
   // Hamburger toggle
   const hamburger = document.getElementById('hamburger');
@@ -3119,6 +3559,181 @@ _gpScanPage();
 })();
 
 /* ─────────────────────────────────────────────────────
+   KATY HOLOGRAPHIC MAP
+───────────────────────────────────────────────────── */
+(function() {
+  var LABELS = {
+    all:'✦ All Katy ✦', west:'🌿 West Katy / Elyson',
+    mills:'🛍 Katy Mills / NW Katy', sw:'🛣 SW Katy · Mason Rd',
+    cinco:'🏡 Cinco Ranch / SE Katy', downtown:'🏛 Historic Downtown'
+  };
+  var COLORS = {
+    west:'#56C87A', mills:'#FF7043', sw:'#C97EE0',
+    cinco:'#D4AF37', downtown:'#26CBE0'
+  };
+  // approximate center of each zone in SVG coords (viewBox 560x360)
+  // will be converted to % for pin placement
+  var CENTERS = {
+    west:    [90,  72],
+    mills:   [390, 72],
+    sw:      [82, 240],
+    cinco:   [252,240],
+    downtown:[445,240]
+  };
+  var VW = 560, VH = 360;
+
+  function countForZone(z) {
+    return restaurants.filter(function(r){ return z==='all'||getArea(r)===z; }).length;
+  }
+
+  function updateCounts() {
+    ['west','mills','sw','cinco','downtown'].forEach(function(z) {
+      var el = document.getElementById('zc-'+z);
+      if (el) el.textContent = countForZone(z)+' spots';
+    });
+  }
+
+  // build floating pins
+  function buildPins() {
+    var container = document.getElementById('holoPins');
+    if (!container) return;
+    container.innerHTML = '';
+    Object.keys(CENTERS).forEach(function(z) {
+      var c = CENTERS[z];
+      var pin = document.createElement('div');
+      pin.className = 'holo-pin';
+      pin.dataset.zone = z;
+      pin.style.left = (c[0]/VW*100)+'%';
+      pin.style.top  = (c[1]/VH*100)+'%';
+      pin.style.color = COLORS[z];
+      pin.innerHTML =
+        '<div class="holo-pin-dot" style="background:'+COLORS[z]+'"></div>'+
+        '<div class="holo-pin-line"></div>';
+      container.appendChild(pin);
+    });
+  }
+
+  function setActiveZone(zone) {
+    // zones
+    document.querySelectorAll('.holo-zone').forEach(function(g) {
+      g.classList.toggle('zone-active', zone!=='all' && g.dataset.zone===zone);
+    });
+    // pins
+    document.querySelectorAll('.holo-pin').forEach(function(p) {
+      p.classList.toggle('active', zone!=='all' && p.dataset.zone===zone);
+    });
+    // label
+    var lbl = document.getElementById('mapActiveLabel');
+    if (lbl) {
+      lbl.textContent = LABELS[zone]||'✦ All Katy ✦';
+      // color
+      lbl.style.color = COLORS[zone]||'#D4AF37';
+      lbl.style.borderColor = COLORS[zone] ? COLORS[zone].replace(')',',0.4)').replace('rgb','rgba') : 'rgba(212,175,55,0.4)';
+      lbl.style.textShadow = zone!=='all' ? '0 0 12px '+COLORS[zone] : '';
+    }
+    // area chips sync
+    document.querySelectorAll('#areaChips .chip').forEach(function(c) {
+      c.classList.toggle('active', c.dataset.area===zone);
+    });
+    activeArea = zone;
+    render();
+    // flash the active zone
+    if (zone !== 'all') {
+      var gz = document.getElementById('hz-'+zone);
+      if (gz) {
+        gz.style.transition = 'filter 0.05s';
+        gz.style.filter = 'brightness(2.5)';
+        setTimeout(function(){ gz.style.filter=''; gz.style.transition=''; }, 160);
+      }
+    }
+  }
+
+  // wire clicks on hit polygons
+  document.querySelectorAll('.hz-hit').forEach(function(poly) {
+    poly.addEventListener('click', function(e) {
+      var g = poly.closest('.holo-zone');
+      if (!g) return;
+      e.stopPropagation();
+      var z = g.dataset.zone;
+      setActiveZone(g.classList.contains('zone-active') ? 'all' : z);
+    });
+  });
+
+  // sync from area chips
+  var areaChips = document.getElementById('areaChips');
+  if (areaChips) {
+    areaChips.addEventListener('click', function(e) {
+      var chip = e.target.closest('.chip[data-area]');
+      if (!chip) return;
+      var zone = chip.dataset.area;
+      document.querySelectorAll('.holo-zone').forEach(function(g) {
+        g.classList.toggle('zone-active', zone!=='all' && g.dataset.zone===zone);
+      });
+      document.querySelectorAll('.holo-pin').forEach(function(p) {
+        p.classList.toggle('active', zone!=='all' && p.dataset.zone===zone);
+      });
+      var lbl = document.getElementById('mapActiveLabel');
+      if (lbl) {
+        lbl.textContent = LABELS[zone]||'✦ All Katy ✦';
+        lbl.style.color = COLORS[zone]||'#D4AF37';
+        lbl.style.textShadow = zone!=='all' ? '0 0 12px '+COLORS[zone] : '';
+      }
+    });
+  }
+
+  // mouse parallax tilt
+  var outer = document.getElementById('katyMapWrap');
+  var inner = document.getElementById('katyMapStage');
+  if (outer && inner) {
+    outer.addEventListener('mousemove', function(e) {
+      var r = outer.getBoundingClientRect();
+      var nx = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 … +0.5
+      var ny = (e.clientY - r.top)  / r.height - 0.5;
+      inner.style.transform =
+        'rotateX('+(32 - ny*22)+'deg) rotateY('+(nx*14)+'deg) scale(1.05)';
+    });
+    outer.addEventListener('mouseleave', function() {
+      inner.style.transform = '';
+    });
+  }
+
+  buildPins();
+  updateCounts();
+})();
+
+function openMatch() {
+  var ov = document.getElementById('swipeOverlay');
+  var cs = document.getElementById('criteriaScreen');
+  var ss = document.getElementById('swipeScreen');
+  var rs = document.getElementById('resultsScreen');
+  if (!ov) return;
+  ov.classList.add('open');
+  if (cs) cs.style.display = 'block';
+  if (ss) ss.classList.remove('active');
+  if (rs) rs.classList.remove('active');
+  document.getElementById('mobileDrawer')?.classList.remove('open');
+  document.getElementById('hamburger')?.classList.remove('open');
+}
+
+function openCrawl() {
+  var ov = document.getElementById('crawlOverlay');
+  if (!ov) return;
+  ov.classList.add('open');
+  // show step 1
+  [1,2,3,4].forEach(function(n) {
+    var el = document.getElementById('crawlStep' + n);
+    if (el) el.classList.toggle('active', n === 1);
+  });
+  document.querySelectorAll('.crawl-step-item').forEach(function(el) {
+    var s = parseInt(el.dataset.step);
+    el.classList.toggle('active', s === 1);
+    el.classList.toggle('done', s < 1);
+  });
+  document.getElementById('hamburger')?.classList.remove('open');
+  document.getElementById('mobileDrawer')?.classList.remove('open');
+}
+
+/* ─────────────────────────────────────────────────────
    3D BUTTON RIPPLE + TILT
 ───────────────────────────────────────────────────── */
 document.querySelectorAll('.quick-action-btn').forEach(btn => {
@@ -3148,45 +3763,114 @@ document.querySelectorAll('.quick-action-btn').forEach(btn => {
 });
 
 /* ─────────────────────────────────────────────────────
-   SURPRISE ME
+   CASINO DICE — SURPRISE ME
 ───────────────────────────────────────────────────── */
-function surpriseMe() {
-  const filtered = restaurants.filter(r => {
-    const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
-    const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
-    const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
-    const areaOk    = activeArea   === 'all' || getArea(r) === activeArea;
-    return cuisineOk && ratingOk && typeOk && areaOk;
-  });
+var _casinoRolling = false;
+var _casinoFiltered = [];
 
-  if (!filtered.length) {
-    alert('No restaurants match your current filters. Try broadening them!');
-    return;
+function _casinoSpawnSparks() {
+    var container = document.getElementById('casinoSparks');
+    if (!container) return;
+    container.innerHTML = '';
+    var colors = ['#ffd700','#ff4500','#ff69b4','#00ff88','#00cfff','#fff'];
+    for (var i = 0; i < 28; i++) {
+      var s = document.createElement('div');
+      s.className = 'spark';
+      var angle = (Math.PI * 2 * i) / 28 + (Math.random() - 0.5) * 0.6;
+      var dist  = 80 + Math.random() * 160;
+      s.style.cssText = 'left:50%;top:45%;background:' + colors[i % colors.length] +
+        ';--sx:' + (Math.cos(angle)*dist) + 'px;--sy:' + (Math.sin(angle)*dist) + 'px' +
+        ';animation-delay:' + (Math.random()*0.2) + 's' +
+        ';animation-duration:' + (0.6+Math.random()*0.5) + 's' +
+        ';width:' + (4+Math.random()*6) + 'px;height:' + (4+Math.random()*6) + 'px';
+      container.appendChild(s);
+      s.addEventListener('animationend', function(){ this.remove(); });
+    }
   }
 
-  const r = filtered[Math.floor(Math.random() * filtered.length)];
-  const img = (window.CUSTOM_PHOTOS && window.CUSTOM_PHOTOS[r.id]) || r.img;
-  const stars = renderStars(r.rating);
-  const cuisineLabel = {
-    chinese:'Chinese', japanese:'Japanese', korean:'Korean', thai:'Thai',
-    vietnamese:'Vietnamese', indian:'Indian', singaporean:'Singaporean / SE Asian',
-    taiwanese:'Taiwanese / Boba'
-  }[r.cuisine] || r.cuisine;
+  function _casinoShowResult(r) {
+    var img = (window.CUSTOM_PHOTOS && window.CUSTOM_PHOTOS[r.id]) || r.img;
+    var stars = renderStars(r.rating);
+    var labels = {chinese:'Chinese',japanese:'Japanese',korean:'Korean',thai:'Thai',
+      vietnamese:'Vietnamese',indian:'Indian',singaporean:'Singaporean / SE Asian',
+      taiwanese:'Taiwanese / Boba'};
+    var cuisineLabel = labels[r.cuisine] || r.cuisine;
+    document.getElementById('surpriseCard').innerHTML =
+      '<img class="surprise-card-img" src="' + img + '" alt="' + r.name + '" onerror="this.src=\'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80\'">' +
+      '<div class="surprise-card-body">' +
+        '<div class="surprise-card-name">' + r.name + '</div>' +
+        '<div class="surprise-card-meta">' +
+          '<span>' + stars + '</span>' +
+          '<span>' + r.rating + ' (' + r.reviewCount.toLocaleString() + ' reviews)</span>' +
+          '<span style="background:rgba(255,215,0,0.15);color:#ffd700;padding:2px 8px;border-radius:20px;font-weight:700">' + cuisineLabel + '</span>' +
+          '<span>' + r.priceDesc + '</span>' +
+        '</div>' +
+        '<div class="surprise-card-sig">' + r.signature + '</div>' +
+        '<div class="surprise-card-desc">' + r.desc + '</div>' +
+        '<div class="surprise-card-addr">📍 ' + r.address + '</div>' +
+      '</div>';
+    document.getElementById('casinoDiceScreen').style.display = 'none';
+    var rev = document.getElementById('casinoReveal');
+    rev.style.display = 'block';
+    rev.style.animation = 'none';
+    void rev.offsetWidth;
+    rev.style.animation = '';
+    _casinoSpawnSparks();
+  }
 
-  document.getElementById('surpriseCard').innerHTML = `
-    <img class="surprise-card-img" src="${img}" alt="${r.name}" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80'">
-    <div class="surprise-card-body">
-      <div class="surprise-card-name">${r.name}</div>
-      <div class="surprise-card-meta">
-        <span>${stars}</span>
-        <span>${r.rating} (${r.reviewCount.toLocaleString()} reviews)</span>
-        <span style="background:rgba(245,158,11,0.15);color:#f59e0b;padding:2px 8px;border-radius:20px;font-weight:600">${cuisineLabel}</span>
-        <span>${r.priceDesc}</span>
-      </div>
-      <div class="surprise-card-sig">${r.signature}</div>
-      <div class="surprise-card-desc">${r.desc}</div>
-      <div class="surprise-card-addr">📍 ${r.address}</div>
-    </div>`;
+function rollTheDice() {
+  if (_casinoRolling) return;
+  if (!_casinoFiltered.length) { alert('No restaurants match your filters!'); return; }
+  _casinoRolling = true;
+
+  var dice = document.getElementById('theDice');
+  var spins = [[0,0],[0,180],[0,-90],[0,90],[-90,0],[90,0]];
+  var pick  = spins[Math.floor(Math.random() * spins.length)];
+  var fullX = 720 + pick[0];
+  var fullY = 1440 + pick[1];
+
+  dice.classList.remove('idle','rolling');
+  dice.style.setProperty('--rx', fullX + 'deg');
+  dice.style.setProperty('--ry', fullY + 'deg');
+  void dice.offsetWidth;
+  dice.classList.add('rolling');
+
+  var hint = document.querySelector('.casino-hint');
+  if (hint) hint.textContent = '🎲 Rolling…';
+
+  setTimeout(function() {
+    _casinoRolling = false;
+    _casinoSpawnSparks();
+    dice.classList.remove('rolling');
+    dice.style.transform = 'rotateX(' + fullX + 'deg) rotateY(' + fullY + 'deg)';
+    var r = _casinoFiltered[Math.floor(Math.random() * _casinoFiltered.length)];
+    setTimeout(function(){ _casinoShowResult(r); }, 200);
+  }, 1300);
+}
+
+function surpriseMe() {
+  _casinoFiltered = restaurants.filter(function(r) {
+    var cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
+    var ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
+    var typeOk    = activeType    === 'all' || getVenueType(r) === activeType;
+    var areaOk    = activeArea    === 'all' || getArea(r) === activeArea;
+    return cuisineOk && ratingOk && typeOk && areaOk;
+  });
+  if (!_casinoFiltered.length) { alert('No restaurants match your filters!'); return; }
+
+  document.getElementById('casinoDiceScreen').style.display = 'block';
+  document.getElementById('casinoReveal').style.display     = 'none';
+
+  var dice = document.getElementById('theDice');
+  dice.classList.remove('rolling');
+  dice.style.transform = '';
+  dice.style.removeProperty('--rx');
+  dice.style.removeProperty('--ry');
+  void dice.offsetWidth;
+  dice.classList.add('idle');
+
+  var hint = document.querySelector('.casino-hint');
+  if (hint) hint.textContent = 'Click the dice to roll!';
 
   document.getElementById('surpriseOverlay').classList.add('open');
 }
@@ -3196,10 +3880,6 @@ function closeSurprise(e) {
     document.getElementById('surpriseOverlay').classList.remove('open');
   }
 }
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.getElementById('surpriseOverlay').classList.remove('open');
-});
 
 /* ─────────────────────────────────────────────────────
    FOOD CRAWL BUILDER
@@ -3251,6 +3931,7 @@ document.addEventListener('keydown', e => {
   overlay.addEventListener('click', e => { if (e.target === overlay) closeCrawl(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeCrawl(); });
 
+  window.openCrawl = openCrawl;
   ['openCrawlBtn','openCrawlBtnMobile','openCrawlBtnFilter'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', openCrawl);
   });

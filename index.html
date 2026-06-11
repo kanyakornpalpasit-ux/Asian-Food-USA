@@ -1466,9 +1466,6 @@
   <button class="crawl-btn" id="openCrawlBtnMobile" style="margin-top:8px;width:100%">🗺 Food Crawl</button>
 </div>
 
-<!-- Floating Action Buttons (mobile) -->
-<button class="fab-crawl" id="openCrawlBtnFab">🗺 Food Crawl</button>
-<button class="fab-match" id="openMatchBtnFab">🍜 Food Match</button>
 
 <!-- ────── HERO ────── -->
 <section class="hero">
@@ -2733,7 +2730,6 @@ _gpScanPage();
 
   document.getElementById('openMatchBtn').addEventListener('click', openMatch);
   document.getElementById('openMatchBtnMobile').addEventListener('click', openMatch);
-  document.getElementById('openMatchBtnFab').addEventListener('click', openMatch);
   document.getElementById('openMatchBtnFilter').addEventListener('click', openMatch);
 
   // Hamburger toggle
@@ -3077,7 +3073,7 @@ document.addEventListener('keydown', e => {
   overlay.addEventListener('click', e => { if (e.target === overlay) closeCrawl(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeCrawl(); });
 
-  ['openCrawlBtn','openCrawlBtnMobile','openCrawlBtnFab','openCrawlBtnFilter'].forEach(id => {
+  ['openCrawlBtn','openCrawlBtnMobile','openCrawlBtnFilter'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', openCrawl);
   });
 

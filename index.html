@@ -228,6 +228,73 @@
     }
     .results-count span { color: var(--gold); font-weight: 600; }
 
+    /* ─── SURPRISE ME ─────────────────────────────── */
+    .surprise-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff; font-weight: 700; font-size: 0.85rem;
+      border: none; border-radius: 50px; padding: 8px 18px;
+      cursor: pointer; letter-spacing: 0.3px;
+      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .surprise-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
+    .surprise-btn:active { transform: translateY(0); }
+
+    .surprise-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .surprise-overlay.open { display: flex; }
+
+    .surprise-modal {
+      background: var(--card-bg); border-radius: 20px;
+      max-width: 460px; width: 100%; padding: 28px 28px 24px;
+      position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: surprisePop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes surprisePop {
+      from { transform: scale(0.8) translateY(20px); opacity: 0; }
+      to   { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .surprise-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; color: var(--text-sub);
+      font-size: 1.1rem; cursor: pointer; padding: 4px 8px;
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .surprise-close:hover { background: rgba(255,255,255,0.08); }
+
+    .surprise-header { text-align: center; margin-bottom: 20px; }
+    .surprise-emoji { font-size: 2.4rem; display: block; margin-bottom: 6px; }
+    .surprise-title { font-size: 1.4rem; font-weight: 800; margin: 0 0 4px; color: var(--text-main); }
+    .surprise-sub { font-size: 0.78rem; color: var(--text-sub); margin: 0; }
+
+    .surprise-card {
+      background: rgba(255,255,255,0.04); border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+    }
+    .surprise-card-img {
+      width: 100%; height: 180px; object-fit: cover; display: block;
+    }
+    .surprise-card-body { padding: 16px; }
+    .surprise-card-name { font-size: 1.15rem; font-weight: 800; margin: 0 0 6px; color: var(--text-main); }
+    .surprise-card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 0.8rem; color: var(--text-sub); }
+    .surprise-card-sig { font-size: 0.82rem; color: var(--gold); margin-bottom: 8px; }
+    .surprise-card-desc { font-size: 0.8rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 10px; }
+    .surprise-card-addr { font-size: 0.78rem; color: var(--text-sub); }
+
+    .surprise-actions { display: flex; justify-content: center; margin-top: 18px; }
+    .surprise-reroll {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff; font-weight: 700; font-size: 0.85rem;
+      border: none; border-radius: 50px; padding: 10px 24px;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 12px rgba(245,158,11,0.35);
+    }
+    .surprise-reroll:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(245,158,11,0.5); }
+
     /* ─── GRID ────────────────────────────────────── */
     .grid-wrap {
       padding: 0 40px 80px;
@@ -1459,6 +1526,23 @@
 <!-- ────── RESULTS BAR ────── -->
 <div class="results-bar">
   <div class="results-count">Showing <span id="countDisplay">0</span> restaurants in <strong>Katy, TX</strong></div>
+  <button class="surprise-btn" id="surpriseBtn" onclick="surpriseMe()">🎲 Surprise Me</button>
+</div>
+
+<!-- ────── SURPRISE MODAL ────── -->
+<div class="surprise-overlay" id="surpriseOverlay" onclick="closeSurprise(event)">
+  <div class="surprise-modal" id="surpriseModal">
+    <button class="surprise-close" onclick="closeSurprise()">✕</button>
+    <div class="surprise-header">
+      <span class="surprise-emoji">🎲</span>
+      <h2 class="surprise-title">Tonight's Pick!</h2>
+      <p class="surprise-sub">Based on your current filters</p>
+    </div>
+    <div class="surprise-card" id="surpriseCard"></div>
+    <div class="surprise-actions">
+      <button class="surprise-reroll" onclick="surpriseMe()">🎲 Pick Another</button>
+    </div>
+  </div>
 </div>
 
 <!-- ────── MAIN GRID ────── -->
@@ -2853,6 +2937,60 @@ _gpScanPage();
     show(criteriaScr);
   });
 })();
+
+/* ─────────────────────────────────────────────────────
+   SURPRISE ME
+───────────────────────────────────────────────────── */
+function surpriseMe() {
+  const filtered = restaurants.filter(r => {
+    const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
+    const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
+    const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
+    const areaOk    = activeArea   === 'all' || getArea(r) === activeArea;
+    return cuisineOk && ratingOk && typeOk && areaOk;
+  });
+
+  if (!filtered.length) {
+    alert('No restaurants match your current filters. Try broadening them!');
+    return;
+  }
+
+  const r = filtered[Math.floor(Math.random() * filtered.length)];
+  const img = (window.CUSTOM_PHOTOS && window.CUSTOM_PHOTOS[r.id]) || r.img;
+  const stars = renderStars(r.rating);
+  const cuisineLabel = {
+    chinese:'Chinese', japanese:'Japanese', korean:'Korean', thai:'Thai',
+    vietnamese:'Vietnamese', indian:'Indian', singaporean:'Singaporean / SE Asian',
+    taiwanese:'Taiwanese / Boba'
+  }[r.cuisine] || r.cuisine;
+
+  document.getElementById('surpriseCard').innerHTML = `
+    <img class="surprise-card-img" src="${img}" alt="${r.name}" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80'">
+    <div class="surprise-card-body">
+      <div class="surprise-card-name">${r.name}</div>
+      <div class="surprise-card-meta">
+        <span>${stars}</span>
+        <span>${r.rating} (${r.reviewCount.toLocaleString()} reviews)</span>
+        <span style="background:rgba(245,158,11,0.15);color:#f59e0b;padding:2px 8px;border-radius:20px;font-weight:600">${cuisineLabel}</span>
+        <span>${r.priceDesc}</span>
+      </div>
+      <div class="surprise-card-sig">${r.signature}</div>
+      <div class="surprise-card-desc">${r.desc}</div>
+      <div class="surprise-card-addr">📍 ${r.address}</div>
+    </div>`;
+
+  document.getElementById('surpriseOverlay').classList.add('open');
+}
+
+function closeSurprise(e) {
+  if (!e || e.target === document.getElementById('surpriseOverlay') || !e.target) {
+    document.getElementById('surpriseOverlay').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('surpriseOverlay').classList.remove('open');
+});
 
 /* ─────────────────────────────────────────────────────
    FOOD CRAWL BUILDER

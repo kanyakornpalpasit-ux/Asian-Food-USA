@@ -1569,6 +1569,70 @@
     .chip.area-downtown.active { background: rgba(196,163,87,0.12);  border-color: var(--gold);  color: var(--gold-lt); }
     .chip.area-sw.active       { background: rgba(106,68,146,0.15);  border-color: #6A4492;      color: #9B7AC8; }
     .chip.area-west.active     { background: rgba(42,122,90,0.15);   border-color: #2A7A5A;      color: #4AAF88; }
+    /* Houston area chip active states */
+    .chip.area-bellaire.active  { background: rgba(196,163,87,0.18); border-color: var(--gold);  color: var(--gold-lt); }
+    .chip.area-midtown.active   { background: rgba(106,68,146,0.15); border-color: #6A4492;      color: #9B7AC8; }
+    .chip.area-heights.active   { background: rgba(42,122,90,0.15);  border-color: #2A7A5A;      color: #4AAF88; }
+    .chip.area-galleria.active  { background: rgba(138,94,44,0.15);  border-color: #8A5E2C;      color: #C4924A; }
+    .chip.area-eado.active      { background: rgba(15,100,120,0.15); border-color: #0F6478;      color: #2BA5C0; }
+    .chip.area-alief.active     { background: rgba(155,35,53,0.12);  border-color: #9B2335;      color: #D45868; }
+
+    /* ─── CITY TABS ───────────────────────────── */
+    .city-tab-bar {
+      display: flex; gap: 0;
+      padding: 20px 40px 0;
+      border-bottom: 1px solid rgba(196,163,87,0.15);
+    }
+    @media (max-width: 640px) { .city-tab-bar { padding: 16px 16px 0; } }
+    .city-tab {
+      font-family: 'Noto Serif', Georgia, serif;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 1.2px;
+      padding: 10px 22px;
+      border: 1px solid rgba(196,163,87,0.2);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      background: transparent;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.22s ease;
+      position: relative;
+    }
+    .city-tab + .city-tab { margin-left: 4px; }
+    .city-tab:hover { color: var(--gold); border-color: rgba(196,163,87,0.45); }
+    .city-tab.active {
+      background: rgba(196,163,87,0.07);
+      color: var(--gold-lt);
+      border-color: rgba(196,163,87,0.5);
+    }
+    .city-tab.active::after {
+      content: '';
+      position: absolute; bottom: -1px; left: 0; right: 0; height: 2px;
+      background: var(--bg);
+    }
+    .city-tab .tab-flag { font-size: 1em; margin-right: 5px; }
+
+    /* ─── HOUSTON MAP ───────────────────────────── */
+    .hou-map-outer { width: 100%; max-width: 580px; border-radius: 12px; overflow: hidden; margin-bottom: 4px; }
+    .hou-svg { width: 100%; display: block; background: #04040e; border-radius: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(196,163,87,0.1); }
+    .hou-zone { cursor: pointer; }
+    .hou-fill { transition: all 0.25s ease; }
+    .hou-border { fill: none; stroke-width: 1.2; stroke-dasharray: 6 3; animation: dashFlow 3s linear infinite; }
+    .hou-name  { font-size: 10px; font-weight: 600; text-anchor: middle; fill: rgba(244,237,216,0.92); font-family: 'Noto Serif', serif; letter-spacing: 1px; pointer-events: none; }
+    .hou-sub   { font-size: 7px; text-anchor: middle; fill: rgba(196,163,87,0.55); font-family: 'Outfit', sans-serif; letter-spacing: 0.8px; pointer-events: none; }
+    .hou-count { font-size: 8px; text-anchor: middle; fill: rgba(196,163,87,0.9); font-family: 'Outfit', sans-serif; font-weight: 600; pointer-events: none; }
+    .hou-zone:hover .hou-fill { opacity: 0.7; }
+    .hou-zone.zone-active .hou-fill { opacity: 0.75; filter: brightness(1.3); }
+    .hou-zone.zone-active .hou-border { stroke-width: 2; animation-duration: 1.2s; }
+    .hou-active-pill {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 1px;
+      padding: 4px 14px; border-radius: 100px;
+      border: 1px solid rgba(196,163,87,0.4);
+      background: rgba(4,4,14,0.85);
+      color: var(--gold); white-space: nowrap; pointer-events: none;
+      font-family: 'Outfit', sans-serif;
+    }
+    .hou-map-rel { position: relative; }
 
     /* Area tag on card footer */
     .card-area-tag {
@@ -2008,6 +2072,12 @@
   </div>
 </section>
 
+<!-- ────── CITY TABS ────── -->
+<div class="city-tab-bar">
+  <button class="city-tab active" id="tabKaty" onclick="setCity('katy')"><span class="tab-flag">🌿</span>Katy, TX</button>
+  <button class="city-tab" id="tabHouston" onclick="setCity('houston')"><span class="tab-flag">🌆</span>Houston, TX</button>
+</div>
+
 <!-- ────── FILTERS ────── -->
 <div class="filter-bar" id="filterBar">
   <!-- ── Quick Action Buttons ── -->
@@ -2022,6 +2092,8 @@
       <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter" onclick="openCrawl()">路 Food Crawl</button>
     </div>
   </div>
+  <!-- ══ KATY CITY CONTENT ══ -->
+  <div id="katyFilterSections">
   <!-- ── KATY HOLOGRAPHIC MAP ── -->
   <div class="filter-section katy-map-section">
     <div class="filter-label map-title-row">
@@ -2606,6 +2678,173 @@
       <button class="chip area-west" data-area="west">西 West Katy / Elyson</button>
     </div>
   </div>
+  </div><!-- /katyFilterSections -->
+
+  <!-- ══ HOUSTON CITY CONTENT ══ -->
+  <div id="houstonFilterSections" style="display:none">
+  <div class="filter-section">
+    <div class="filter-label map-title-row">
+      <span class="map-title-text" style="font-family:'Noto Serif',Georgia,serif;letter-spacing:1.5px;font-weight:600;">都 HOUSTON NEIGHBORHOOD MAP</span>
+      <span class="map-subtitle" style="letter-spacing:0.8px;">click a neighborhood to filter</span>
+    </div>
+    <div class="hou-map-outer">
+      <div class="hou-map-rel">
+        <svg class="hou-svg" viewBox="0 0 580 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="hglow-gold"  x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#C4A357" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="hglow-purple" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#6A4492" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="hglow-green"  x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#2A7A5A" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="hglow-orange" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#8A5E2C" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="hglow-teal"   x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#0F6478" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="hglow-red"    x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#9B2335" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <radialGradient id="hBg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#060612"/><stop offset="100%" stop-color="#020208"/></radialGradient>
+            <linearGradient id="hRoad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(255,255,200,0.0)"/><stop offset="50%" stop-color="rgba(255,255,200,0.35)"/><stop offset="100%" stop-color="rgba(255,255,200,0.0)"/></linearGradient>
+          </defs>
+          <rect width="580" height="340" fill="url(#hBg)"/>
+          <!-- dot grid -->
+          <rect width="580" height="340" fill="none" style="background-image:radial-gradient(circle,rgba(196,163,87,0.12) 1px,transparent 1px);background-size:24px 24px;"/>
+
+          <!-- ── Loop 610 (ring road) ── -->
+          <ellipse cx="290" cy="168" rx="190" ry="138" fill="none" stroke="rgba(255,255,200,0.06)" stroke-width="22"/>
+          <ellipse cx="290" cy="168" rx="190" ry="138" fill="none" stroke="rgba(255,255,200,0.18)" stroke-width="3" stroke-dasharray="20 10"/>
+
+          <!-- ── Beltway 8 (outer loop) ── -->
+          <ellipse cx="290" cy="175" rx="265" ry="158" fill="none" stroke="rgba(255,200,80,0.05)" stroke-width="18"/>
+          <ellipse cx="290" cy="175" rx="265" ry="158" fill="none" stroke="rgba(255,200,80,0.22)" stroke-width="2.5" stroke-dasharray="16 10"/>
+
+          <!-- ── I-10 (horizontal) ── -->
+          <line x1="0" y1="130" x2="580" y2="130" stroke="rgba(255,255,200,0.12)" stroke-width="16"/>
+          <line x1="0" y1="130" x2="580" y2="130" stroke="rgba(255,255,200,0.45)" stroke-width="4" stroke-dasharray="22 10"/>
+          <text x="12" y="124" fill="rgba(255,255,200,0.7)" font-size="7.5" font-family="'Outfit',sans-serif" font-weight="600" letter-spacing="1.5">I-10</text>
+
+          <!-- ── US-59 / I-69 (diagonal SW-NE) ── -->
+          <line x1="60" y1="310" x2="480" y2="40" stroke="rgba(255,200,80,0.1)" stroke-width="14"/>
+          <line x1="60" y1="310" x2="480" y2="40" stroke="rgba(255,200,80,0.4)" stroke-width="3.5" stroke-dasharray="18 10"/>
+          <text x="72" y="294" fill="rgba(255,200,80,0.65)" font-size="7" font-family="'Outfit',sans-serif" font-weight="500" letter-spacing="1">US-59</text>
+
+          <!-- ── Bellaire Blvd (horizontal lower) ── -->
+          <line x1="50" y1="232" x2="490" y2="232" stroke="rgba(196,163,87,0.1)" stroke-width="12"/>
+          <line x1="50" y1="232" x2="490" y2="232" stroke="rgba(196,163,87,0.38)" stroke-width="3" stroke-dasharray="14 8"/>
+          <text x="60" y="227" fill="rgba(196,163,87,0.6)" font-size="6.5" font-family="'Outfit',sans-serif" font-weight="500" letter-spacing="1">BELLAIRE BLVD</text>
+
+          <!-- ── Westheimer Rd (horizontal upper-mid) ── -->
+          <line x1="30" y1="168" x2="550" y2="168" stroke="rgba(138,94,44,0.08)" stroke-width="12"/>
+          <line x1="30" y1="168" x2="550" y2="168" stroke="rgba(138,94,44,0.35)" stroke-width="3" stroke-dasharray="14 8"/>
+          <text x="38" y="163" fill="rgba(138,94,44,0.65)" font-size="6.5" font-family="'Outfit',sans-serif" font-weight="500" letter-spacing="1">WESTHEIMER RD</text>
+
+          <!-- ── Neighborhoods ── -->
+
+          <!-- BELLAIRE / CHINATOWN — lower left, largest zone -->
+          <g class="hou-zone" id="hzone-bellaire" data-zone="bellaire" tabindex="0">
+            <rect class="hou-fill" x="40" y="192" width="220" height="120" rx="6"
+              fill="rgba(196,163,87,0.10)" stroke="none"/>
+            <rect class="hou-border" x="40" y="192" width="220" height="120" rx="6"
+              stroke="rgba(196,163,87,0.75)"/>
+            <text class="hou-name" x="150" y="244">Bellaire · Chinatown</text>
+            <text class="hou-sub"  x="150" y="258">Houston's Asian Food Hub</text>
+            <text class="hou-count" id="hzc-bellaire" x="150" y="274">— spots</text>
+            <rect x="40" y="192" width="220" height="120" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- MIDTOWN / MONTROSE — center -->
+          <g class="hou-zone" id="hzone-midtown" data-zone="midtown" tabindex="0">
+            <rect class="hou-fill" x="200" y="130" width="130" height="110" rx="6"
+              fill="rgba(106,68,146,0.10)" stroke="none"/>
+            <rect class="hou-border" x="200" y="130" width="130" height="110" rx="6"
+              stroke="rgba(106,68,146,0.75)"/>
+            <text class="hou-name" x="265" y="177">Midtown</text>
+            <text class="hou-sub"  x="265" y="190">Montrose · Kirby</text>
+            <text class="hou-count" id="hzc-midtown" x="265" y="204">— spots</text>
+            <rect x="200" y="130" width="130" height="110" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- THE HEIGHTS — upper left -->
+          <g class="hou-zone" id="hzone-heights" data-zone="heights" tabindex="0">
+            <rect class="hou-fill" x="40" y="50" width="180" height="115" rx="6"
+              fill="rgba(42,122,90,0.10)" stroke="none"/>
+            <rect class="hou-border" x="40" y="50" width="180" height="115" rx="6"
+              stroke="rgba(42,122,90,0.75)"/>
+            <text class="hou-name" x="130" y="101">The Heights</text>
+            <text class="hou-sub"  x="130" y="115">Washington Ave · 11th St</text>
+            <text class="hou-count" id="hzc-heights" x="130" y="129">— spots</text>
+            <rect x="40" y="50" width="180" height="115" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- GALLERIA — upper right -->
+          <g class="hou-zone" id="hzone-galleria" data-zone="galleria" tabindex="0">
+            <rect class="hou-fill" x="340" y="50" width="200" height="155" rx="6"
+              fill="rgba(138,94,44,0.10)" stroke="none"/>
+            <rect class="hou-border" x="340" y="50" width="200" height="155" rx="6"
+              stroke="rgba(138,94,44,0.75)"/>
+            <text class="hou-name" x="440" y="118">Galleria</text>
+            <text class="hou-sub"  x="440" y="132">Post Oak · Westheimer</text>
+            <text class="hou-count" id="hzc-galleria" x="440" y="148">— spots</text>
+            <rect x="340" y="50" width="200" height="155" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- EADO — right -->
+          <g class="hou-zone" id="hzone-eado" data-zone="eado" tabindex="0">
+            <rect class="hou-fill" x="400" y="215" width="148" height="100" rx="6"
+              fill="rgba(15,100,120,0.10)" stroke="none"/>
+            <rect class="hou-border" x="400" y="215" width="148" height="100" rx="6"
+              stroke="rgba(15,100,120,0.75)"/>
+            <text class="hou-name" x="474" y="258">EaDo</text>
+            <text class="hou-sub"  x="474" y="271">East Downtown</text>
+            <text class="hou-count" id="hzc-eado" x="474" y="285">— spots</text>
+            <rect x="400" y="215" width="148" height="100" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- ALIEF / WESTCHASE — lower right -->
+          <g class="hou-zone" id="hzone-alief" data-zone="alief" tabindex="0">
+            <rect class="hou-fill" x="270" y="242" width="120" height="82" rx="6"
+              fill="rgba(155,35,53,0.10)" stroke="none"/>
+            <rect class="hou-border" x="270" y="242" width="120" height="82" rx="6"
+              stroke="rgba(155,35,53,0.75)"/>
+            <text class="hou-name" x="330" y="277">Alief</text>
+            <text class="hou-sub"  x="330" y="290">SW Houston · Westchase</text>
+            <text class="hou-count" id="hzc-alief" x="330" y="304">— spots</text>
+            <rect x="270" y="242" width="120" height="82" rx="6" fill="transparent"/>
+          </g>
+
+          <!-- Luxury compass rose -->
+          <g transform="translate(549,26)">
+            <circle r="18" fill="rgba(0,0,0,0.75)" stroke="rgba(196,163,87,0.35)" stroke-width="0.8"/>
+            <circle r="15" fill="none" stroke="rgba(196,163,87,0.15)" stroke-width="0.5"/>
+            <line x1="0" y1="-15" x2="0" y2="-12" stroke="rgba(196,163,87,0.55)" stroke-width="0.8"/>
+            <line x1="0" y1="15"  x2="0" y2="12"  stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <line x1="-15" y1="0" x2="-12" y2="0" stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <line x1="15"  y1="0" x2="12"  y2="0" stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <polygon points="0,-11 2,-3 -2,-3" fill="#C4A357"/>
+            <polygon points="0,11 2,3 -2,3" fill="rgba(196,163,87,0.2)"/>
+            <line x1="-10" y1="0" x2="10" y2="0" stroke="rgba(196,163,87,0.2)" stroke-width="0.7"/>
+            <circle r="2.2" fill="#C4A357"/>
+            <circle r="1" fill="#07070C"/>
+            <text text-anchor="middle" y="-13" fill="#C4A357" font-size="6" font-family="'Noto Serif',serif" font-weight="600">N</text>
+          </g>
+          <!-- corner ornament top-left -->
+          <g opacity="0.3" stroke="#C4A357" stroke-width="0.8" fill="none">
+            <line x1="4" y1="4" x2="16" y2="4"/><line x1="4" y1="4" x2="4" y2="16"/>
+          </g>
+        </svg>
+        <div class="hou-active-pill" id="houActiveLabel">✦ All Houston ✦</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">◉ Neighborhood</div>
+    <div class="filter-chips" id="houstonAreaChips">
+      <button class="chip active" data-harea="all">◉ All Houston</button>
+      <button class="chip area-bellaire" data-harea="bellaire">亞 Bellaire · Chinatown</button>
+      <button class="chip area-midtown" data-harea="midtown">城 Midtown · Montrose</button>
+      <button class="chip area-heights" data-harea="heights">高 The Heights</button>
+      <button class="chip area-galleria" data-harea="galleria">廊 Galleria · Post Oak</button>
+      <button class="chip area-eado" data-harea="eado">東 EaDo</button>
+      <button class="chip area-alief" data-harea="alief">南 Alief · Westchase</button>
+    </div>
+  </div>
+  </div><!-- /houstonFilterSections -->
+
   <div class="filter-section">
     <div class="filter-label">Cuisine Type</div>
     <div class="filter-chips" id="cuisineChips">
@@ -3210,6 +3449,23 @@ const restaurants = [
   {id:189,cuisine:'chinese',rating:4.2,reviewCount:182,name:'Dim Sum Box',img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80',signature:'🥟 Har Gow, Crispy Garlic Shu Mai & Hong Kong Cocktails',priceLevel:2,priceDesc:'$18–$35 / person',address:'1223 Grand W Blvd B107, Katy TX 77449',desc:'Boutique dim sum bar owned by the Fung\'s Kitchen family — over 50 classic and creative dim sum dishes in a compact, date-night setting with Hong Kong-inspired cocktails like the Honey Aloe Cat.'},
   {id:190,cuisine:'singaporean',rating:4.8,reviewCount:257,name:'Uncle Chin\'s Kitchen',img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80',signature:'🍛 Hainanese Chicken Rice, Nasi Lemak & Mee Goreng',priceLevel:1,priceDesc:'$12–$22 / person',address:'1520 S Mason Rd, Katy TX 77450',desc:'One of Katy\'s highest-rated hidden gems — authentic Malaysian home-cooking with impossibly fragrant Hainanese chicken, roti canai, and clay pot noodles. Often praised as the best Malaysian food in the Houston area.'},
   {id:191,cuisine:'indian',rating:4.6,reviewCount:48,name:'Aga\'s Restaurant To-Go',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🍛 Nihari, Haleem & Chicken Karahi',priceLevel:2,priceDesc:'$14–$28 / person',address:'102 W Grand Pkwy S Ste 100, Katy TX 77494',desc:'Katy outpost of the Houston Chronicle\'s #1-ranked Houston restaurant — award-winning Pakistani cuisine with slow-cooked nihari, smoky karahi, and house-made desi desserts. Takeout and delivery only at this location.'},
+  /* ── Houston TX ── */
+  {id:193,cuisine:'vietnamese',rating:4.2,reviewCount:1213,name:'Crawfish & Noodles',img:'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?w=600&q=80',signature:'🦞 Viet-Cajun Crawfish & Asian-Spiced Dungeness Crab',priceLevel:2,priceDesc:'$18–$38 / person',address:'11360 Bellaire Blvd Ste 990, Houston TX 77072',desc:'The original pioneer of Viet-Cajun cuisine — chef Trong Nguyen helped invent the genre at this Chinatown institution, boiling crawfish with lemongrass, ginger, and butter in a way no one had done before.'},
+  {id:194,cuisine:'vietnamese',rating:4.7,reviewCount:1260,name:'Huynh Restaurant',img:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80',signature:'🍜 Bún Bò Huế & Salt & Pepper Soft Shell Crab',priceLevel:1,priceDesc:'$12–$24 / person',address:'912 St Emanuel St, Houston TX 77003',desc:'A beloved Vietnamese institution in Houston\'s EaDo neighborhood — decades of loyal regulars, enormous portions of bún bò huế, and some of the most consistent Vietnamese cooking in the city.'},
+  {id:195,cuisine:'chinese',rating:4.6,reviewCount:890,name:'Mala Sichuan Bistro — Bellaire',img:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80',signature:'🌶 Mala Beef Tripe & Award-Winning Mapo Tofu',priceLevel:2,priceDesc:'$15–$30 / person',address:'9348 Bellaire Blvd, Houston TX 77036',desc:'The original Bellaire location of this Michelin-recognized Sichuan landmark — the dish that started it all, featuring house-ground chili paste and Sichuan peppercorns imported fresh from Chengdu.'},
+  {id:196,cuisine:'vietnamese',rating:4.5,reviewCount:320,name:'Nam Giao',img:'https://images.unsplash.com/photo-1547592166-23ac88417717?w=600&q=80',signature:'🍲 Bánh Bèo & Bún Bò Huế (Michelin Bib Gourmand)',priceLevel:1,priceDesc:'$10–$20 / person',address:'6938 Wilcrest Dr, Houston TX 77072',desc:'Michelin Bib Gourmand-awarded Vietnamese restaurant specializing in the delicate steamed dishes of Huế — impossibly thin bánh bèo rice cakes and intensely fragrant bún bò Huế broth.'},
+  {id:197,cuisine:'thai',rating:4.5,reviewCount:248,name:"Lao'd District",img:'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80',signature:'🌿 Lao Sausage, Chicken Laab & Crispy Pork Belly',priceLevel:1,priceDesc:'$12–$22 / person',address:'9393 Bellaire Blvd Ste B, Houston TX 77036',desc:'One of Houston\'s only Thai-Lao restaurants — hip-hop atmosphere, sticky rice served with every dish, and a menu of Lao specialties like sai oua sausage and papaya salad.'},
+  {id:198,cuisine:'indian',rating:4.8,reviewCount:310,name:'Musaafer',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🍛 Michelin-Star Tasting Menu · Lamb Rogan Josh & Saffron Biryani',priceLevel:3,priceDesc:'$65–$120 / person',address:'5115 Westheimer Rd Ste 3500, Houston TX 77056',desc:'Houston\'s only Michelin-starred Indian restaurant — a refined journey across the Silk Road set inside the Galleria-area high-rise with dramatic interiors and an award-winning wine program.'},
+  {id:199,cuisine:'japanese',rating:4.3,reviewCount:247,name:'Toyori',img:'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80',signature:'🍜 Spicy Tan Tan Ramen & Crispy Pork Buns',priceLevel:1,priceDesc:'$12–$22 / person',address:'9889 Bellaire Blvd Ste 306, Houston TX 77036',desc:'A gem tucked inside Houston Chinatown\'s food court — standout tan tan ramen with intensely creamy sesame broth, golden crispy pork buns, and Japanese comfort food that punches above its price point.'},
+  {id:200,cuisine:'taiwanese',rating:4.0,reviewCount:749,name:'San Dong Noodle House',img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80',signature:'🥟 Pan-Fried Dumplings & Taiwanese Beef Noodle Soup',priceLevel:1,priceDesc:'$8–$16 / person',address:'9938 Bellaire Blvd Ste F, Houston TX 77036',desc:'A no-frills Chinatown institution with 749 reviews — hand-formed dumplings pan-fried to a golden crisp, and a beef noodle soup with collagen-rich broth that regulars order every week.'},
+  {id:201,cuisine:'chinese',rating:4.4,reviewCount:486,name:'One Dragon Restaurant',img:'https://images.unsplash.com/photo-1541557435984-1c79685a082b?w=600&q=80',signature:'🥟 Shanghai XLB Soup Dumplings & Crispy-Bottom Pan-Fried Bao',priceLevel:1,priceDesc:'$10–$20 / person',address:'9310 Bellaire Blvd, Houston TX 77036',desc:'The best xiao long bao in Houston\'s Chinatown — thin-skinned, broth-filled soup dumplings made to order alongside sheng jian bao with a perfectly crisped bottom and juicy pork filling.'},
+  {id:202,cuisine:'korean',rating:4.3,reviewCount:707,name:'Handam BBQ',img:'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&q=80',signature:'🥩 AYCE Smokeless Charcoal KBBQ · Prime Brisket & Short Rib',priceLevel:2,priceDesc:'$25–$45 / person',address:'6609 W Sam Houston Pkwy S Ste 96, Houston TX 77072',desc:'Houston Chinatown\'s most popular Korean BBQ — smokeless charcoal tabletop grills with premium cuts of brisket, short rib, and pork belly in an all-you-can-eat format that draws long weekend waits.'},
+  {id:203,cuisine:'japanese',rating:4.4,reviewCount:275,name:'Toukei',img:'https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&q=80',signature:'🍶 Yakitori, Karaage & Late-Night Sake Highballs',priceLevel:2,priceDesc:'$20–$40 / person',address:'9630 Clarewood Dr Ste A15, Houston TX 77036',desc:'Houston\'s finest izakaya — open until 1am with a floor-to-ceiling liquor cabinet, smoked yakitori skewers, and rotating Japanese whisky flights tucked just off Bellaire Blvd.'},
+  {id:204,cuisine:'vietnamese',rating:4.1,reviewCount:210,name:'Bodard Bistro',img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80',signature:'🍲 Canh Chua Tamarind Soup & Bánh Xèo Sizzling Crepe',priceLevel:1,priceDesc:'$10–$20 / person',address:'9140 Bellaire Blvd, Houston TX 77036',desc:'A Mekong Delta specialist in the heart of Chinatown — canh chua soup with pineapple, tamarind, and okra, and a bánh xèo that sizzles dramatically at the table.'},
+  {id:205,cuisine:'korean',rating:4.4,reviewCount:195,name:'Myung Dong Kyoja',img:'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&q=80',signature:'🍜 Chlorella Kalguksu Cold Noodles & Handmade Mandu',priceLevel:1,priceDesc:'$12–$22 / person',address:'9798 Bellaire Blvd, Houston TX 77036',desc:'LA Koreatown export that took Houston by storm — silky handmade kalguksu noodles tinted green with chlorella, served cold, alongside house-made mandu dumplings that sell out daily.'},
+  {id:206,cuisine:'indian',rating:4.3,reviewCount:380,name:'Pondicheri',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🍛 Masala Chai Pancakes & Spiced Lamb Chops',priceLevel:2,priceDesc:'$18–$38 / person',address:'2800 Kirby Dr B132, Houston TX 77098',desc:'James Beard-nominated modern Indian kitchen in Upper Kirby — all-day menu from chai-spiced pancakes at brunch to fragrant lamb chops and dosas at dinner.'},
+  {id:207,cuisine:'vietnamese',rating:4.2,reviewCount:295,name:'Hai Cang',img:'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?w=600&q=80',signature:'🦀 Salt & Pepper Dungeness Crab & Lobster Ho Fun Noodles',priceLevel:3,priceDesc:'$35–$70 / person',address:'11768 Bellaire Blvd, Houston TX 77072',desc:'Houston\'s go-to destination for Vietnamese-Chinese seafood feasts — massive whole Dungeness crab, live lobster stir-fried to order, and heaping ho fun noodles for large group celebrations.'},
+
   {id:192,cuisine:'taiwanese',rating:4.1,reviewCount:22,name:'AMA Kitchen',img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80',signature:'🍱 14 Asian Cuisines Under One Roof · Robo Café Experience',priceLevel:1,priceDesc:'$10–$22 / person',address:'23119 Colonial Pkwy Ste A3, Katy TX 77449',desc:'Katy Asian Town\'s innovative multi-concept food hall — one counter, 14 Asian regional menus spanning Taiwanese, Korean, Japanese, Vietnamese, and Chinese, featuring a unique Robo Café AI experience inside the heart of H-Mart.'},
 
 ];
@@ -3518,6 +3774,60 @@ let activeCuisine = 'all';
 let activeRating  = 'all';
 let activeType    = 'all';
 let activeArea    = 'all';
+let activeCity    = 'katy';
+let activeHouArea = 'all';
+
+/* ── Houston helpers ── */
+function isHouston(r) { return /houston\s*tx/i.test(r.address || ''); }
+function isKaty(r)    { return !isHouston(r); }
+
+function getAreaHouston(r) {
+  const a = (r.address || '').toLowerCase();
+  if (/bellaire\s*blvd|wilcrest|clarewood|gessner|sharpstown/.test(a)) return 'bellaire';
+  if (/kirby|montrose|midtown|westheimer\s*rd.*770(98|06|27)/.test(a)) return 'midtown';
+  if (/heights|washington\s*ave|11th\s*st/.test(a)) return 'heights';
+  if (/post\s*oak|galleria|westheimer\s*rd.*77056|san\s*felipe/.test(a)) return 'galleria';
+  if (/st\s*emanuel|harrisburg|navigation|eado/.test(a)) return 'eado';
+  if (/sam\s*houston\s*pkwy|westchase|alief|beltway/.test(a)) return 'alief';
+  return 'bellaire';
+}
+
+const HOU_AREA_INFO = {
+  bellaire: { icon:'🏮', label:'Bellaire · Chinatown', desc:'Bellaire Blvd, Wilcrest Dr & the Asiatown corridor — Houston\'s largest concentration of authentic Asian restaurants.' },
+  midtown:  { icon:'🌆', label:'Midtown · Montrose',   desc:'Kirby Dr, Westheimer Rd & Montrose — upscale Asian dining, modern concepts, and James Beard-recognized kitchens.' },
+  heights:  { icon:'🌿', label:'The Heights',           desc:'Washington Ave & 19th St — neighborhood Asian gems in one of Houston\'s trendiest walkable districts.' },
+  galleria: { icon:'💎', label:'Galleria · Post Oak',   desc:'Westheimer Rd high-rises and Post Oak Blvd — Michelin-starred fine dining and upscale pan-Asian cuisine.' },
+  eado:     { icon:'🏭', label:'EaDo · East Downtown',  desc:'St Emanuel St, Harrisburg Blvd & Navigation — beloved Vietnamese classics and creative new concepts east of downtown.' },
+  alief:    { icon:'🌏', label:'Alief · Westchase',     desc:'SW Houston, Sam Houston Pkwy & Beltway 8 — diverse, affordable, and deeply authentic Asian neighborhood dining.' },
+};
+
+function setCity(city) {
+  activeCity    = city;
+  activeArea    = 'all';
+  activeHouArea = 'all';
+
+  // tab UI
+  document.getElementById('tabKaty').classList.toggle('active', city === 'katy');
+  document.getElementById('tabHouston').classList.toggle('active', city === 'houston');
+
+  // show/hide map + area sections
+  document.getElementById('katyFilterSections').style.display    = city === 'katy'    ? '' : 'none';
+  document.getElementById('houstonFilterSections').style.display = city === 'houston' ? '' : 'none';
+
+  // reset katy area chips
+  document.querySelectorAll('#areaChips .chip').forEach(c => c.classList.toggle('active', c.dataset.area === 'all'));
+  // reset houston area chips
+  document.querySelectorAll('#houstonAreaChips .chip').forEach(c => c.classList.toggle('active', c.dataset.harea === 'all'));
+  // reset katy map zones
+  document.querySelectorAll('.holo-zone').forEach(g => g.classList.remove('zone-active'));
+
+  // reset hero text
+  const eyebrow = document.querySelector('.hero-eyebrow');
+  if (eyebrow) eyebrow.innerHTML = `<span class="live-dot"></span> Asian Food Directory · ${city === 'houston' ? 'Houston, Texas' : 'Katy, Texas'}`;
+
+  updateHouCounts();
+  render();
+}
 
 /* Area detection from address string */
 const AREA_INFO = {
@@ -3569,11 +3879,14 @@ function render() {
   wrap.innerHTML = '';
 
   const filtered = restaurants.filter(r => {
+    const cityOk    = activeCity === 'katy' ? isKaty(r) : isHouston(r);
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
     const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
-    const areaOk    = activeArea   === 'all' || getArea(r) === activeArea;
-    return cuisineOk && ratingOk && typeOk && areaOk;
+    const areaOk    = activeCity === 'houston'
+      ? (activeHouArea === 'all' || getAreaHouston(r) === activeHouArea)
+      : (activeArea === 'all' || getArea(r) === activeArea);
+    return cityOk && cuisineOk && ratingOk && typeOk && areaOk;
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;
@@ -4242,6 +4555,16 @@ _gpScanPage();
     });
   }
 
+  function updateHouCounts() {
+    ['bellaire','midtown','heights','galleria','eado','alief'].forEach(function(z) {
+      var el = document.querySelector('#hzone-'+z+' .hou-count');
+      if (el) {
+        var n = restaurants.filter(function(r){ return isHouston(r) && getAreaHouston(r)===z; }).length;
+        el.textContent = n+' spots';
+      }
+    });
+  }
+
   // build floating pins
   function buildPins() {
     var container = document.getElementById('holoPins');
@@ -4364,6 +4687,51 @@ _gpScanPage();
 
   buildPins();
   updateCounts();
+
+  // ── HOUSTON area chips ──
+  var houChips = document.getElementById('houstonAreaChips');
+  if (houChips) {
+    houChips.addEventListener('click', function(e) {
+      var chip = e.target.closest('.chip[data-harea]');
+      if (!chip) return;
+      var zone = chip.dataset.harea;
+      activeHouArea = zone;
+      document.querySelectorAll('#houstonAreaChips .chip').forEach(function(c) {
+        c.classList.toggle('active', c.dataset.harea === zone);
+      });
+      document.querySelectorAll('.hou-zone').forEach(function(g) {
+        g.classList.toggle('zone-active', zone !== 'all' && g.dataset.zone === zone);
+      });
+      var pill = document.getElementById('houActiveLabel');
+      if (pill) {
+        var info = HOU_AREA_INFO[zone];
+        pill.textContent = zone === 'all' ? '✦ All Houston ✦' : (info ? info.icon + ' ' + info.label : zone);
+      }
+      render();
+    });
+  }
+
+  // ── HOUSTON map zone clicks ──
+  document.querySelectorAll('.hou-zone').forEach(function(g) {
+    g.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var zone = g.dataset.zone;
+      var next = (activeHouArea === zone) ? 'all' : zone;
+      activeHouArea = next;
+      document.querySelectorAll('.hou-zone').forEach(function(z) {
+        z.classList.toggle('zone-active', next !== 'all' && z.dataset.zone === next);
+      });
+      document.querySelectorAll('#houstonAreaChips .chip').forEach(function(c) {
+        c.classList.toggle('active', c.dataset.harea === next);
+      });
+      var pill = document.getElementById('houActiveLabel');
+      if (pill) {
+        var info = HOU_AREA_INFO[next];
+        pill.textContent = next === 'all' ? '✦ All Houston ✦' : (info ? info.icon + ' ' + info.label : next);
+      }
+      render();
+    });
+  });
 })();
 
 function openMatch() {

@@ -3779,7 +3779,7 @@ let activeHouArea = 'all';
 
 /* ── Houston helpers ── */
 function isHouston(r) { return /houston\s*tx/i.test(r.address || ''); }
-function isKaty(r)    { return !isHouston(r); }
+function isKaty(r)    { return /katy\s*tx/i.test(r.address || ''); }
 
 function getAreaHouston(r) {
   const a = (r.address || '').toLowerCase();

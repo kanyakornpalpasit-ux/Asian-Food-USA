@@ -3938,7 +3938,9 @@ let activeArea    = 'all';
 let activeCity    = 'katy';
 let activeHouArea = 'all';
 
-/* ── Houston helpers ── */
+/* ── City pools — built once at load, never wrong ── */
+const houstonRestaurants = restaurants.filter(r => /houston\s*tx/i.test(r.address || ''));
+const katyRestaurants    = restaurants.filter(r => /katy\s*tx/i.test(r.address || ''));
 function isHouston(r) { return /houston\s*tx/i.test(r.address || ''); }
 function isKaty(r)    { return /katy\s*tx/i.test(r.address || ''); }
 
@@ -4039,15 +4041,15 @@ function render() {
   const wrap = document.getElementById('gridWrap');
   wrap.innerHTML = '';
 
-  const filtered = restaurants.filter(r => {
-    const cityOk    = activeCity === 'katy' ? isKaty(r) : isHouston(r);
+  const pool = activeCity === 'houston' ? houstonRestaurants : katyRestaurants;
+  const filtered = pool.filter(r => {
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
     const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
     const areaOk    = activeCity === 'houston'
       ? (activeHouArea === 'all' || getAreaHouston(r) === activeHouArea)
       : (activeArea === 'all' || getArea(r) === activeArea);
-    return cityOk && cuisineOk && ratingOk && typeOk && areaOk;
+    return cuisineOk && ratingOk && typeOk && areaOk;
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;

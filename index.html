@@ -2104,8 +2104,8 @@
 
 <!-- ────── CITY TABS ────── -->
 <div class="city-tab-bar">
-  <a class="city-tab" id="tabKaty" href="index.html"><span class="tab-flag">🌿</span>Katy, TX</a>
-  <a class="city-tab" id="tabHouston" href="index.html?city=houston"><span class="tab-flag">🌆</span>Houston, TX</a>
+  <button class="city-tab" id="tabKaty" onclick="setCity('katy')"><span class="tab-flag">🌿</span>Katy, TX</button>
+  <button class="city-tab" id="tabHouston" onclick="setCity('houston')"><span class="tab-flag">🌆</span>Houston, TX</button>
 </div>
 
 <!-- ────── FILTERS ────── -->
@@ -4397,19 +4397,9 @@ if (GPLACES_KEY) {
 updateWlBadge();
 buildStats();
 
-/* ── URL-based city routing ── */
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const cityParam = params.get('city');
-  if (cityParam === 'houston') {
-    setCity('houston');
-  } else {
-    // Katy is default — just mark tab active
-    document.getElementById('tabKaty').classList.add('active');
-    document.getElementById('tabHouston').classList.remove('active');
-    render();
-  }
-})();
+/* ── Default city on load ── */
+document.getElementById('tabKaty').classList.add('active');
+render();
 
 _gpScanPage();
 

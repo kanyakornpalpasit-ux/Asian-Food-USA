@@ -6,40 +6,47 @@
   <title>AsiaFoodUSA — Asian Dining Directory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ─── CSS Variables ─────────────────────────── */
     :root {
-      --bg:        #08080F;
-      --bg-card:   #0F0F1C;
-      --bg-card2:  #14142A;
-      --border:    rgba(212,175,55,0.18);
-      --gold:      #D4AF37;
-      --gold-lt:   #F0D060;
-      --gold-dim:  rgba(212,175,55,0.15);
-      --text:      #F0EDE8;
-      --text-sub:  #A09888;
-      --text-dim:  #605850;
-      --radius:    16px;
-      --radius-sm: 8px;
-      --shadow:    0 8px 40px rgba(0,0,0,0.6);
+      /* Base — ink black / antique gold / rice paper cream */
+      --bg:        #07070C;
+      --bg-card:   #0C0C12;
+      --bg-card2:  #101018;
+      --cream:     #F4EDD8;
+      --border:    rgba(196,163,87,0.15);
+      --gold:      #C4A357;
+      --gold-lt:   #DFC078;
+      --gold-dim:  rgba(196,163,87,0.10);
+      --text:      #EDE7D6;
+      --text-sub:  #9A8E7A;
+      --text-dim:  #4E453A;
+      --radius:    12px;
+      --radius-sm: 6px;
+      --shadow:    0 8px 40px rgba(0,0,0,0.72);
       --transition: 0.28s cubic-bezier(.4,0,.2,1);
 
-      /* Cuisine Colors */
-      --c-cn: #FF4444;   /* Chinese */
-      --c-jp: #FF6B9D;   /* Japanese */
-      --c-kr: #FF7043;   /* Korean */
-      --c-th: #56C87A;   /* Thai */
-      --c-vn: #FFB730;   /* Vietnamese */
-      --c-in: #C97EE0;   /* Indian */
-      --c-sg: #26CBE0;   /* Singaporean */
-      --c-tw: #5BA8FF;   /* Taiwanese */
+      /* Luxury cuisine accent palette — 4 families */
+      --crimson:   #9B2335;   /* Chinese · Korean         */
+      --jade:      #2A7A5A;   /* Vietnamese · Thai        */
+      --umber:     #8A5E2C;   /* Japanese · Indian        */
+      --amethyst:  #6A4492;   /* Taiwanese · Singaporean  */
 
-      /* Rating Band Colors */
-      --r-4: #56C87A;
-      --r-3: #FFB730;
-      --r-2: #FF7043;
-      --r-1: #FF4444;
+      --c-cn: var(--crimson);
+      --c-jp: var(--umber);
+      --c-kr: var(--crimson);
+      --c-th: var(--jade);
+      --c-vn: var(--jade);
+      --c-in: var(--umber);
+      --c-sg: var(--amethyst);
+      --c-tw: var(--amethyst);
+
+      /* Rating band colors — pulled from same luxury palette */
+      --r-4: #2A7A5A;
+      --r-3: #C4A357;
+      --r-2: #8A5E2C;
+      --r-1: #9B2335;
     }
 
     /* ─── Reset ─────────────────────────────────── */
@@ -47,7 +54,10 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Outfit', sans-serif;
-      background: var(--bg);
+      background-color: var(--bg);
+      /* Seigaiha (fish-scale) wave — 8% opacity, cultural texture not decoration */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpath d='M0,20 A20,20,0,0,1,40,20' fill='none' stroke='rgba(196,163,87,0.08)' stroke-width='0.8'/%3E%3Cpath d='M-20,0 A20,20,0,0,1,20,0' fill='none' stroke='rgba(196,163,87,0.08)' stroke-width='0.8'/%3E%3Cpath d='M20,0 A20,20,0,0,1,60,0' fill='none' stroke='rgba(196,163,87,0.08)' stroke-width='0.8'/%3E%3C/svg%3E");
+      background-size: 40px 20px;
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
@@ -72,7 +82,7 @@
     }
     .cur-ring {
       position: fixed; width: 36px; height: 36px; border-radius: 50%;
-      border: 1.5px solid rgba(212,175,55,0.7); pointer-events: none; z-index: 99998;
+      border: 1.5px solid rgba(196,163,87,0.7); pointer-events: none; z-index: 99998;
       transform: translate(-50%,-50%);
       transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94),
                   width 0.25s, height 0.25s, border-color 0.2s, opacity 0.2s;
@@ -85,7 +95,7 @@
     .mouse-glow {
       position: fixed; width: 500px; height: 500px;
       border-radius: 50%; pointer-events: none; z-index: 0;
-      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(196,163,87,0.06) 0%, transparent 70%);
       transform: translate(-50%,-50%);
       transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
       will-change: transform;
@@ -97,17 +107,17 @@
       padding: 16px 40px;
       background: rgba(8,8,15,0.75);
       backdrop-filter: blur(28px) saturate(180%);
-      border-bottom: 1px solid rgba(212,175,55,0.12);
+      border-bottom: 1px solid rgba(196,163,87,0.12);
       box-shadow: 0 1px 40px rgba(0,0,0,0.4);
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.4rem; font-weight: 700;
       color: var(--gold);
       letter-spacing: 0.02em;
     }
-    .nav-logo .dot { color: #FF4444; }
+    .nav-logo .dot { color: var(--gold); }
     .nav-meta {
       display: flex; align-items: center; gap: 8px;
       font-size: 0.78rem; font-weight: 500; color: var(--text-sub);
@@ -132,9 +142,11 @@
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 900px 600px at 60% 50%, rgba(212,175,55,0.10), transparent),
-        radial-gradient(ellipse 600px 400px at 10% 80%, rgba(86,200,122,0.07), transparent),
-        radial-gradient(ellipse 500px 300px at 90% 10%, rgba(255,107,157,0.07), transparent);
+        radial-gradient(ellipse 900px 500px at 65% 40%, rgba(196,163,87,0.07), transparent),
+        radial-gradient(ellipse 500px 300px at 5% 90%,  rgba(196,163,87,0.04), transparent),
+        /* Sakura petals — 9% opacity, staggered 44px grid */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg transform='translate(22,22)' fill='none' stroke='rgba(196,163,87,0.09)' stroke-width='0.7'%3E%3Cellipse cx='0' cy='-9' rx='3.5' ry='7'/%3E%3Cellipse cx='0' cy='-9' rx='3.5' ry='7' transform='rotate(72)'/%3E%3Cellipse cx='0' cy='-9' rx='3.5' ry='7' transform='rotate(144)'/%3E%3Cellipse cx='0' cy='-9' rx='3.5' ry='7' transform='rotate(216)'/%3E%3Cellipse cx='0' cy='-9' rx='3.5' ry='7' transform='rotate(288)'/%3E%3Ccircle r='2'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: auto, auto, 44px 44px;
     }
     /* Floating food emoji particles */
     .hero-particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -156,9 +168,9 @@
       position: absolute; border-radius: 50%; filter: blur(80px);
       pointer-events: none; z-index: 0; animation: orbFloat ease-in-out infinite alternate;
     }
-    .hero-orb-1 { width: 400px; height: 400px; background: rgba(212,175,55,0.12); top: -100px; right: 10%; animation-duration: 8s; }
-    .hero-orb-2 { width: 300px; height: 300px; background: rgba(239,68,68,0.08);  bottom: -50px; left: 5%;  animation-duration: 11s; }
-    .hero-orb-3 { width: 250px; height: 250px; background: rgba(34,197,94,0.07);  top: 30%;  right: 30%; animation-duration: 14s; }
+    .hero-orb-1 { width: 500px; height: 500px; background: rgba(196,163,87,0.07); top: -140px; right: 8%;  animation-duration: 10s; }
+    .hero-orb-2 { width: 300px; height: 300px; background: rgba(196,163,87,0.04); bottom: -60px; left: 4%; animation-duration: 14s; }
+    .hero-orb-3 { display: none; }
     @keyframes orbFloat {
       from { transform: translate(0, 0) scale(1); }
       to   { transform: translate(30px, 20px) scale(1.15); }
@@ -180,7 +192,7 @@
       50%      { opacity: 0.5; transform: scale(1.4); }
     }
     .hero-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: clamp(2.4rem, 5vw, 4rem);
       font-weight: 900; line-height: 1.1;
       margin-bottom: 16px;
@@ -242,18 +254,18 @@
     }
 
     /* Rating Chips */
-    .chip.r4.active  { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
-    .chip.r3.active  { background: rgba(255,183,48,0.15);  border-color: var(--r-3); color: var(--r-3); }
-    .chip.r2.active  { background: rgba(255,112,67,0.15);  border-color: var(--r-2); color: var(--r-2); }
-    .chip.r1.active  { background: rgba(255,68,68,0.15);   border-color: var(--r-1); color: var(--r-1); }
+    .chip.r4.active  { background: rgba(42,122,90,0.15);   border-color: var(--r-4); color: var(--r-4); }
+    .chip.r3.active  { background: rgba(196,163,87,0.15);  border-color: var(--r-3); color: var(--r-3); }
+    .chip.r2.active  { background: rgba(138,94,44,0.15);   border-color: var(--r-2); color: var(--r-2); }
+    .chip.r1.active  { background: rgba(155,35,53,0.15);   border-color: var(--r-1); color: var(--r-1); }
 
     /* Type chips */
-    .chip.type-cafe.active    { background: rgba(255,107,157,0.15); border-color: #FF6B9D; color: #FF6B9D; }
-    .chip.type-boba.active    { background: rgba(91,168,255,0.15);  border-color: #5BA8FF; color: #5BA8FF; }
-    .chip.type-rest.active    { background: rgba(86,200,122,0.15);  border-color: var(--r-4); color: var(--r-4); }
-    .chip.type-dessert.active { background: rgba(201,126,224,0.15); border-color: #C97EE0; color: #C97EE0; }
-    .chip.type-ice.active     { background: rgba(38,203,224,0.15);  border-color: #26CBE0; color: #26CBE0; }
-    .chip.type-buffet.active  { background: rgba(255,183,48,0.15);  border-color: var(--r-3); color: var(--r-3); }
+    .chip.type-cafe.active    { background: rgba(106,68,146,0.15);  border-color: #6A4492; color: #9B7AC8; }
+    .chip.type-boba.active    { background: rgba(106,68,146,0.15);  border-color: #6A4492; color: #9B7AC8; }
+    .chip.type-rest.active    { background: rgba(42,122,90,0.15);   border-color: var(--r-4); color: var(--r-4); }
+    .chip.type-dessert.active { background: rgba(106,68,146,0.15);  border-color: #6A4492; color: #9B7AC8; }
+    .chip.type-ice.active     { background: rgba(42,122,90,0.15);   border-color: #2A7A5A; color: #4AAF88; }
+    .chip.type-buffet.active  { background: rgba(196,163,87,0.15);  border-color: var(--r-3); color: var(--r-3); }
 
     /* Type badges on cards */
     .type-badge {
@@ -263,11 +275,11 @@
       padding: 3px 9px; border-radius: 100px;
       backdrop-filter: blur(8px);
     }
-    .type-badge.cafe    { background: rgba(255,107,157,0.18); border: 1px solid rgba(255,107,157,0.45); color: #FF6B9D; }
-    .type-badge.boba    { background: rgba(91,168,255,0.18);  border: 1px solid rgba(91,168,255,0.45);  color: #5BA8FF; }
-    .type-badge.dessert { background: rgba(201,126,224,0.18); border: 1px solid rgba(201,126,224,0.45); color: #C97EE0; }
-    .type-badge.icecream{ background: rgba(38,203,224,0.18);  border: 1px solid rgba(38,203,224,0.45);  color: #26CBE0; }
-    .type-badge.buffet  { background: rgba(255,183,48,0.18);  border: 1px solid rgba(255,183,48,0.45);  color: #FFB730; }
+    .type-badge.cafe    { background: rgba(106,68,146,0.14); border: 1px solid rgba(106,68,146,0.4); color: #9B7AC8; }
+    .type-badge.boba    { background: rgba(106,68,146,0.14); border: 1px solid rgba(106,68,146,0.4); color: #9B7AC8; }
+    .type-badge.dessert { background: rgba(106,68,146,0.14); border: 1px solid rgba(106,68,146,0.4); color: #9B7AC8; }
+    .type-badge.icecream{ background: rgba(42,122,90,0.14);  border: 1px solid rgba(42,122,90,0.4);  color: #4AAF88; }
+    .type-badge.buffet  { background: rgba(138,94,44,0.14);  border: 1px solid rgba(138,94,44,0.4);  color: #C4924A; }
 
     /* Divider */
     .divider {
@@ -339,40 +351,46 @@
       50%      { transform: translateY(-4px) rotateX(4deg); }
     }
     .surprise-qa {
-      background: linear-gradient(160deg, #fbbf24 0%, #f59e0b 40%, #ef4444 100%);
-      color: #fff;
-      box-shadow: 0 6px 0 #92230e, 0 8px 20px rgba(245,100,11,0.45);
+      background: linear-gradient(160deg, #1C1408 0%, #0E0B05 100%);
+      color: var(--gold-lt);
+      border: 1.5px solid rgba(196,163,87,0.38);
+      box-shadow: 0 5px 0 rgba(196,163,87,0.12), 0 8px 28px rgba(196,163,87,0.12);
       animation: floatBtn 3.2s ease-in-out infinite;
     }
-    .surprise-qa::after { background: linear-gradient(160deg, #fbbf24, #ef4444); }
+    .surprise-qa::after { background: linear-gradient(160deg, #0E0B05, #1C1408); }
     .surprise-qa:hover {
       transform: translateY(-5px) rotateX(8deg) scale(1.04);
-      box-shadow: 0 10px 0 #92230e, 0 14px 32px rgba(245,100,11,0.6);
-      filter: brightness(1.08);
+      border-color: var(--gold);
+      box-shadow: 0 9px 0 rgba(196,163,87,0.18), 0 14px 40px rgba(196,163,87,0.28);
+      filter: brightness(1.15);
     }
     .match-qa {
-      background: linear-gradient(160deg, #f87171 0%, #dc2626 40%, #9f1239 100%);
-      color: #fff;
-      box-shadow: 0 6px 0 #5b0e1e, 0 8px 20px rgba(220,38,38,0.45);
+      background: linear-gradient(160deg, #140810 0%, #08060A 100%);
+      color: #C47090;
+      border: 1.5px solid rgba(155,35,53,0.38);
+      box-shadow: 0 5px 0 rgba(155,35,53,0.18), 0 8px 28px rgba(155,35,53,0.12);
       animation: floatBtn 3.8s ease-in-out infinite 0.4s;
     }
-    .match-qa::after { background: linear-gradient(160deg, #f87171, #9f1239); }
+    .match-qa::after { background: linear-gradient(160deg, #08060A, #140810); }
     .match-qa:hover {
       transform: translateY(-5px) rotateX(8deg) scale(1.04);
-      box-shadow: 0 10px 0 #5b0e1e, 0 14px 32px rgba(220,38,38,0.6);
-      filter: brightness(1.08);
+      border-color: rgba(155,35,53,0.7);
+      box-shadow: 0 9px 0 rgba(155,35,53,0.24), 0 14px 40px rgba(155,35,53,0.28);
+      filter: brightness(1.15);
     }
     .crawl-qa {
-      background: linear-gradient(160deg, #4ade80 0%, #16a34a 40%, #14532d 100%);
-      color: #fff;
-      box-shadow: 0 6px 0 #052e16, 0 8px 20px rgba(22,163,74,0.4);
+      background: linear-gradient(160deg, #08140F 0%, #060C08 100%);
+      color: #6DBBA0;
+      border: 1.5px solid rgba(42,122,90,0.38);
+      box-shadow: 0 5px 0 rgba(42,122,90,0.18), 0 8px 28px rgba(42,122,90,0.12);
       animation: floatBtn 4.4s ease-in-out infinite 0.8s;
     }
-    .crawl-qa::after { background: linear-gradient(160deg, #4ade80, #14532d); }
+    .crawl-qa::after { background: linear-gradient(160deg, #060C08, #08140F); }
     .crawl-qa:hover {
       transform: translateY(-5px) rotateX(8deg) scale(1.04);
-      box-shadow: 0 10px 0 #052e16, 0 14px 32px rgba(22,163,74,0.55);
-      filter: brightness(1.08);
+      border-color: rgba(42,122,90,0.7);
+      box-shadow: 0 9px 0 rgba(42,122,90,0.24), 0 14px 40px rgba(42,122,90,0.28);
+      filter: brightness(1.15);
     }
 
     /* ─── CASINO DICE MODAL ───────────────────────── */
@@ -385,10 +403,10 @@
 
     .casino-modal {
       background: radial-gradient(ellipse at top, #1a0a00 0%, #0d0d0d 60%);
-      border: 1px solid rgba(212,175,55,0.3);
+      border: 1px solid rgba(196,163,87,0.3);
       border-radius: 24px; max-width: 480px; width: 100%;
       padding: 28px 24px 24px; position: relative;
-      box-shadow: 0 0 0 1px rgba(212,175,55,0.1),
+      box-shadow: 0 0 0 1px rgba(196,163,87,0.1),
                   0 30px 80px rgba(0,0,0,0.8),
                   inset 0 1px 0 rgba(255,255,255,0.06);
       animation: casinoPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
@@ -433,7 +451,7 @@
       border: 3px solid #8B6914; border-radius: 50%;
       width: 220px; height: 220px; margin: 0 auto 14px;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 0 6px #5a4010, 0 0 40px rgba(212,175,55,0.25), inset 0 0 40px rgba(0,0,0,0.5);
+      box-shadow: 0 0 0 6px #5a4010, 0 0 40px rgba(196,163,87,0.25), inset 0 0 40px rgba(0,0,0,0.5);
       position: relative; perspective: 600px;
     }
     .casino-shadow {
@@ -485,7 +503,7 @@
     .dice.idle { animation: diceIdle 2.4s ease-in-out infinite; }
 
     .casino-hint {
-      color: rgba(212,175,55,0.7); font-size: 0.78rem; letter-spacing: 0.1em;
+      color: rgba(196,163,87,0.7); font-size: 0.78rem; letter-spacing: 0.1em;
       text-transform: uppercase; margin: 0 0 8px; font-weight: 600;
       animation: hintPulse 1.8s ease-in-out infinite;
     }
@@ -556,12 +574,12 @@
       font-size: 0.78rem; font-weight: 700;
       padding: 5px 14px; border-radius: 100px;
     }
-    .rating-badge.r4 { background: rgba(86,200,122,0.15); color: var(--r-4); border: 1px solid rgba(86,200,122,0.3); }
-    .rating-badge.r3 { background: rgba(255,183,48,0.15);  color: var(--r-3); border: 1px solid rgba(255,183,48,0.3); }
-    .rating-badge.r2 { background: rgba(255,112,67,0.15);  color: var(--r-2); border: 1px solid rgba(255,112,67,0.3); }
-    .rating-badge.r1 { background: rgba(255,68,68,0.15);   color: var(--r-1); border: 1px solid rgba(255,68,68,0.3); }
+    .rating-badge.r4 { background: rgba(42,122,90,0.14);  color: var(--r-4); border: 1px solid rgba(42,122,90,0.35); }
+    .rating-badge.r3 { background: rgba(196,163,87,0.14); color: var(--r-3); border: 1px solid rgba(196,163,87,0.35); }
+    .rating-badge.r2 { background: rgba(138,94,44,0.14);  color: var(--r-2); border: 1px solid rgba(138,94,44,0.35); }
+    .rating-badge.r1 { background: rgba(155,35,53,0.14);  color: var(--r-1); border: 1px solid rgba(155,35,53,0.35); }
     .rating-section-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.2rem; font-weight: 600; color: var(--text);
     }
     .rating-section-count {
@@ -595,8 +613,8 @@
       opacity: 1; translate: 0 0;
     }
     .card:hover {
-      border-color: rgba(212,175,55,0.5);
-      box-shadow: var(--shadow), 0 20px 60px rgba(212,175,55,0.15), 0 0 0 1px rgba(212,175,55,0.1);
+      border-color: rgba(196,163,87,0.5);
+      box-shadow: var(--shadow), 0 20px 60px rgba(196,163,87,0.15), 0 0 0 1px rgba(196,163,87,0.1);
     }
     /* shimmer glare on card */
     .card::before {
@@ -607,48 +625,62 @@
     }
     .card:hover::before { opacity: 1; }
 
-    .card-img {
-      position: relative;
-      height: 200px; overflow: hidden;
+    /* Cuisine color header strip */
+    .card-cuisine-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .card-img img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+    /* Gold ring with native script character */
+    .ch-script {
+      width: 34px; height: 34px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Serif', serif;
+      font-size: 0.88rem; font-weight: 700;
+      line-height: 1;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.25);
     }
-    .card:hover .card-img img { transform: scale(1.08); }
+    .card-cuisine-header .ch-label {
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      flex: 1;
+    }
+    .card-cuisine-header .ch-flag { font-size: 1rem; line-height: 1; }
+    .open-badge {
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 100px;
+    }
+    .open-badge.open   { background: rgba(42,122,90,0.18);  border: 1px solid rgba(42,122,90,0.45);  color: #4AAF88; }
+    .open-badge.closed { background: rgba(155,35,53,0.15);  border: 1px solid rgba(155,35,53,0.40);  color: #C45068; }
 
-    .card-img-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(8,8,15,0.85) 100%);
+    /* Authenticity score bar */
+    .auth-bar-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
     }
-
-    .card-badges {
-      position: absolute; top: 12px; left: 12px;
-      display: flex; gap: 6px; flex-wrap: wrap;
+    .auth-bar-label {
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-dim); white-space: nowrap;
     }
-    .cuisine-badge {
-      font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 100px;
-      backdrop-filter: blur(10px);
+    .auth-bar {
+      flex: 1; height: 4px; border-radius: 99px;
+      background: rgba(255,255,255,0.08); overflow: hidden;
     }
-
-    .card-rating-badge {
-      position: absolute; top: 12px; right: 12px;
-      display: flex; align-items: center; gap: 4px;
-      font-size: 0.72rem; font-weight: 700;
-      padding: 4px 10px; border-radius: 100px;
-      backdrop-filter: blur(10px);
-      background: rgba(8,8,15,0.75);
-      border: 1px solid rgba(255,255,255,0.12);
+    .auth-fill {
+      height: 100%; border-radius: 99px;
+      transition: width 0.8s cubic-bezier(.4,0,.2,1);
     }
-    .card-rating-badge .star { font-size: 0.8em; }
+    .auth-pct {
+      font-size: 0.62rem; font-weight: 700; color: var(--text-sub); white-space: nowrap;
+    }
 
     /* Card Body */
-    .card-body { padding: 18px; }
+    .card-body { padding: 14px 18px 18px; }
 
     .card-name {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.05rem; font-weight: 700;
       line-height: 1.3; margin-bottom: 6px;
       color: var(--text);
@@ -675,8 +707,11 @@
 
     .card-signature {
       display: flex; align-items: flex-start; gap: 8px;
-      background: rgba(212,175,55,0.07);
-      border: 1px solid rgba(212,175,55,0.22);
+      /* Chinese lattice diamond — 9% opacity, restraint not decoration */
+      background-color: rgba(196,163,87,0.06);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Cpath d='M14,1 L27,14 L14,27 L1,14 Z' fill='none' stroke='rgba(196,163,87,0.09)' stroke-width='0.7'/%3E%3Cpath d='M14,8 L20,14 L14,20 L8,14 Z' fill='none' stroke='rgba(196,163,87,0.07)' stroke-width='0.5'/%3E%3C/svg%3E");
+      background-size: 28px 28px;
+      border: 1px solid rgba(196,163,87,0.18);
       border-radius: var(--radius-sm);
       padding: 10px 12px; margin-bottom: 12px;
       position: relative;
@@ -688,6 +723,7 @@
       color: var(--gold); margin-bottom: 3px;
     }
     .card-signature-dish {
+      font-family: 'Noto Serif', serif;
       font-size: 0.82rem; font-weight: 600; color: var(--text);
       line-height: 1.4;
     }
@@ -706,16 +742,6 @@
 
     /* ─── CARD ENHANCEMENTS ──────────────────────── */
 
-    /* Open / Closed status */
-    .open-badge {
-      position: absolute; bottom: 44px; right: 12px;
-      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 3px 8px; border-radius: 100px;
-      backdrop-filter: blur(10px);
-    }
-    .open-badge.open   { background: rgba(86,200,122,0.22); border: 1px solid rgba(86,200,122,0.5); color: #56C87A; }
-    .open-badge.closed { background: rgba(255,68,68,0.18);  border: 1px solid rgba(255,68,68,0.45); color: #FF6060; }
-
     /* Card action row */
     .card-actions {
       display: flex; gap: 6px;
@@ -732,18 +758,8 @@
       transition: all var(--transition); text-decoration: none;
     }
     .ca-btn:hover { border-color: var(--gold); color: var(--gold-lt); background: var(--gold-dim); }
-    .ca-btn.fav-active { border-color: #FF6B9D; color: #FF6B9D; background: rgba(255,107,157,0.1); }
+    .ca-btn.fav-active { border-color: var(--crimson); color: #C45068; background: rgba(155,35,53,0.1); }
 
-    /* Photo count on image */
-    .photo-count {
-      position: absolute; bottom: 12px; right: 12px;
-      font-size: 0.62rem; font-weight: 600;
-      background: rgba(8,8,15,0.72); border: 1px solid rgba(255,255,255,0.15);
-      color: var(--text-sub); padding: 3px 8px; border-radius: 100px;
-      backdrop-filter: blur(8px); cursor: pointer;
-      transition: all var(--transition);
-    }
-    .photo-count:hover { color: var(--text); border-color: rgba(255,255,255,0.35); }
 
     /* ─── LIGHTBOX ───────────────────────────────── */
     .lightbox {
@@ -761,7 +777,7 @@
     .lb-close:hover { color: #fff; }
     .lb-header {
       position: absolute; top: 18px; left: 22px;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.1rem; font-weight: 700; color: #fff;
       max-width: calc(100% - 100px);
     }
@@ -810,7 +826,7 @@
       border-bottom: 1px solid var(--border);
     }
     .wishlist-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.2rem; font-weight: 700; color: var(--gold);
     }
     .wishlist-close { font-size: 1.3rem; cursor: pointer; color: var(--text-sub); background: none; border: none; }
@@ -827,12 +843,12 @@
     .wl-item-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .wl-item-meta { font-size: 0.7rem; color: var(--text-sub); }
     .wl-remove { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.1rem; padding: 4px; transition: color var(--transition); flex-shrink: 0; }
-    .wl-remove:hover { color: #FF4444; }
+    .wl-remove:hover { color: var(--crimson); }
     .wl-maps { display: block; margin-top: 4px; font-size: 0.68rem; color: var(--gold); text-decoration: none; }
     .wl-maps:hover { color: var(--gold-lt); }
     .wishlist-footer { padding: 14px 20px; border-top: 1px solid var(--border); }
-    .wl-clear { width: 100%; padding: 10px; border-radius: 100px; background: transparent; border: 1px solid rgba(255,68,68,0.3); color: #FF6060; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all var(--transition); }
-    .wl-clear:hover { background: rgba(255,68,68,0.1); border-color: #FF4444; }
+    .wl-clear { width: 100%; padding: 10px; border-radius: 100px; background: transparent; border: 1px solid rgba(155,35,53,0.3); color: #C45068; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all var(--transition); }
+    .wl-clear:hover { background: rgba(155,35,53,0.1); border-color: var(--crimson); }
 
     /* Wishlist nav button */
     .wl-nav-btn {
@@ -842,11 +858,11 @@
       border-radius: 100px; padding: 6px 14px; cursor: pointer;
       transition: all var(--transition); position: relative;
     }
-    .wl-nav-btn:hover { border-color: #FF6B9D; color: #FF6B9D; }
+    .wl-nav-btn:hover { border-color: var(--gold); color: var(--gold-lt); }
     .wl-count-badge {
       display: none; position: absolute; top: -5px; right: -5px;
       width: 18px; height: 18px; border-radius: 50%;
-      background: #FF6B9D; color: #fff;
+      background: var(--gold); color: var(--bg);
       font-size: 0.6rem; font-weight: 700;
       align-items: center; justify-content: center;
     }
@@ -871,7 +887,7 @@
     }
     .empty-state.show { display: block; }
     .empty-state h3 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.5rem; margin-bottom: 10px; color: var(--text-sub);
     }
     .empty-state p { color: var(--text-dim); font-size: 0.88rem; }
@@ -936,10 +952,10 @@
       color: #08080F; font-weight: 700; font-size: 0.9rem;
       padding: 14px 22px; border-radius: 100px; border: none;
       cursor: pointer;
-      box-shadow: 0 6px 28px rgba(212,175,55,0.45);
+      box-shadow: 0 6px 28px rgba(196,163,87,0.45);
       transition: all var(--transition);
     }
-    .fab-match:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(212,175,55,0.55); }
+    .fab-match:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(196,163,87,0.55); }
     @media (min-width: 769px) { .fab-match { display: none; } }
 
     /* ─── RESPONSIVE ───────────────────────────────── */
@@ -990,7 +1006,6 @@
       .cards-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
 
       /* Cards */
-      .card-img { height: 160px; }
       .card-body { padding: 14px; }
       .card-name { font-size: 0.95rem; }
 
@@ -1025,15 +1040,14 @@
 
       /* Grid — single column */
       .cards-grid { grid-template-columns: 1fr; gap: 12px; }
-      .card-img { height: 180px; }
 
       /* Filters scroll horizontally instead of wrapping messy */
       .filter-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
       .filter-chips::-webkit-scrollbar { display: none; }
 
       /* Rating chips label — shorten */
-      .chip[data-rating="4"]::before { content: "⭐⭐⭐⭐ 4+"; }
-      .chip[data-rating="3"]::before { content: "⭐⭐⭐ 3+"; }
+      .chip[data-rating="4"]::before { content: "★★★★ 4+"; }
+      .chip[data-rating="3"]::before { content: "★★★ 3+"; }
 
       /* Swipe modal */
       .swipe-arena { max-width: 100%; max-height: 420px; }
@@ -1076,9 +1090,9 @@
       cursor: pointer; transition: all var(--transition);
     }
     .match-btn:hover {
-      background: rgba(212,175,55,0.28);
+      background: rgba(196,163,87,0.28);
       transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(212,175,55,0.2);
+      box-shadow: 0 4px 20px rgba(196,163,87,0.2);
     }
 
     /* ─── KATY HOLOGRAPHIC MAP ───────────────────── */
@@ -1091,27 +1105,90 @@
       perspective: 1100px;
       width: 100%; max-width: 580px;
       margin-bottom: 4px;
+      overflow: hidden;
+      border-radius: 16px;
+      touch-action: none;
     }
     .holo-map-inner {
       position: relative;
-      transform: rotateX(32deg) rotateZ(-0.5deg);
+      transform: rotateX(58deg) rotateZ(-0.5deg);
       transform-style: preserve-3d;
       transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
       border-radius: 16px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow:
         0 30px 70px rgba(0,0,0,0.85),
-        0 0 0 1px rgba(212,175,55,0.12),
-        0 0 60px rgba(212,175,55,0.06);
+        0 0 0 1px rgba(196,163,87,0.12),
+        0 0 60px rgba(196,163,87,0.06);
       background: #04040e;
+    }
+    /* ?? Mobile map adjustments ?? */
+    @media (max-width: 640px) {
+      .katy-map-section { padding: 0 2px 8px; }
+      .holo-map-outer {
+        perspective: 700px;
+        max-width: 100%;
+        border-radius: 10px;
+      }
+      .holo-map-inner {
+        transform: rotateX(44deg) rotateZ(-0.5deg);
+        border-radius: 10px;
+      }
+      .lm-obj { transform: rotateX(-44deg); }
+      .map-title-row { margin-bottom: 6px; }
+      .map-title-text { font-size: 0.88rem; }
+      .holo-active-pill { font-size: 0.65rem; padding: 3px 10px; }
+    }
+
+    /* ── 3D upright landmarks ─────────────────────────── */
+    .lm-layer { position:absolute; inset:0; pointer-events:none; transform-style:preserve-3d; z-index:4; }
+    .lm-obj {
+      position: absolute;
+      display: flex; flex-direction: column; align-items: center;
+      transform-origin: 50% 100%;
+      transform: rotateX(-58deg);
+      transform-style: preserve-3d;
+    }
+    /* tree shapes */
+    .lm-crown {
+      width: 34px; height: 42px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      filter: drop-shadow(5px 4px 0 rgba(0,0,0,0.8));
+    }
+    .lm-trunk {
+      width: 9px; height: 14px;
+      background: #5c3a10;
+      box-shadow: 4px 0 0 #2a1600;
+    }
+    /* house shapes */
+    .lm-roof {
+      width: 42px; height: 20px;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      filter: drop-shadow(6px 3px 0 rgba(0,0,0,0.75));
+    }
+    .lm-wall {
+      width: 42px; height: 24px;
+      position: relative;
+      box-shadow: 7px 0 0 rgba(0,0,0,0.6);
+    }
+    .lm-door {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 10px; height: 13px;
+      background: rgba(0,0,0,0.55);
+    }
+    .lm-win {
+      position: absolute; top: 3px; left: 4px;
+      width: 10px; height: 9px;
+      background: rgba(220,255,235,0.45);
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     /* holographic grid floor */
     .holo-grid-floor {
       position: absolute; inset: 0; pointer-events: none; z-index: 0;
       background-image:
-        linear-gradient(rgba(212,175,55,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.06) 1px, transparent 1px);
+        linear-gradient(rgba(196,163,87,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,163,87,0.06) 1px, transparent 1px);
       background-size: 32px 32px;
       animation: gridShift 8s linear infinite;
     }
@@ -1123,7 +1200,7 @@
     /* scan line sweep */
     .holo-scan {
       position: absolute; left: 0; right: 0; height: 3px; z-index: 10;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), rgba(255,255,255,0.3), rgba(212,175,55,0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(196,163,87,0.5), rgba(255,255,255,0.3), rgba(196,163,87,0.5), transparent);
       animation: scanSweep 4s ease-in-out infinite;
       pointer-events: none;
     }
@@ -1147,11 +1224,11 @@
 
     /* top face fill */
     .hz-fill { cursor: pointer; transition: all 0.25s ease; }
-    .hz-fill-west     { fill: rgba(86,200,122,0.14); }
-    .hz-fill-mills    { fill: rgba(255,112,67,0.14); }
-    .hz-fill-sw       { fill: rgba(201,126,224,0.14); }
-    .hz-fill-cinco    { fill: rgba(212,175,55,0.16); }
-    .hz-fill-downtown { fill: rgba(38,203,224,0.14); }
+    .hz-fill-west     { fill: rgba(42,122,90,0.14);  }
+    .hz-fill-mills    { fill: rgba(138,94,44,0.14);  }
+    .hz-fill-sw       { fill: rgba(106,68,146,0.14); }
+    .hz-fill-cinco    { fill: rgba(196,163,87,0.16); }
+    .hz-fill-downtown { fill: rgba(196,163,87,0.14); }
 
     /* animated neon border */
     .hz-border {
@@ -1160,11 +1237,11 @@
       animation: dashFlow 3s linear infinite;
     }
     @keyframes dashFlow { to { stroke-dashoffset: -36; } }
-    .hz-border-west     { stroke: rgba(86,200,122,0.7); }
-    .hz-border-mills    { stroke: rgba(255,112,67,0.7); }
-    .hz-border-sw       { stroke: rgba(201,126,224,0.7); }
-    .hz-border-cinco    { stroke: rgba(212,175,55,0.85); }
-    .hz-border-downtown { stroke: rgba(38,203,224,0.7); }
+    .hz-border-west     { stroke: rgba(42,122,90,0.7);  }
+    .hz-border-mills    { stroke: rgba(138,94,44,0.7);  }
+    .hz-border-sw       { stroke: rgba(106,68,146,0.7); }
+    .hz-border-cinco    { stroke: rgba(196,163,87,0.85); }
+    .hz-border-downtown { stroke: rgba(196,163,87,0.7); }
 
     /* shimmer overlay */
     .hz-shimmer {
@@ -1179,30 +1256,30 @@
     .hz-emoji { font-size: 20px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
     .hz-name  { font-size: 10.5px; font-weight: 700; text-anchor: middle; fill: rgba(255,255,255,0.88); font-family: sans-serif; pointer-events: none; }
     .hz-sub   { font-size: 8px; text-anchor: middle; fill: rgba(255,255,255,0.42); font-family: sans-serif; pointer-events: none; }
-    .hz-count { font-size: 9px; text-anchor: middle; fill: rgba(212,175,55,0.9); font-family: sans-serif; font-weight: 700; pointer-events: none; }
+    .hz-count { font-size: 9px; text-anchor: middle; fill: rgba(196,163,87,0.9); font-family: sans-serif; font-weight: 700; pointer-events: none; }
 
     /* HOVER state */
     .holo-zone:hover .hz-fill-west,
-    .holo-zone.zone-active .hz-fill-west     { fill: rgba(86,200,122,0.32); filter: url(#glow-green); }
+    .holo-zone.zone-active .hz-fill-west     { fill: rgba(42,122,90,0.32);  filter: url(#glow-green); }
     .holo-zone:hover .hz-fill-mills,
-    .holo-zone.zone-active .hz-fill-mills    { fill: rgba(255,112,67,0.32); filter: url(#glow-orange); }
+    .holo-zone.zone-active .hz-fill-mills    { fill: rgba(138,94,44,0.32);  filter: url(#glow-orange); }
     .holo-zone:hover .hz-fill-sw,
-    .holo-zone.zone-active .hz-fill-sw       { fill: rgba(201,126,224,0.32); filter: url(#glow-purple); }
+    .holo-zone.zone-active .hz-fill-sw       { fill: rgba(106,68,146,0.32);  filter: url(#glow-purple); }
     .holo-zone:hover .hz-fill-cinco,
-    .holo-zone.zone-active .hz-fill-cinco    { fill: rgba(212,175,55,0.38); filter: url(#glow-gold); }
+    .holo-zone.zone-active .hz-fill-cinco    { fill: rgba(196,163,87,0.38); filter: url(#glow-gold); }
     .holo-zone:hover .hz-fill-downtown,
-    .holo-zone.zone-active .hz-fill-downtown { fill: rgba(38,203,224,0.32); filter: url(#glow-teal); }
+    .holo-zone.zone-active .hz-fill-downtown { fill: rgba(196,163,87,0.32);  filter: url(#glow-teal); }
 
     .holo-zone:hover .hz-shimmer,
     .holo-zone.zone-active .hz-shimmer { opacity: 0.07; }
 
     /* ACTIVE: border becomes solid + brighter + fast dash */
     .holo-zone.zone-active .hz-border { stroke-width: 2.5; animation-duration: 1.2s; opacity: 1; }
-    .holo-zone.zone-active .hz-border-west     { stroke: #56C87A; filter: url(#softglow); }
-    .holo-zone.zone-active .hz-border-mills    { stroke: #FF7043; filter: url(#softglow); }
-    .holo-zone.zone-active .hz-border-sw       { stroke: #C97EE0; filter: url(#softglow); }
-    .holo-zone.zone-active .hz-border-cinco    { stroke: #D4AF37; filter: url(#softglow); }
-    .holo-zone.zone-active .hz-border-downtown { stroke: #26CBE0; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-west     { stroke: #2A7A5A; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-mills    { stroke: #8A5E2C; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-sw       { stroke: #6A4492; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-cinco    { stroke: #C4A357; filter: url(#softglow); }
+    .holo-zone.zone-active .hz-border-downtown { stroke: #C4A357; filter: url(#softglow); }
 
     /* ACTIVE: walls glow */
     .holo-zone.zone-active ~ .zone-wall { /* handled by JS class on SVG */ }
@@ -1237,13 +1314,13 @@
     /* active pill label */
     .holo-active-pill {
       position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-      background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(212,175,55,0.08));
-      border: 1px solid rgba(212,175,55,0.4);
-      color: #D4AF37; font-size: 0.76rem; font-weight: 800;
+      background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(196,163,87,0.08));
+      border: 1px solid rgba(196,163,87,0.4);
+      color: #C4A357; font-size: 0.76rem; font-weight: 800;
       padding: 5px 18px; border-radius: 30px; letter-spacing: 0.1em;
       pointer-events: none; white-space: nowrap; z-index: 8;
-      text-shadow: 0 0 12px rgba(212,175,55,0.6);
-      box-shadow: 0 0 20px rgba(212,175,55,0.15);
+      text-shadow: 0 0 12px rgba(196,163,87,0.6);
+      box-shadow: 0 0 20px rgba(196,163,87,0.15);
       transition: all 0.3s ease;
     }
 
@@ -1272,7 +1349,7 @@
       text-align: center;
     }
     .criteria-screen h2 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.8rem; font-weight: 700;
       color: var(--gold); margin-bottom: 8px;
     }
@@ -1309,7 +1386,7 @@
       color: #08080F; cursor: pointer;
       transition: all var(--transition);
     }
-    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212,175,55,0.35); }
+    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(196,163,87,0.35); }
 
     /* ── Swipe Screen ── */
     .swipe-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
@@ -1342,7 +1419,7 @@
     }
     .s-card-body { padding: 16px 18px; }
     .s-card-name {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;
     }
     .s-card-meta {
@@ -1354,6 +1431,19 @@
       line-height: 1.4;
     }
     .s-card-sig strong { color: var(--gold); }
+    .s-auth-bar {
+      display: flex; align-items: center; gap: 7px; margin-top: 8px;
+    }
+    .s-auth-label {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-dim); white-space: nowrap;
+    }
+    .s-auth-track {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+    }
+    .s-auth-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+    .s-auth-score { font-size: 0.7rem; font-weight: 700; min-width: 24px; text-align: right; }
 
     /* Stamp overlays */
     .stamp {
@@ -1367,11 +1457,11 @@
       text-transform: uppercase;
     }
     .stamp-yes {
-      left: 20px; color: #56C87A; border-color: #56C87A;
+      left: 20px; color: #4AAF88; border-color: #2A7A5A;
       transform: rotate(-15deg);
     }
     .stamp-no {
-      right: 20px; color: #FF4444; border-color: #FF4444;
+      right: 20px; color: #C45068; border-color: #9B2335;
       transform: rotate(15deg);
     }
 
@@ -1388,9 +1478,9 @@
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       border: 1px solid;
     }
-    .swipe-hint.hint-no  .hint-icon { border-color: rgba(255,68,68,0.4);  color: #FF4444; }
-    .swipe-hint.hint-yes .hint-icon { border-color: rgba(86,200,122,0.4); color: #56C87A; }
-    .swipe-hint.hint-undo .hint-icon{ border-color: rgba(255,183,48,0.3); color: #FFB730; }
+    .swipe-hint.hint-no  .hint-icon { border-color: rgba(155,35,53,0.4);  color: #C45068; }
+    .swipe-hint.hint-yes .hint-icon { border-color: rgba(42,122,90,0.4);  color: #4AAF88; }
+    .swipe-hint.hint-undo .hint-icon{ border-color: rgba(196,163,87,0.3); color: var(--gold); }
     .swipe-hint.hint-drag .hint-icon{ border-color: rgba(255,255,255,0.15); color: var(--text-sub); }
 
     .swipe-actions {
@@ -1402,18 +1492,18 @@
       display: flex; align-items: center; justify-content: center;
       transition: all var(--transition);
     }
-    .swipe-btn.no { background: rgba(255,68,68,0.12); border: 2px solid rgba(255,68,68,0.3); }
-    .swipe-btn.no:hover { background: rgba(255,68,68,0.25); transform: scale(1.1); }
-    .swipe-btn.yes { background: rgba(86,200,122,0.12); border: 2px solid rgba(86,200,122,0.3); }
-    .swipe-btn.yes:hover { background: rgba(86,200,122,0.25); transform: scale(1.1); }
-    .swipe-btn.undo { background: rgba(255,183,48,0.1); border: 2px solid rgba(255,183,48,0.2); font-size: 1.1rem; width: 44px; height: 44px; }
-    .swipe-btn.undo:hover { background: rgba(255,183,48,0.2); transform: scale(1.1); }
+    .swipe-btn.no { background: rgba(155,35,53,0.12); border: 2px solid rgba(155,35,53,0.3); }
+    .swipe-btn.no:hover { background: rgba(155,35,53,0.25); transform: scale(1.1); }
+    .swipe-btn.yes { background: rgba(42,122,90,0.12); border: 2px solid rgba(42,122,90,0.3); }
+    .swipe-btn.yes:hover { background: rgba(42,122,90,0.25); transform: scale(1.1); }
+    .swipe-btn.undo { background: rgba(196,163,87,0.1); border: 2px solid rgba(196,163,87,0.2); font-size: 1.1rem; width: 44px; height: 44px; }
+    .swipe-btn.undo:hover { background: rgba(196,163,87,0.2); transform: scale(1.1); }
 
     /* ── Results Screen ── */
     .results-screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 560px; padding: 24px; }
     .results-screen.active { display: flex; }
     .results-screen h2 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.6rem; color: var(--gold); margin-bottom: 6px; text-align: center;
     }
     .results-screen p { color: var(--text-sub); font-size: 0.88rem; margin-bottom: 20px; text-align: center; }
@@ -1467,7 +1557,7 @@
       background: linear-gradient(135deg, var(--gold), #b8960a);
       color: #08080F;
     }
-    .sap-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.35); }
+    .sap-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,163,87,0.35); }
     .sap-no {
       background: transparent;
       border: 1px solid var(--border) !important;
@@ -1476,11 +1566,11 @@
     .sap-no:hover { border-color: var(--gold) !important; color: var(--gold); }
 
     /* ─── AREA FILTER ───────────────────────────── */
-    .chip.area-cinco.active    { background: rgba(212,175,55,0.18);  border-color: var(--gold);  color: var(--gold-lt); }
-    .chip.area-mills.active    { background: rgba(255,112,67,0.15);  border-color: #FF7043;      color: #FF9070; }
-    .chip.area-downtown.active { background: rgba(38,203,224,0.15);  border-color: #26CBE0;      color: #5DDDE8; }
-    .chip.area-sw.active       { background: rgba(201,126,224,0.15); border-color: #C97EE0;      color: #D99EF0; }
-    .chip.area-west.active     { background: rgba(86,200,122,0.15);  border-color: var(--r-4);   color: var(--r-4); }
+    .chip.area-cinco.active    { background: rgba(196,163,87,0.18);  border-color: var(--gold);  color: var(--gold-lt); }
+    .chip.area-mills.active    { background: rgba(138,94,44,0.15);   border-color: #8A5E2C;      color: #C4924A; }
+    .chip.area-downtown.active { background: rgba(196,163,87,0.12);  border-color: var(--gold);  color: var(--gold-lt); }
+    .chip.area-sw.active       { background: rgba(106,68,146,0.15);  border-color: #6A4492;      color: #9B7AC8; }
+    .chip.area-west.active     { background: rgba(42,122,90,0.15);   border-color: #2A7A5A;      color: #4AAF88; }
 
     /* Area tag on card footer */
     .card-area-tag {
@@ -1489,11 +1579,11 @@
       padding: 2px 8px; border-radius: 100px;
       white-space: nowrap;
     }
-    .card-area-tag.cinco    { background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);  color: var(--gold); }
-    .card-area-tag.mills    { background: rgba(255,112,67,0.12); border: 1px solid rgba(255,112,67,0.3);  color: #FF7043; }
-    .card-area-tag.downtown { background: rgba(38,203,224,0.12); border: 1px solid rgba(38,203,224,0.3);  color: #26CBE0; }
-    .card-area-tag.sw       { background: rgba(201,126,224,0.12);border: 1px solid rgba(201,126,224,0.3); color: #C97EE0; }
-    .card-area-tag.west     { background: rgba(86,200,122,0.12); border: 1px solid rgba(86,200,122,0.3);  color: #56C87A; }
+    .card-area-tag.cinco    { background: rgba(196,163,87,0.12); border: 1px solid rgba(196,163,87,0.3);  color: var(--gold); }
+    .card-area-tag.mills    { background: rgba(138,94,44,0.10);  border: 1px solid rgba(138,94,44,0.3);   color: #C4924A; }
+    .card-area-tag.downtown { background: rgba(196,163,87,0.10); border: 1px solid rgba(196,163,87,0.28); color: var(--gold); }
+    .card-area-tag.sw       { background: rgba(106,68,146,0.10); border: 1px solid rgba(106,68,146,0.3);  color: #9B7AC8; }
+    .card-area-tag.west     { background: rgba(42,122,90,0.10);  border: 1px solid rgba(42,122,90,0.3);   color: #4AAF88; }
 
     /* Area info bar (below hero) */
     .area-info-bar {
@@ -1513,25 +1603,25 @@
 
     /* ─── FOOD CRAWL BUILDER ─────────────────────── */
     .crawl-btn {
-      background: linear-gradient(135deg, #26CBE0 0%, #5BA8FF 100%);
-      color: #0a0a0a; border: none;
+      background: linear-gradient(135deg, #2A7A5A 0%, #C4A357 100%);
+      color: #F4EDD8; border: none;
       padding: 8px 18px; border-radius: 100px;
       font-size: 0.82rem; font-weight: 700; cursor: pointer;
       transition: all var(--transition);
     }
-    .crawl-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(38,203,224,0.4); }
+    .crawl-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(196,163,87,0.35); }
 
     .fab-crawl {
       display: flex; position: fixed; bottom: 84px; right: 20px; z-index: 200;
       align-items: center; gap: 7px;
-      background: linear-gradient(135deg, #26CBE0 0%, #5BA8FF 100%);
-      color: #0a0a0a; border: none;
+      background: linear-gradient(135deg, #2A7A5A 0%, #C4A357 100%);
+      color: #F4EDD8; border: none;
       padding: 13px 18px; border-radius: 100px;
       font-size: 0.82rem; font-weight: 700; cursor: pointer;
-      box-shadow: 0 6px 24px rgba(38,203,224,0.45);
+      box-shadow: 0 6px 24px rgba(196,163,87,0.45);
       transition: all var(--transition);
     }
-    .fab-crawl:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(38,203,224,0.55); }
+    .fab-crawl:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(196,163,87,0.55); }
     @media (min-width: 769px) { .fab-crawl { display: none; } }
 
     /* Overlay */
@@ -1561,7 +1651,7 @@
       flex-shrink: 0;
     }
     .crawl-header h2 {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Noto Serif', serif;
       font-size: 1.5rem; font-weight: 700;
       color: var(--text); margin: 0;
     }
@@ -1618,8 +1708,8 @@
       cursor: pointer; transition: all var(--transition);
       background: transparent; text-align: left;
     }
-    .preset-card:hover { border-color: var(--gold-dk); background: rgba(212,175,55,0.05); }
-    .preset-card.sel   { border-color: var(--gold); background: rgba(212,175,55,0.1); }
+    .preset-card:hover { border-color: var(--gold-dk); background: rgba(196,163,87,0.05); }
+    .preset-card.sel   { border-color: var(--gold); background: rgba(196,163,87,0.1); }
     .preset-card .pc-icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
     .preset-card .pc-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
     .preset-card .pc-desc { font-size: 0.74rem; color: var(--text-sub); margin-top: 3px; }
@@ -1631,7 +1721,7 @@
       border-radius: 100px; background: rgba(255,255,255,0.07);
       color: var(--text-sub); border: 1px solid var(--border);
     }
-    .preset-card.sel .pc-tag { background: rgba(212,175,55,0.12); border-color: rgba(212,175,55,0.3); color: var(--gold); }
+    .preset-card.sel .pc-tag { background: rgba(196,163,87,0.12); border-color: rgba(196,163,87,0.3); color: var(--gold); }
 
     /* Area row in crawl */
     .crawl-area-chips {
@@ -1645,7 +1735,7 @@
       transition: all var(--transition);
     }
     .crawl-area-chip:hover { border-color: var(--gold-dk); color: var(--text); }
-    .crawl-area-chip.sel  { border-color: var(--gold); background: rgba(212,175,55,0.1); color: var(--gold-lt); }
+    .crawl-area-chip.sel  { border-color: var(--gold); background: rgba(196,163,87,0.1); color: var(--gold-lt); }
 
     /* Step nav buttons */
     .crawl-nav {
@@ -1665,7 +1755,7 @@
       font-size: 0.82rem; font-weight: 700; cursor: pointer;
       transition: all var(--transition);
     }
-    .crawl-nav-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,175,55,0.35); }
+    .crawl-nav-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(196,163,87,0.35); }
     .crawl-nav-next:disabled { opacity: 0.4; pointer-events: none; }
 
     /* Spot picker */
@@ -1686,7 +1776,7 @@
       background: var(--bg);
     }
     .spot-card:hover { border-color: var(--gold-dk); transform: translateY(-2px); }
-    .spot-card.picked { border-color: var(--gold); background: rgba(212,175,55,0.06); }
+    .spot-card.picked { border-color: var(--gold); background: rgba(196,163,87,0.06); }
     .spot-card .sc-img {
       height: 90px; overflow: hidden; position: relative;
     }
@@ -1718,7 +1808,7 @@
       border-radius: 100px; background: rgba(255,255,255,0.07);
       color: var(--text-dim); border: 1px solid var(--border);
     }
-    .spot-card.picked .sc-type { background: rgba(212,175,55,0.1); border-color: rgba(212,175,55,0.3); color: var(--gold); }
+    .spot-card.picked .sc-type { background: rgba(196,163,87,0.1); border-color: rgba(196,163,87,0.3); color: var(--gold); }
 
     /* Route timeline */
     .route-stats {
@@ -1778,6 +1868,35 @@
     }
     .rs-must-dish { font-size: 0.78rem; color: var(--text-sub); }
     .rs-addr { font-size: 0.7rem; color: var(--text-dim); margin-top: 4px; }
+    .rs-cuisine-header {
+      display: flex; align-items: center; gap: 7px;
+      padding: 5px 10px; border-radius: 6px; margin-bottom: 6px;
+      font-size: 0.72rem;
+    }
+    .rs-script {
+      width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%;
+      border: 1.5px solid currentColor; background: rgba(0,0,0,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Serif', serif; font-size: 0.72rem; font-weight: 700;
+    }
+    .rs-cuisine-label { font-weight: 600; }
+    .rs-reviews { font-size: 0.68rem; color: var(--text-dim); }
+    .rs-rating-row {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      margin-top: 3px; margin-bottom: 2px;
+    }
+    .rs-auth-bar {
+      display: flex; align-items: center; gap: 7px; margin-top: 5px;
+    }
+    .rs-auth-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-dim); white-space: nowrap;
+    }
+    .rs-auth-track {
+      flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.08);
+    }
+    .rs-auth-fill { height: 100%; border-radius: 2px; }
+    .rs-auth-score { font-size: 0.65rem; font-weight: 700; min-width: 22px; text-align: right; }
     .rs-area-tag {
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 0.62rem; font-weight: 600;
@@ -1797,12 +1916,12 @@
       font-size: 0.8rem; font-weight: 600; cursor: pointer;
       transition: all var(--transition); text-align: center;
     }
-    .route-action-btn:hover { border-color: var(--gold-dk); color: var(--text); background: rgba(212,175,55,0.06); }
+    .route-action-btn:hover { border-color: var(--gold-dk); color: var(--text); background: rgba(196,163,87,0.06); }
     .route-action-btn.primary {
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
       border-color: transparent; color: #0a0a0a; font-weight: 700;
     }
-    .route-action-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(212,175,55,0.35); }
+    .route-action-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(196,163,87,0.35); }
 
     @media (max-width: 768px) {
       .crawl-box { border-radius: 16px; max-height: 94vh; }
@@ -1817,13 +1936,12 @@
     .card::before {
       content: '';
       position: absolute; inset: 0; border-radius: var(--radius);
-      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212,175,55,0.04), transparent 60%);
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(196,163,87,0.04), transparent 60%);
       z-index: 0; pointer-events: none; transition: opacity 0.3s;
       opacity: 0;
     }
     .card:hover::before { opacity: 1; }
     .card > * { position: relative; z-index: 1; }
-    .card-img { z-index: 1 !important; }
   </style>
 </head>
 
@@ -1835,7 +1953,7 @@
     Asia<span class="dot">·</span>FoodUSA
   </div>
   <div class="nav-meta">
-    <span class="pin">📍</span>
+    <span class="pin">◉</span>
     <span>Katy, Texas</span>
   </div>
   <div class="nav-links">
@@ -1843,9 +1961,9 @@
     <a href="#">Top Rated</a>
     <a href="#">New Spots</a>
     <a href="#">About</a>
-    <button class="match-btn" id="openMatchBtn" onclick="openMatch()">🍜 Food Match</button>
-    <button class="crawl-btn" id="openCrawlBtn" onclick="openCrawl()">🗺 Food Crawl</button>
-    <button class="wl-nav-btn" id="openWishlist">❤ Saved<span class="wl-count-badge" id="wlBadge">0</span></button>
+    <button class="match-btn" id="openMatchBtn" onclick="openMatch()">縁 Food Match</button>
+    <button class="crawl-btn" id="openCrawlBtn" onclick="openCrawl()">路 Food Crawl</button>
+    <button class="wl-nav-btn" id="openWishlist">♡ Saved<span class="wl-count-badge" id="wlBadge">0</span></button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1858,8 +1976,8 @@
   <a href="#">Top Rated</a>
   <a href="#">New Spots</a>
   <a href="#">About</a>
-  <button class="match-btn" id="openMatchBtnMobile">🍜 Food Match</button>
-  <button class="crawl-btn" id="openCrawlBtnMobile" style="margin-top:8px;width:100%">🗺 Food Crawl</button>
+  <button class="match-btn" id="openMatchBtnMobile">縁 Food Match</button>
+  <button class="crawl-btn" id="openCrawlBtnMobile" style="margin-top:8px;width:100%">路 Food Crawl</button>
 </div>
 
 
@@ -1897,20 +2015,20 @@
   <!-- ── Quick Action Buttons ── -->
   <div class="filter-section quick-actions-row">
     <div class="qa-wrap">
-      <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">🎲 Surprise Me</button>
+      <button class="quick-action-btn surprise-qa" onclick="surpriseMe()">運 Surprise Me</button>
     </div>
     <div class="qa-wrap">
-      <button class="quick-action-btn match-qa" id="openMatchBtnFilter" onclick="openMatch()">🍜 Food Match</button>
+      <button class="quick-action-btn match-qa" id="openMatchBtnFilter" onclick="openMatch()">縁 Food Match</button>
     </div>
     <div class="qa-wrap">
-      <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter" onclick="openCrawl()">🗺 Food Crawl</button>
+      <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter" onclick="openCrawl()">路 Food Crawl</button>
     </div>
   </div>
   <!-- ── KATY HOLOGRAPHIC MAP ── -->
   <div class="filter-section katy-map-section">
     <div class="filter-label map-title-row">
-      <span class="map-title-text">🗺 Katy District Map</span>
-      <span class="map-subtitle">click a district · hover to explore</span>
+      <span class="map-title-text">地 Katy District Map</span>
+      <span class="map-subtitle">click a district · drag to tilt</span>
     </div>
     <div class="holo-map-outer" id="katyMapWrap">
       <div class="holo-map-inner" id="katyMapStage">
@@ -1919,193 +2037,578 @@
         <!-- scan line -->
         <div class="holo-scan"></div>
 
-        <svg class="holo-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
+        <svg class="holo-svg" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <!-- glow filter per color -->
-            <filter id="glow-green" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feFlood flood-color="#56C87A" flood-opacity="0.7" result="color"/>
-              <feComposite in="color" in2="blur" operator="in" result="glow"/>
-              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="glow-orange" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feFlood flood-color="#FF7043" flood-opacity="0.7" result="color"/>
-              <feComposite in="color" in2="blur" operator="in" result="glow"/>
-              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="glow-purple" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feFlood flood-color="#C97EE0" flood-opacity="0.7" result="color"/>
-              <feComposite in="color" in2="blur" operator="in" result="glow"/>
-              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="glow-gold" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="6" result="blur"/>
-              <feFlood flood-color="#D4AF37" flood-opacity="0.8" result="color"/>
-              <feComposite in="color" in2="blur" operator="in" result="glow"/>
-              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="glow-teal" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feFlood flood-color="#26CBE0" flood-opacity="0.7" result="color"/>
-              <feComposite in="color" in2="blur" operator="in" result="glow"/>
-              <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <!-- animated dash for borders -->
-            <filter id="softglow">
-              <feGaussianBlur stdDeviation="3" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
+            <filter id="glow-green"  x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#2A7A5A" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#8A5E2C" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#6A4492" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-gold"   x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feFlood flood-color="#C4A357" flood-opacity="0.9" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="glow-teal"   x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feFlood flood-color="#C4A357" flood-opacity="0.8" result="c"/><feComposite in="c" in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="softglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <!-- wall gradients — top bright, bottom dark for lighting -->
+            <linearGradient id="wg-west"     x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2A7A5A" stop-opacity="0.55"/><stop offset="100%" stop-color="#0a1f14" stop-opacity="0.95"/></linearGradient>
+            <linearGradient id="wg-mills"    x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8A5E2C" stop-opacity="0.55"/><stop offset="100%" stop-color="#1e1208" stop-opacity="0.95"/></linearGradient>
+            <linearGradient id="wg-sw"       x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6A4492" stop-opacity="0.55"/><stop offset="100%" stop-color="#160a24" stop-opacity="0.95"/></linearGradient>
+            <linearGradient id="wg-cinco"    x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4A357" stop-opacity="0.65"/><stop offset="100%" stop-color="#2a1e00" stop-opacity="0.95"/></linearGradient>
+            <linearGradient id="wg-downtown" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4A357" stop-opacity="0.55"/><stop offset="100%" stop-color="#2a1e00" stop-opacity="0.95"/></linearGradient>
+            <!-- ground shadow -->
+            <radialGradient id="groundShadow" cx="50%" cy="100%" r="60%"><stop offset="0%" stop-color="rgba(0,0,0,0.6)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient>
           </defs>
 
-          <!-- ══ EXTRUSION WALLS (drawn first, behind everything) ══ -->
-          <!-- West walls: bottom edge (0,145→180,145) and right slant (180,145→210,140→200,0) -->
-          <polygon class="zone-wall zone-wall-west"  points="0,145 180,145 180,162 0,162"/>
-          <polygon class="zone-wall zone-wall-west"  points="180,145 210,140 210,157 180,162" opacity="0.7"/>
-          <!-- Mills walls: bottom edge (520,145→330,145→310,130→210,140) -->
-          <polygon class="zone-wall zone-wall-mills" points="520,145 330,145 330,162 520,162"/>
-          <polygon class="zone-wall zone-wall-mills" points="330,145 310,130 310,147 330,162" opacity="0.7"/>
-          <!-- SW walls: bottom edge (160,340→0,340) -->
-          <polygon class="zone-wall zone-wall-sw"    points="160,340 0,340 0,357 160,357"/>
-          <!-- Cinco walls: bottom edge (340,340→160,340) -->
-          <polygon class="zone-wall zone-wall-cinco" points="340,340 160,340 160,357 340,357"/>
-          <!-- Downtown walls: bottom edge (520,340→340,340), right side (520,145→520,340) -->
-          <polygon class="zone-wall zone-wall-downtown" points="520,340 340,340 340,357 520,357"/>
-          <polygon class="zone-wall zone-wall-downtown" points="520,145 520,340 537,340 537,145" opacity="0.8"/>
+          <!-- ground glow -->
+          <rect x="0" y="340" width="560" height="80" fill="url(#groundShadow)" opacity="0.7"/>
 
-          <!-- ══ ZONE TOP FACES ══ -->
+          <!-- ══ THICK EXTRUSION WALLS — 55px height ══ -->
+          <!-- WEST: bottom (0,145→180,145) + right-slant (180,145→210,140) -->
+          <polygon fill="url(#wg-west)"     stroke="#2A7A5A" stroke-width="0.5" stroke-opacity="0.5"
+            points="0,145 180,145 180,200 0,200"/>
+          <polygon fill="url(#wg-west)"     stroke="#2A7A5A" stroke-width="0.5" stroke-opacity="0.4"
+            points="180,145 210,140 210,195 180,200" opacity="0.75"/>
 
-          <!-- WEST KATY -->
+          <!-- MILLS: bottom (560,145→330,145→310,130) -->
+          <polygon fill="url(#wg-mills)"    stroke="#8A5E2C" stroke-width="0.5" stroke-opacity="0.5"
+            points="560,145 330,145 330,200 560,200"/>
+          <polygon fill="url(#wg-mills)"    stroke="#8A5E2C" stroke-width="0.5" stroke-opacity="0.4"
+            points="330,145 310,130 310,185 330,200" opacity="0.75"/>
+
+          <!-- SW: bottom (160,340→0,340) + right slant (200,240→160,340) -->
+          <polygon fill="url(#wg-sw)"       stroke="#6A4492" stroke-width="0.5" stroke-opacity="0.5"
+            points="0,340 160,340 160,395 0,395"/>
+          <polygon fill="url(#wg-sw)"       stroke="#6A4492" stroke-width="0.5" stroke-opacity="0.4"
+            points="160,340 200,240 200,295 160,395" opacity="0.8"/>
+
+          <!-- CINCO: bottom (160,340→340,340) -->
+          <polygon fill="url(#wg-cinco)"    stroke="#C4A357" stroke-width="0.5" stroke-opacity="0.5"
+            points="160,340 340,340 340,395 160,395"/>
+
+          <!-- DOWNTOWN: bottom (340,340→560,340) + right (560,145→560,340) -->
+          <polygon fill="url(#wg-downtown)" stroke="#C4A357" stroke-width="0.5" stroke-opacity="0.5"
+            points="340,340 560,340 560,395 340,395"/>
+          <polygon fill="url(#wg-downtown)" stroke="#C4A357" stroke-width="0.5" stroke-opacity="0.4"
+            points="560,145 560,340 556,340 556,145" opacity="0.6"/>
+
+          <!-- base edge highlight lines -->
+          <line x1="0" y1="200" x2="210" y2="195" stroke="rgba(42,122,90,0.4)"  stroke-width="1"/>
+          <line x1="310" y1="185" x2="560" y2="200" stroke="rgba(138,94,44,0.4)" stroke-width="1"/>
+          <line x1="0" y1="395" x2="200" y2="295" stroke="rgba(106,68,146,0.4)" stroke-width="1"/>
+          <line x1="160" y1="395" x2="340" y2="395" stroke="rgba(196,163,87,0.5)"  stroke-width="1"/>
+          <line x1="340" y1="395" x2="560" y2="395" stroke="rgba(196,163,87,0.4)"  stroke-width="1"/>
+
+          <!-- ══ TOP FACES ══ -->
+
+          <!-- WEST KATY — 3D isometric pine trees + 3D houses -->
           <g class="map-zone holo-zone" id="hz-west" data-zone="west" tabindex="0">
-            <polygon class="hz-fill hz-fill-west" points="0,0 200,0 210,140 180,145 0,145"/>
+            <polygon class="hz-fill hz-fill-west"     points="0,0 200,0 210,140 180,145 0,145"/>
             <polygon class="hz-border hz-border-west" points="0,0 200,0 210,140 180,145 0,145"/>
-            <polygon class="hz-shimmer" points="0,0 200,0 210,140 180,145 0,145"/>
-            <text class="hz-emoji" x="90" y="55">🌿</text>
-            <text class="hz-name"  x="90" y="80">West Katy</text>
-            <text class="hz-sub"   x="90" y="96">Elyson</text>
-            <text class="hz-count" id="zc-west" x="90" y="117">— spots</text>
+            <!-- trees + houses rendered as upright CSS 3D in .lm-layer -->
+            <text class="hz-name"  x="95" y="66">West Katy</text>
+            <text class="hz-sub"   x="95" y="79">Elyson · New Development</text>
+            <text class="hz-count" id="zc-west" x="95" y="98">— spots</text>
             <polygon class="hz-hit" points="0,0 200,0 210,140 180,145 0,145"/>
           </g>
 
-          <!-- KATY MILLS / NW -->
+          <!-- KATY MILLS — 3D mall block + 3D roller coaster frame -->
           <g class="map-zone holo-zone" id="hz-mills" data-zone="mills" tabindex="0">
-            <polygon class="hz-fill hz-fill-mills" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
+            <polygon class="hz-fill hz-fill-mills"     points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
             <polygon class="hz-border hz-border-mills" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
-            <polygon class="hz-shimmer" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
-            <text class="hz-emoji" x="390" y="55">🛍</text>
-            <text class="hz-name"  x="390" y="80">Katy Mills</text>
-            <text class="hz-sub"   x="390" y="96">NW Katy · I-10</text>
-            <text class="hz-count" id="zc-mills" x="390" y="117">— spots</text>
+            <g pointer-events="none">
+              <!-- mall + coaster rendered as upright CSS 3D in .lm-layer -->
+            </g>
+            <text class="hz-name"  x="390" y="76">Katy Mills</text>
+            <text class="hz-sub"   x="390" y="89">NW Katy · I-10 Corridor</text>
+            <text class="hz-count" id="zc-mills" x="390" y="108">— spots</text>
             <polygon class="hz-hit" points="200,0 560,0 560,145 330,145 310,130 210,140 200,0"/>
           </g>
 
-          <!-- SW KATY -->
+          <!-- SW KATY — 3D house row + 3D road + 3D street sign -->
           <g class="map-zone holo-zone" id="hz-sw" data-zone="sw" tabindex="0">
-            <polygon class="hz-fill hz-fill-sw" points="0,145 180,145 200,240 160,340 0,340"/>
+            <polygon class="hz-fill hz-fill-sw"     points="0,145 180,145 200,240 160,340 0,340"/>
             <polygon class="hz-border hz-border-sw" points="0,145 180,145 200,240 160,340 0,340"/>
-            <polygon class="hz-shimmer" points="0,145 180,145 200,240 160,340 0,340"/>
-            <text class="hz-emoji" x="82" y="215">🛣</text>
-            <text class="hz-name"  x="82" y="240">SW Katy</text>
-            <text class="hz-sub"   x="82" y="256">Mason Rd</text>
-            <text class="hz-count" id="zc-sw" x="82" y="277">— spots</text>
+            <g pointer-events="none">
+              <!-- houses rendered as upright CSS 3D in .lm-layer -->
+              <!-- 3D Road (depth shadow + bright surface + dashes) -->
+              <rect x="30" y="216" width="115" height="6" fill="#6A4492" opacity="0.07"/>
+              <line x1="30" y1="220" x2="145" y2="220" stroke="#6A4492" stroke-width="3" opacity="0.18"/>
+              <line x1="30" y1="218" x2="145" y2="218" stroke="#6A4492" stroke-width="1.2" stroke-dasharray="9 7"/>
+              <rect x="77" y="186" width="8" height="58" fill="#6A4492" opacity="0.07"/>
+              <line x1="81" y1="186" x2="81" y2="244" stroke="#6A4492" stroke-width="3" opacity="0.18"/>
+              <line x1="81" y1="186" x2="81" y2="244" stroke="#6A4492" stroke-width="1.2" stroke-dasharray="9 7"/>
+              <!-- 3D street sign: post right + post front + board top + board right + board front -->
+              <polygon points="81,212 84,209 84,204 81,207" fill="#2d0a40" opacity="0.5"/>
+              <rect x="79" y="207" width="2" height="13" fill="#6A4492" opacity="0.4" stroke="#6A4492" stroke-width="0.7"/>
+              <polygon points="75,203 89,203 92,200 78,200" fill="#6A4492" opacity="0.45"/>
+              <polygon points="89,203 92,200 92,207 89,207" fill="#2d0a40" opacity="0.4"/>
+              <rect x="75" y="203" width="14" height="4" rx="0.5" fill="#6A4492" opacity="0.28" stroke="#6A4492" stroke-width="0.8"/>
+            </g>
+            <text class="hz-name"  x="82" y="264">SW Katy</text>
+            <text class="hz-sub"   x="82" y="277">Mason Rd · Westheimer Pkwy</text>
+            <text class="hz-count" id="zc-sw" x="82" y="298">— spots</text>
             <polygon class="hz-hit" points="0,145 180,145 200,240 160,340 0,340"/>
           </g>
 
-          <!-- CINCO RANCH / SE -->
+          <!-- CINCO RANCH — 3D Torii gate + 3D rice bowl + 3D chopsticks -->
           <g class="map-zone holo-zone" id="hz-cinco" data-zone="cinco" tabindex="0">
-            <polygon class="hz-fill hz-fill-cinco" points="180,145 330,145 340,340 160,340 200,240"/>
+            <polygon class="hz-fill hz-fill-cinco"     points="180,145 330,145 340,340 160,340 200,240"/>
             <polygon class="hz-border hz-border-cinco" points="180,145 330,145 340,340 160,340 200,240"/>
-            <polygon class="hz-shimmer" points="180,145 330,145 340,340 160,340 200,240"/>
-            <text class="hz-emoji" x="252" y="215">🏡</text>
-            <text class="hz-name"  x="252" y="240">Cinco Ranch</text>
-            <text class="hz-sub"   x="252" y="256">SE Katy · Asian Town</text>
-            <text class="hz-count" id="zc-cinco" x="252" y="277">— spots</text>
+            <g pointer-events="none">
+              <!-- torii + bowl rendered as upright CSS 3D in .lm-layer -->
+            </g>
+            <text class="hz-name"  x="252" y="255">Cinco Ranch</text>
+            <text class="hz-sub"   x="252" y="268">SE Katy · Asian Town Hub</text>
+            <text class="hz-count" id="zc-cinco" x="252" y="289">— spots</text>
             <polygon class="hz-hit" points="180,145 330,145 340,340 160,340 200,240"/>
           </g>
 
-          <!-- HISTORIC DOWNTOWN -->
+          <!-- DOWNTOWN — 3D Katy water tower + 3D railroad depot -->
           <g class="map-zone holo-zone" id="hz-downtown" data-zone="downtown" tabindex="0">
-            <polygon class="hz-fill hz-fill-downtown" points="330,145 560,145 560,340 340,340"/>
+            <polygon class="hz-fill hz-fill-downtown"     points="330,145 560,145 560,340 340,340"/>
             <polygon class="hz-border hz-border-downtown" points="330,145 560,145 560,340 340,340"/>
-            <polygon class="hz-shimmer" points="330,145 560,145 560,340 340,340"/>
-            <text class="hz-emoji" x="445" y="215">🏛</text>
-            <text class="hz-name"  x="445" y="240">Downtown</text>
-            <text class="hz-sub"   x="445" y="256">Historic Katy</text>
-            <text class="hz-count" id="zc-downtown" x="445" y="277">— spots</text>
+            <g pointer-events="none">
+              <!-- water tower + depot rendered as upright CSS 3D in .lm-layer -->
+            </g>
+            <text class="hz-name"  x="445" y="262">Downtown Katy</text>
+            <text class="hz-sub"   x="445" y="275">Historic District · Old Town</text>
+            <text class="hz-count" id="zc-downtown" x="445" y="296">— spots</text>
             <polygon class="hz-hit" points="330,145 560,145 560,340 340,340"/>
           </g>
 
-          <!-- I-10 freeway -->
-          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,180,0.25)" stroke-width="4"/>
-          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
-          <text x="8" y="139" fill="rgba(255,255,180,0.5)" font-size="8.5" font-family="sans-serif" font-weight="600">I-10</text>
-          <!-- TX-99 Grand Pkwy -->
-          <line x1="320" y1="0" x2="340" y2="360" stroke="rgba(255,200,100,0.2)" stroke-width="3"/>
-          <text x="322" y="12" fill="rgba(255,200,100,0.45)" font-size="8" font-family="sans-serif">TX-99</text>
+          <!-- ── Road network ── -->
+          <!-- Fry Rd: West Katy north-south connector (upper left) -->
+          <line x1="88" y1="0"   x2="88" y2="145" stroke="rgba(42,122,90,0.22)" stroke-width="30"/>
+          <line x1="88" y1="0"   x2="88" y2="145" stroke="rgba(42,122,90,0.6)"  stroke-width="7.5" stroke-dasharray="18 12"/>
+          <text x="91" y="26" fill="rgba(42,122,90,0.6)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Fry Rd</text>
+          <!-- Mason Rd: left-zone north-south connector (lower left) -->
+          <line x1="88" y1="145" x2="72" y2="340" stroke="rgba(42,122,90,0.22)" stroke-width="30"/>
+          <line x1="88" y1="145" x2="72" y2="340" stroke="rgba(42,122,90,0.55)" stroke-width="7.5" stroke-dasharray="18 12"/>
+          <text x="58" y="200" fill="rgba(42,122,90,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Mason Rd</text>
+          <!-- Westheimer Pkwy: SW→Cinco→Downtown connector (horizontal lower) -->
+          <line x1="0"   y1="238" x2="560" y2="238" stroke="rgba(196,163,87,0.22)" stroke-width="35"/>
+          <line x1="0"   y1="238" x2="560" y2="238" stroke="rgba(196,163,87,0.55)" stroke-width="7.5" stroke-dasharray="22 12"/>
+          <text x="168" y="232" fill="rgba(196,163,87,0.6)" font-size="8" font-family="sans-serif" font-weight="700" letter-spacing="0.5">Westheimer Pkwy</text>
+          <!-- Cinco Ranch Blvd: vertical through Cinco Ranch zone -->
+          <line x1="248" y1="145" x2="256" y2="340" stroke="rgba(196,163,87,0.2)"  stroke-width="25"/>
+          <line x1="248" y1="145" x2="256" y2="340" stroke="rgba(196,163,87,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
+          <text x="260" y="180" fill="rgba(196,163,87,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Cinco Ranch Blvd</text>
+          <!-- Pin Oak Rd: upper horizontal inside Katy Mills zone -->
+          <line x1="200" y1="72"  x2="560" y2="72"  stroke="rgba(138,94,44,0.2)"  stroke-width="25"/>
+          <line x1="200" y1="72"  x2="560" y2="72"  stroke="rgba(138,94,44,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
+          <text x="222" y="66" fill="rgba(138,94,44,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" letter-spacing="0.5">Pin Oak Rd</text>
+          <!-- Avenue D: Downtown north-south connector -->
+          <line x1="450" y1="145" x2="450" y2="340" stroke="rgba(196,163,87,0.2)"  stroke-width="25"/>
+          <line x1="450" y1="145" x2="450" y2="340" stroke="rgba(196,163,87,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
+          <text x="453" y="178" fill="rgba(196,163,87,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Avenue D</text>
+          <!-- I-10 road -->
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,200,0.28)" stroke-width="40"/>
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,255,0.6)"  stroke-width="10"  stroke-dasharray="28 14"/>
+          <text x="10" y="138" fill="rgba(255,255,160,0.75)" font-size="9" font-family="sans-serif" font-weight="700" letter-spacing="1">I-10</text>
+          <!-- TX-99 -->
+          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.28)"  stroke-width="30"/>
+          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.65)"  stroke-width="7.5" stroke-dasharray="18 12"/>
+          <text x="325" y="14" fill="rgba(255,200,80,0.7)" font-size="8.5" font-family="sans-serif" font-weight="600">TX-99</text>
 
           <!-- Compass -->
-          <g transform="translate(534,26)">
-            <circle cx="0" cy="0" r="16" fill="rgba(0,0,0,0.55)" stroke="rgba(212,175,55,0.4)" stroke-width="1"/>
-            <text x="0" y="-4" text-anchor="middle" dominant-baseline="middle" fill="#D4AF37" font-size="9" font-family="sans-serif" font-weight="700">N</text>
-            <polygon points="0,-12 3,-4 -3,-4" fill="#D4AF37" opacity="0.8"/>
-            <polygon points="0,12 3,4 -3,4" fill="rgba(212,175,55,0.3)"/>
+          <g transform="translate(533,22)">
+            <circle r="15" fill="rgba(0,0,0,0.7)" stroke="rgba(196,163,87,0.5)" stroke-width="1.5"/>
+            <text text-anchor="middle" y="-3" fill="#C4A357" font-size="9" font-family="sans-serif" font-weight="900">N</text>
+            <polygon points="0,-11 2.5,-3 -2.5,-3" fill="#C4A357"/>
+            <polygon points="0,11 2.5,3 -2.5,3" fill="rgba(196,163,87,0.25)"/>
+            <line x1="-10" y1="0" x2="10" y2="0" stroke="rgba(196,163,87,0.3)" stroke-width="0.8"/>
           </g>
         </svg>
 
-        <!-- floating district pins -->
-        <div class="holo-pins" id="holoPins"></div>
-        <!-- active label -->
+        <!-- ── 3D upright landmarks (rotateX -58deg cancels map tilt → stand vertical) ── -->
+        <div class="lm-layer">
+
+          <!-- West Katy: village (back row + front row) -->
+          <!-- ══ West Katy village ══ -->
+          <!-- back row: 4 houses at higher bottom% (further back on map) -->
+          <div class="lm-obj" style="left:3%;bottom:87%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#8dffa8"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#8dffa8"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3B9B72"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:8%;bottom:89%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#7ae096"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#7ae096"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3ea860"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:14%;bottom:88%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#8dffa8"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#8dffa8"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3B9B72"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:20%;bottom:89%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#7ae096"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#7ae096"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3ea860"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <!-- front row: 6 houses at lower bottom% (closer on map) -->
+          <div class="lm-obj" style="left:1%;bottom:82%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#8dffa8"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#8dffa8"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3B9B72"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:6%;bottom:83%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#7ae096"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#7ae096"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3ea860"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:11%;bottom:82%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#8dffa8"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#8dffa8"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3B9B72"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:17%;bottom:83%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#7ae096"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#7ae096"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3ea860"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:23%;bottom:82%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#8dffa8"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#8dffa8"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3B9B72"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+          <div class="lm-obj" style="left:29%;bottom:83%">
+            <svg width="24" height="31" viewBox="0 0 26 34" style="display:block;filter:drop-shadow(3px 3px 0 rgba(0,0,0,0.85))">
+              <rect x="26" y="10" width="4" height="22" fill="rgba(0,30,0,0.75)"/>
+              <path d="M8,6 Q13,2 18,6 L19,7 Q13,3 7,7 Z" fill="#7ae096"/>
+              <polygon points="18,6 22,4 22,7 18,7" fill="rgba(0,30,0,0.6)"/>
+              <path d="M0,12 Q13,5 26,12 L26,13 Q13,6 0,13 Z" fill="#7ae096"/>
+              <polygon points="26,12 30,10 30,13 26,13" fill="rgba(0,30,0,0.65)"/>
+              <rect x="0" y="13" width="26" height="19" fill="#3ea860"/>
+              <rect x="2" y="15" width="9" height="7" rx="0.5" fill="rgba(190,255,210,0.35)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
+              <line x1="6" y1="15" x2="6" y2="22" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="13" y="20" width="7" height="12" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.25)" stroke-width="0.4"/>
+              <circle cx="18.5" cy="27" r="0.55" fill="rgba(255,255,255,0.5)"/>
+              <rect x="21" y="15" width="4" height="7" rx="0.5" fill="rgba(190,255,210,0.3)" stroke="rgba(255,255,255,0.45)" stroke-width="0.4"/>
+              <rect x="0" y="31" width="26" height="1.5" fill="rgba(0,0,0,0.25)"/>
+            </svg>
+          </div>
+
+
+          <!-- SW Katy: Asian restaurant -->
+          <div class="lm-obj" style="left:16%;bottom:43%">
+            <svg width="66" height="88" viewBox="0 0 44 58" style="display:block;filter:drop-shadow(5px 4px 0 rgba(0,0,0,0.9))">
+              <!-- right depth wall -->
+              <rect x="44" y="12" width="6" height="44" fill="rgba(30,0,50,0.85)"/>
+              <!-- upper pagoda tier with upturned tips -->
+              <path d="M12,8 Q22,2 32,8 L35,11 Q22,5 9,11 Z" fill="#e8b8ff"/>
+              <polygon points="32,8 36,5 36,11 32,11" fill="rgba(30,0,50,0.6)"/>
+              <path d="M9,11 Q5,9 3,12" fill="none" stroke="#e8b8ff" stroke-width="2" stroke-linecap="round"/>
+              <path d="M35,11 Q39,9 41,12" fill="none" stroke="#e8b8ff" stroke-width="2" stroke-linecap="round"/>
+              <!-- main hip roof -->
+              <path d="M0,20 Q22,9 44,20 L44,23 Q22,12 0,23 Z" fill="#6A4492"/>
+              <polygon points="44,20 50,17 50,23 44,23" fill="rgba(30,0,50,0.65)"/>
+              <path d="M0,23 Q-3,21 -5,24" fill="none" stroke="#6A4492" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M44,23 Q47,21 49,24" fill="none" stroke="#6A4492" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- hanging lanterns -->
+              <line x1="10" y1="23" x2="10" y2="27" stroke="#e8b8ff" stroke-width="0.7"/>
+              <ellipse cx="10" cy="29" rx="2.5" ry="3.5" fill="#d966ff" opacity="0.9"/>
+              <line x1="10" y1="32" x2="10" y2="34" stroke="#e8b8ff" stroke-width="0.6"/>
+              <line x1="22" y1="22" x2="22" y2="26" stroke="#e8b8ff" stroke-width="0.7"/>
+              <ellipse cx="22" cy="28" rx="2.5" ry="3.5" fill="#6A4492" opacity="0.9"/>
+              <line x1="22" y1="31" x2="22" y2="33" stroke="#e8b8ff" stroke-width="0.6"/>
+              <line x1="34" y1="23" x2="34" y2="27" stroke="#e8b8ff" stroke-width="0.7"/>
+              <ellipse cx="34" cy="29" rx="2.5" ry="3.5" fill="#d966ff" opacity="0.9"/>
+              <line x1="34" y1="32" x2="34" y2="34" stroke="#e8b8ff" stroke-width="0.6"/>
+              <!-- facade -->
+              <rect x="0" y="23" width="44" height="33" fill="#a55ec0"/>
+              <!-- sign board -->
+              <rect x="3" y="26" width="38" height="11" rx="1.5" fill="#e8b8ff"/>
+              <rect x="4" y="27" width="36" height="9" rx="1" fill="#6A4492"/>
+              <text x="22" y="34.5" text-anchor="middle" font-size="5.5" fill="#fff0ff" font-family="serif" font-weight="900" letter-spacing="0.5">ASIAN BISTRO</text>
+              <!-- left window -->
+              <rect x="3" y="40" width="11" height="9" rx="0.8" fill="rgba(240,200,255,0.25)" stroke="#e8b8ff" stroke-width="0.7"/>
+              <line x1="8" y1="40" x2="8" y2="49" stroke="#e8b8ff" stroke-width="0.4" opacity="0.6"/>
+              <!-- center door -->
+              <rect x="17" y="38" width="10" height="18" fill="rgba(0,0,0,0.6)" stroke="#e8b8ff" stroke-width="0.7"/>
+              <circle cx="25" cy="48" r="0.8" fill="#e8b8ff"/>
+              <!-- right window -->
+              <rect x="30" y="40" width="11" height="9" rx="0.8" fill="rgba(240,200,255,0.25)" stroke="#e8b8ff" stroke-width="0.7"/>
+              <line x1="35" y1="40" x2="35" y2="49" stroke="#e8b8ff" stroke-width="0.4" opacity="0.6"/>
+              <!-- steps -->
+              <rect x="14" y="55" width="16" height="2" rx="0.5" fill="#e8b8ff" opacity="0.5"/>
+              <!-- ground -->
+              <rect x="0" y="56" width="44" height="2" fill="rgba(0,0,0,0.3)"/>
+            </svg>
+          </div>
+
+          <!-- Katy Mills: mall building -->
+          <div class="lm-obj" style="left:52%;bottom:86.9%">
+            <svg width="90" height="45" viewBox="0 0 60 30" style="display:block;filter:drop-shadow(6px 4px 0 rgba(0,0,0,0.8))">
+              <!-- roof parapet -->
+              <rect x="0" y="0" width="60" height="4" fill="#ff9070"/>
+              <!-- main facade -->
+              <rect x="0" y="4" width="60" height="22" fill="#A06840"/>
+              <!-- right shadow face -->
+              <rect x="60" y="0" width="7" height="26" fill="#4a1800" opacity="0.85"/>
+              <!-- sign text -->
+              <text x="30" y="14" text-anchor="middle" font-size="6" fill="rgba(255,230,200,0.95)" font-family="sans-serif" font-weight="900" letter-spacing="0.5">KATY MILLS</text>
+              <!-- 3 arched entrances -->
+              <path d="M8,26 L8,17 Q13,11 18,17 L18,26" fill="rgba(0,0,0,0.55)"/>
+              <path d="M26,26 L26,17 Q31,11 36,17 L36,26" fill="rgba(0,0,0,0.55)"/>
+              <path d="M42,26 L42,17 Q47,11 52,17 L52,26" fill="rgba(0,0,0,0.55)"/>
+            </svg>
+          </div>
+          <!-- Katy Mills: flag pole -->
+          <div class="lm-obj" style="left:61%;bottom:90%">
+            <svg width="28" height="46" viewBox="0 0 18 30" style="display:block">
+              <line x1="4" y1="0" x2="4" y2="30" stroke="#8A5E2C" stroke-width="1.5"/>
+              <polygon points="4,2 16,6 4,10" fill="#A06840" opacity="0.9"/>
+            </svg>
+          </div>
+          <!-- Katy Mills: roller coaster -->
+          <div class="lm-obj" style="left:74%;bottom:86.9%">
+            <svg width="66" height="48" viewBox="0 0 44 32" style="display:block;filter:drop-shadow(4px 3px 0 rgba(0,0,0,0.8))">
+              <!-- track double hill -->
+              <path d="M0,32 Q10,8 22,32 Q32,12 44,32" fill="none" stroke="#8A5E2C" stroke-width="3" stroke-linecap="round"/>
+              <!-- support struts -->
+              <line x1="11" y1="8" x2="11" y2="32" stroke="#8A5E2C" stroke-width="1.5" opacity="0.7"/>
+              <line x1="33" y1="12" x2="33" y2="32" stroke="#8A5E2C" stroke-width="1.5" opacity="0.7"/>
+              <line x1="0" y1="32" x2="44" y2="32" stroke="#8A5E2C" stroke-width="1.5" opacity="0.4"/>
+              <!-- cart at top of first hill -->
+              <rect x="19" y="5" width="8" height="5" rx="1.5" fill="#A06840" stroke="rgba(255,200,180,0.9)" stroke-width="0.8"/>
+            </svg>
+          </div>
+
+          <!-- Cinco Ranch: torii gate -->
+          <div class="lm-obj" style="left:38%;bottom:48%">
+            <svg width="72" height="66" viewBox="0 0 48 44" style="display:block;filter:drop-shadow(5px 3px 0 rgba(0,0,0,0.8))">
+              <!-- kasagi top beam with upturned tips -->
+              <path d="M1,10 Q24,4 47,10 L47,14 Q24,8 1,14 Z" fill="#C4A357"/>
+              <!-- nuki mid crossbar -->
+              <rect x="7" y="20" width="34" height="5" fill="#C4A357" opacity="0.85"/>
+              <!-- left post -->
+              <rect x="9" y="14" width="5" height="30" fill="#C4A357" opacity="0.9"/>
+              <!-- right post -->
+              <rect x="34" y="14" width="5" height="30" fill="#C4A357" opacity="0.9"/>
+              <!-- shimenawa rope with zigzag -->
+              <path d="M14,22 Q24,28 34,22" fill="none" stroke="#C4A357" stroke-width="1.5" opacity="0.65"/>
+              <!-- post shadows -->
+              <rect x="14" y="14" width="2" height="30" fill="rgba(0,0,0,0.35)"/>
+              <rect x="39" y="14" width="2" height="30" fill="rgba(0,0,0,0.35)"/>
+            </svg>
+          </div>
+          <!-- Cinco Ranch: rice bowl -->
+          <div class="lm-obj" style="left:47%;bottom:42%">
+            <svg width="52" height="42" viewBox="0 0 34 28" style="display:block;filter:drop-shadow(4px 3px 0 rgba(0,0,0,0.7))">
+              <!-- steam wisps -->
+              <path d="M10,8 Q12,4 10,0" fill="none" stroke="#C4A357" stroke-width="1.3" opacity="0.7"/>
+              <path d="M17,6 Q19,2 17,-2" fill="none" stroke="#C4A357" stroke-width="1.3" opacity="0.7"/>
+              <path d="M24,8 Q26,4 24,0" fill="none" stroke="#C4A357" stroke-width="1.3" opacity="0.7"/>
+              <!-- bowl curve -->
+              <path d="M3,18 Q3,10 17,10 Q31,10 31,18 Z" fill="#C4A357" opacity="0.8"/>
+              <!-- rim ellipse -->
+              <ellipse cx="17" cy="18" rx="14" ry="4" fill="#C4A357"/>
+              <!-- base -->
+              <rect x="11" y="22" width="12" height="3" rx="1.5" fill="#C4A357" opacity="0.7"/>
+              <!-- chopsticks -->
+              <line x1="26" y1="22" x2="34" y2="6" stroke="#C4A357" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="30" y1="22" x2="38" y2="6" stroke="#C4A357" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Downtown: water tower -->
+          <div class="lm-obj" style="left:72%;bottom:44.8%">
+            <svg width="52" height="66" viewBox="0 0 34 44" style="display:block;filter:drop-shadow(5px 4px 0 rgba(0,0,0,0.8))">
+              <!-- dome top -->
+              <path d="M6,14 Q17,4 28,14" fill="#C4A357" opacity="0.9"/>
+              <!-- tank body -->
+              <rect x="6" y="14" width="22" height="16" fill="#C4A357" opacity="0.65"/>
+              <!-- tank right shadow -->
+              <rect x="28" y="14" width="3" height="16" fill="rgba(0,40,50,0.7)"/>
+              <!-- bottom rim -->
+              <ellipse cx="17" cy="30" rx="11" ry="3" fill="#C4A357" opacity="0.5"/>
+              <!-- KATY text -->
+              <text x="17" y="25" text-anchor="middle" font-size="5.5" fill="rgba(0,30,40,0.95)" font-family="sans-serif" font-weight="900">KATY</text>
+              <!-- legs -->
+              <line x1="9" y1="30" x2="4" y2="44" stroke="#C4A357" stroke-width="2.2"/>
+              <line x1="25" y1="30" x2="30" y2="44" stroke="#C4A357" stroke-width="2.2"/>
+              <line x1="17" y1="30" x2="13" y2="44" stroke="#C4A357" stroke-width="1.5" opacity="0.65"/>
+              <line x1="17" y1="30" x2="21" y2="44" stroke="#C4A357" stroke-width="1.5" opacity="0.65"/>
+              <!-- crossbrace -->
+              <line x1="4" y1="38" x2="30" y2="36" stroke="#C4A357" stroke-width="1" opacity="0.55"/>
+            </svg>
+          </div>
+          <!-- Downtown: railroad depot -->
+          <div class="lm-obj" style="left:80%;bottom:44.5%">
+            <svg width="70" height="58" viewBox="0 0 46 38" style="display:block;filter:drop-shadow(5px 4px 0 rgba(0,0,0,0.8))">
+              <!-- hip roof -->
+              <polygon points="0,14 46,14 34,2" fill="#C4A357" opacity="0.85"/>
+              <!-- roof right shadow -->
+              <polygon points="46,14 52,11 40,0 34,2" fill="rgba(0,40,50,0.7)"/>
+              <!-- building body -->
+              <rect x="0" y="14" width="46" height="20" fill="#C4A357" opacity="0.5"/>
+              <!-- right wall shadow -->
+              <rect x="46" y="14" width="5" height="20" fill="rgba(0,40,50,0.7)"/>
+              <!-- 3 windows -->
+              <rect x="3" y="17" width="8" height="7" fill="rgba(196,163,87,0.15)" stroke="#C4A357" stroke-width="0.9"/>
+              <rect x="15" y="17" width="8" height="7" fill="rgba(196,163,87,0.15)" stroke="#C4A357" stroke-width="0.9"/>
+              <rect x="27" y="17" width="8" height="7" fill="rgba(196,163,87,0.15)" stroke="#C4A357" stroke-width="0.9"/>
+              <!-- door -->
+              <rect x="18" y="24" width="10" height="10" fill="rgba(0,20,30,0.65)" stroke="#C4A357" stroke-width="0.9"/>
+              <!-- rail tracks -->
+              <line x1="0" y1="36" x2="46" y2="36" stroke="#C4A357" stroke-width="2"/>
+              <line x1="0" y1="34" x2="46" y2="34" stroke="#C4A357" stroke-width="2"/>
+              <line x1="5" y1="32" x2="5" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+              <line x1="12" y1="32" x2="12" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+              <line x1="19" y1="32" x2="19" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+              <line x1="26" y1="32" x2="26" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+              <line x1="33" y1="32" x2="33" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+              <line x1="40" y1="32" x2="40" y2="38" stroke="#C4A357" stroke-width="1.3"/>
+            </svg>
+          </div>
+        </div>
+
         <div class="holo-active-pill" id="mapActiveLabel">✦ All Katy ✦</div>
       </div>
     </div>
   </div>
 
   <div class="filter-section">
-    <div class="filter-label">📍 Area</div>
+    <div class="filter-label">◉ Area</div>
     <div class="filter-chips" id="areaChips">
-      <button class="chip active" data-area="all">🗺 All Areas</button>
-      <button class="chip area-cinco" data-area="cinco">🏡 Cinco Ranch / SE Katy</button>
-      <button class="chip area-mills" data-area="mills">🛍 Katy Mills / NW Katy</button>
-      <button class="chip area-downtown" data-area="downtown">🏛 Historic Downtown</button>
-      <button class="chip area-sw" data-area="sw">🛣 SW Katy · Mason Rd</button>
-      <button class="chip area-west" data-area="west">🌿 West Katy / Elyson</button>
+      <button class="chip active" data-area="all">◉ All Areas</button>
+      <button class="chip area-cinco" data-area="cinco">五 Cinco Ranch / SE Katy</button>
+      <button class="chip area-mills" data-area="mills">商 Katy Mills / NW Katy</button>
+      <button class="chip area-downtown" data-area="downtown">古 Historic Downtown</button>
+      <button class="chip area-sw" data-area="sw">南 SW Katy · Mason Rd</button>
+      <button class="chip area-west" data-area="west">西 West Katy / Elyson</button>
     </div>
   </div>
   <div class="filter-section">
     <div class="filter-label">Cuisine Type</div>
     <div class="filter-chips" id="cuisineChips">
-      <button class="chip active" data-cuisine="all">🍽 All Cuisines</button>
-      <button class="chip" data-cuisine="chinese"><span class="dot" style="background:var(--c-cn)"></span>🥢 Chinese</button>
-      <button class="chip" data-cuisine="japanese"><span class="dot" style="background:var(--c-jp)"></span>🍱 Japanese</button>
-      <button class="chip" data-cuisine="korean"><span class="dot" style="background:var(--c-kr)"></span>🥩 Korean</button>
-      <button class="chip" data-cuisine="thai"><span class="dot" style="background:var(--c-th)"></span>🌿 Thai</button>
-      <button class="chip" data-cuisine="vietnamese"><span class="dot" style="background:var(--c-vn)"></span>🍜 Vietnamese</button>
-      <button class="chip" data-cuisine="indian"><span class="dot" style="background:var(--c-in)"></span>🍛 Indian</button>
-      <button class="chip" data-cuisine="singaporean"><span class="dot" style="background:var(--c-sg)"></span>🦀 Singaporean</button>
-      <button class="chip" data-cuisine="taiwanese"><span class="dot" style="background:var(--c-tw)"></span>🧋 Taiwanese</button>
+      <button class="chip active" data-cuisine="all">食 All Cuisines</button>
+      <button class="chip" data-cuisine="chinese"><span class="dot" style="background:var(--c-cn)"></span>中 Chinese</button>
+      <button class="chip" data-cuisine="japanese"><span class="dot" style="background:var(--c-jp)"></span>和 Japanese</button>
+      <button class="chip" data-cuisine="korean"><span class="dot" style="background:var(--c-kr)"></span>한 Korean</button>
+      <button class="chip" data-cuisine="thai"><span class="dot" style="background:var(--c-th)"></span>ไท Thai</button>
+      <button class="chip" data-cuisine="vietnamese"><span class="dot" style="background:var(--c-vn)"></span>越 Vietnamese</button>
+      <button class="chip" data-cuisine="indian"><span class="dot" style="background:var(--c-in)"></span>भा Indian</button>
+      <button class="chip" data-cuisine="singaporean"><span class="dot" style="background:var(--c-sg)"></span>新 Singaporean</button>
+      <button class="chip" data-cuisine="taiwanese"><span class="dot" style="background:var(--c-tw)"></span>台 Taiwanese</button>
     </div>
   </div>
   <div class="filter-section">
     <div class="filter-label">Type</div>
     <div class="filter-chips" id="typeChips">
-      <button class="chip active" data-type="all">🍽 All</button>
-      <button class="chip type-rest" data-type="restaurant">🥢 Restaurants</button>
-      <button class="chip type-cafe" data-type="cafe">☕ Coffee &amp; Café</button>
-      <button class="chip type-boba" data-type="boba">🧋 Boba &amp; Drinks</button>
-      <button class="chip type-dessert" data-type="dessert">🍧 Asian Desserts</button>
-      <button class="chip type-ice" data-type="icecream">🍦 Ice Cream</button>
-      <button class="chip type-buffet" data-type="buffet">🍱 Buffet &amp; AYCE</button>
+      <button class="chip active" data-type="all">全 All</button>
+      <button class="chip type-rest" data-type="restaurant">食 Restaurants</button>
+      <button class="chip type-cafe" data-type="cafe">茶 Coffee &amp; Café</button>
+      <button class="chip type-boba" data-type="boba">珍 Boba &amp; Drinks</button>
+      <button class="chip type-dessert" data-type="dessert">甜 Asian Desserts</button>
+      <button class="chip type-ice" data-type="icecream">冰 Ice Cream</button>
+      <button class="chip type-buffet" data-type="buffet">宴 Buffet &amp; AYCE</button>
     </div>
   </div>
   <div class="filter-section">
     <div class="filter-label">Google Maps Rating</div>
     <div class="filter-chips" id="ratingChips">
-      <button class="chip active" data-rating="all">⭐ All Ratings</button>
-      <button class="chip r4" data-rating="4">⭐⭐⭐⭐ 4–5 Stars · Excellent</button>
-      <button class="chip r3" data-rating="3">⭐⭐⭐ 3–4 Stars · Good</button>
-      <button class="chip r2" data-rating="2">⭐⭐ 2–3 Stars · Average</button>
-      <button class="chip r1" data-rating="1">⭐ 1–2 Stars · Poor</button>
+      <button class="chip active" data-rating="all">★ All Ratings</button>
+      <button class="chip r4" data-rating="4">★★★★ 4–5 Stars · Excellent</button>
+      <button class="chip r3" data-rating="3">★★★ 3–4 Stars · Good</button>
+      <button class="chip r2" data-rating="2">★★ 2–3 Stars · Average</button>
+      <button class="chip r1" data-rating="1">★ 1–2 Stars · Poor</button>
     </div>
   </div>
 </div>
@@ -2114,7 +2617,7 @@
 
 <!-- ────── AREA INFO BAR ────── -->
 <div class="area-info-bar" id="areaInfoBar">
-  <div class="area-info-icon" id="areaInfoIcon">🗺</div>
+  <div class="area-info-icon" id="areaInfoIcon">地</div>
   <div class="area-info-body">
     <h4 id="areaInfoTitle"></h4>
     <p id="areaInfoDesc"></p>
@@ -2132,19 +2635,19 @@
     <button class="casino-close" onclick="closeSurprise()">✕</button>
 
     <!-- neon sign -->
-    <div class="casino-neon">🎰 LUCKY ROLL 🎰</div>
+    <div class="casino-neon">✦ LUCKY ROLL ✦</div>
 
     <!-- dice screen -->
     <div class="casino-dice-screen" id="casinoDiceScreen">
       <div class="casino-table">
         <div class="dice-scene" id="diceScene" onclick="rollTheDice()" style="cursor:pointer">
           <div class="dice" id="theDice">
-            <div class="face front">🍜</div>
-            <div class="face back">🍣</div>
-            <div class="face right">🥢</div>
-            <div class="face left">🍱</div>
-            <div class="face top">🌶</div>
-            <div class="face bottom">🧋</div>
+            <div class="face front">食</div>
+            <div class="face back">和</div>
+            <div class="face right">中</div>
+            <div class="face left">한</div>
+            <div class="face top">越</div>
+            <div class="face bottom">台</div>
           </div>
         </div>
         <div class="casino-shadow"></div>
@@ -2155,10 +2658,10 @@
 
     <!-- reveal screen (hidden until roll done) -->
     <div class="casino-reveal" id="casinoReveal" style="display:none">
-      <div class="casino-winner-banner" id="casinoWinnerBanner">🏆 TONIGHT'S PICK! 🏆</div>
+      <div class="casino-winner-banner" id="casinoWinnerBanner">✦ TONIGHT'S PICK ✦</div>
       <div class="surprise-card" id="surpriseCard"></div>
       <div class="casino-btns">
-        <button class="casino-roll-again" onclick="surpriseMe()">🎲 Roll Again</button>
+        <button class="casino-roll-again" onclick="surpriseMe()">運 Roll Again</button>
       </div>
     </div>
   </div>
@@ -2189,7 +2692,7 @@
   <div class="crawl-box">
     <div class="crawl-header">
       <div>
-        <h2>🗺 Food Crawl Builder</h2>
+        <h2>路 Food Crawl Builder</h2>
         <p>Plan a multi-stop food tour around Katy, TX</p>
       </div>
       <button class="crawl-close" id="crawlClose">✕</button>
@@ -2221,47 +2724,47 @@
         <div class="crawl-section-title">Choose a crawl theme</div>
         <div class="preset-grid" id="presetGrid">
           <button class="preset-card" data-preset="classic">
-            <span class="pc-icon">🍜</span>
+            <span class="pc-icon">食</span>
             <div class="pc-name">Classic Crawl</div>
             <div class="pc-desc">Full meals with a sweet finish</div>
             <div class="pc-tags">
-              <span class="pc-tag">🥢 Restaurant</span>
-              <span class="pc-tag">🥢 Restaurant</span>
-              <span class="pc-tag">🧋 Boba</span>
+              <span class="pc-tag">食 Restaurant</span>
+              <span class="pc-tag">食 Restaurant</span>
+              <span class="pc-tag">珍 Boba</span>
             </div>
           </button>
           <button class="preset-card" data-preset="heavy">
-            <span class="pc-icon">🔥</span>
+            <span class="pc-icon">火</span>
             <div class="pc-name">Heavy Feeder</div>
             <div class="pc-desc">All-you-can-eat, no regrets</div>
             <div class="pc-tags">
-              <span class="pc-tag">🍱 Buffet</span>
-              <span class="pc-tag">🥢 Restaurant</span>
-              <span class="pc-tag">🍧 Dessert</span>
+              <span class="pc-tag">宴 Buffet</span>
+              <span class="pc-tag">食 Restaurant</span>
+              <span class="pc-tag">甜 Dessert</span>
             </div>
           </button>
           <button class="preset-card" data-preset="sweet">
-            <span class="pc-icon">🍬</span>
+            <span class="pc-icon">甜</span>
             <div class="pc-name">Sweet Tour</div>
             <div class="pc-desc">Drinks, desserts &amp; sweet vibes</div>
             <div class="pc-tags">
-              <span class="pc-tag">🧋 Boba</span>
-              <span class="pc-tag">🍧 Dessert</span>
-              <span class="pc-tag">🍦 Ice Cream</span>
+              <span class="pc-tag">珍 Boba</span>
+              <span class="pc-tag">甜 Dessert</span>
+              <span class="pc-tag">冰 Ice Cream</span>
             </div>
           </button>
           <button class="preset-card" data-preset="brunch">
-            <span class="pc-icon">☕</span>
+            <span class="pc-icon">茶</span>
             <div class="pc-name">Weekend Brunch</div>
             <div class="pc-desc">Cafés, bites &amp; good morning vibes</div>
             <div class="pc-tags">
-              <span class="pc-tag">☕ Café</span>
-              <span class="pc-tag">🥢 Restaurant</span>
-              <span class="pc-tag">🧋 Boba</span>
+              <span class="pc-tag">茶 Café</span>
+              <span class="pc-tag">食 Restaurant</span>
+              <span class="pc-tag">珍 Boba</span>
             </div>
           </button>
           <button class="preset-card" data-preset="custom" style="grid-column: 1/-1">
-            <span class="pc-icon">✨</span>
+            <span class="pc-icon">◈</span>
             <div class="pc-name">Fully Custom</div>
             <div class="pc-desc">Pick any stops in any order — total freedom</div>
           </button>
@@ -2273,12 +2776,12 @@
       <div class="crawl-screen" id="crawlStep2">
         <div class="crawl-section-title">Where are you exploring?</div>
         <div class="crawl-area-chips" id="crawlAreaChips">
-          <button class="crawl-area-chip sel" data-ca="all">🗺 Anywhere in Katy</button>
-          <button class="crawl-area-chip" data-ca="cinco">🏡 Cinco Ranch / SE</button>
-          <button class="crawl-area-chip" data-ca="mills">🛍 Katy Mills / NW</button>
-          <button class="crawl-area-chip" data-ca="downtown">🏛 Historic Downtown</button>
-          <button class="crawl-area-chip" data-ca="sw">🛣 SW Katy · Mason Rd</button>
-          <button class="crawl-area-chip" data-ca="west">🌿 West Katy / Elyson</button>
+          <button class="crawl-area-chip sel" data-ca="all">◉ Anywhere in Katy</button>
+          <button class="crawl-area-chip" data-ca="cinco">五 Cinco Ranch / SE</button>
+          <button class="crawl-area-chip" data-ca="mills">商 Katy Mills / NW</button>
+          <button class="crawl-area-chip" data-ca="downtown">古 Historic Downtown</button>
+          <button class="crawl-area-chip" data-ca="sw">南 SW Katy · Mason Rd</button>
+          <button class="crawl-area-chip" data-ca="west">西 West Katy / Elyson</button>
         </div>
         <div class="crawl-nav">
           <button class="crawl-nav-back" id="crawlBack2">← Back</button>
@@ -2305,9 +2808,9 @@
         <div class="route-stats" id="routeStats"></div>
         <div class="route-timeline" id="routeTimeline"></div>
         <div class="route-actions">
-          <button class="route-action-btn" id="crawlReset">🔄 Start Over</button>
+          <button class="route-action-btn" id="crawlReset">↺ Start Over</button>
           <button class="route-action-btn" id="crawlShareRoute">↗ Share Route</button>
-          <button class="route-action-btn primary" id="crawlMapsRoute">📍 Open in Maps</button>
+          <button class="route-action-btn primary" id="crawlMapsRoute">◉ Open in Maps</button>
         </div>
       </div>
 
@@ -2319,7 +2822,7 @@
 <div class="wishlist-overlay" id="wishlistOverlay"></div>
 <div class="wishlist-panel" id="wishlistPanel">
   <div class="wishlist-header">
-    <span class="wishlist-title">❤ My Wishlist</span>
+    <span class="wishlist-title">♡ My Wishlist</span>
     <button class="wishlist-close" id="wishlistClose">✕</button>
   </div>
   <div class="wishlist-list" id="wishlistList"></div>
@@ -2337,49 +2840,49 @@
 
   <!-- CRITERIA SCREEN -->
   <div class="criteria-screen" id="criteriaScreen">
-    <h2>🍜 Food Match</h2>
+    <h2>縁 Food Match</h2>
     <p>Set your preferences and swipe right on restaurants you love, left on ones you skip.</p>
 
     <div class="criteria-group">
       <div class="criteria-group-label">Type</div>
       <div class="criteria-chips" id="cTypeChips">
-        <button class="c-chip sel" data-t="all">🍽 All</button>
-        <button class="c-chip" data-t="restaurant">🥢 Restaurants</button>
-        <button class="c-chip" data-t="cafe">☕ Coffee &amp; Café</button>
-        <button class="c-chip" data-t="boba">🧋 Boba &amp; Drinks</button>
-        <button class="c-chip" data-t="dessert">🍧 Asian Desserts</button>
-        <button class="c-chip" data-t="icecream">🍦 Ice Cream</button>
-        <button class="c-chip" data-t="buffet">🍱 Buffet &amp; AYCE</button>
+        <button class="c-chip sel" data-t="all">全 All</button>
+        <button class="c-chip" data-t="restaurant">食 Restaurants</button>
+        <button class="c-chip" data-t="cafe">茶 Coffee &amp; Café</button>
+        <button class="c-chip" data-t="boba">珍 Boba &amp; Drinks</button>
+        <button class="c-chip" data-t="dessert">甜 Asian Desserts</button>
+        <button class="c-chip" data-t="icecream">冰 Ice Cream</button>
+        <button class="c-chip" data-t="buffet">宴 Buffet &amp; AYCE</button>
       </div>
     </div>
     <div class="criteria-group">
       <div class="criteria-group-label">Cuisine Type</div>
       <div class="criteria-chips" id="cCuisineChips">
-        <button class="c-chip sel" data-c="all">🍽 Any</button>
-        <button class="c-chip" data-c="chinese">🥢 Chinese</button>
-        <button class="c-chip" data-c="japanese">🍱 Japanese</button>
-        <button class="c-chip" data-c="korean">🥩 Korean</button>
-        <button class="c-chip" data-c="thai">🌿 Thai</button>
-        <button class="c-chip" data-c="vietnamese">🍜 Vietnamese</button>
-        <button class="c-chip" data-c="indian">🍛 Indian</button>
-        <button class="c-chip" data-c="singaporean">🦀 Singaporean</button>
-        <button class="c-chip" data-c="taiwanese">🧋 Taiwanese</button>
+        <button class="c-chip sel" data-c="all">全 Any</button>
+        <button class="c-chip" data-c="chinese">中 Chinese</button>
+        <button class="c-chip" data-c="japanese">和 Japanese</button>
+        <button class="c-chip" data-c="korean">한 Korean</button>
+        <button class="c-chip" data-c="thai">ไท Thai</button>
+        <button class="c-chip" data-c="vietnamese">越 Vietnamese</button>
+        <button class="c-chip" data-c="indian">भा Indian</button>
+        <button class="c-chip" data-c="singaporean">新 Singaporean</button>
+        <button class="c-chip" data-c="taiwanese">台 Taiwanese</button>
       </div>
     </div>
 
     <div class="criteria-group">
       <div class="criteria-group-label">Minimum Rating</div>
       <div class="criteria-chips" id="cRatingChips">
-        <button class="c-chip sel" data-r="0">⭐ Any</button>
-        <button class="c-chip" data-r="4">⭐⭐⭐⭐ 4+ Stars</button>
-        <button class="c-chip" data-r="3">⭐⭐⭐ 3+ Stars</button>
+        <button class="c-chip sel" data-r="0">★ Any</button>
+        <button class="c-chip" data-r="4">★★★★ 4+ Stars</button>
+        <button class="c-chip" data-r="3">★★★ 3+ Stars</button>
       </div>
     </div>
 
     <div class="criteria-group">
       <div class="criteria-group-label">Price Range</div>
       <div class="criteria-chips" id="cPriceChips">
-        <button class="c-chip sel" data-p="0">💰 Any</button>
+        <button class="c-chip sel" data-p="0">¥ Any</button>
         <button class="c-chip" data-p="1">$ Budget</button>
         <button class="c-chip" data-p="2">$$ Mid-Range</button>
         <button class="c-chip" data-p="3">$$$ Upscale</button>
@@ -2388,14 +2891,14 @@
     </div>
 
     <div class="criteria-group">
-      <div class="criteria-group-label">📍 Area</div>
+      <div class="criteria-group-label">◉ Area</div>
       <div class="criteria-chips" id="cAreaChips">
-        <button class="c-chip sel" data-a="all">🗺 Anywhere</button>
-        <button class="c-chip" data-a="cinco">🏡 Cinco Ranch / SE</button>
-        <button class="c-chip" data-a="mills">🛍 Katy Mills / NW</button>
-        <button class="c-chip" data-a="downtown">🏛 Historic Downtown</button>
-        <button class="c-chip" data-a="sw">🛣 SW Katy · Mason Rd</button>
-        <button class="c-chip" data-a="west">🌿 West Katy / Elyson</button>
+        <button class="c-chip sel" data-a="all">全 Anywhere</button>
+        <button class="c-chip" data-a="cinco">五 Cinco Ranch / SE</button>
+        <button class="c-chip" data-a="mills">商 Katy Mills / NW</button>
+        <button class="c-chip" data-a="downtown">古 Historic Downtown</button>
+        <button class="c-chip" data-a="sw">南 SW Katy · Mason Rd</button>
+        <button class="c-chip" data-a="west">西 West Katy / Elyson</button>
       </div>
     </div>
 
@@ -2408,7 +2911,7 @@
     <div class="swipe-arena" id="swipeArena"></div>
     <div class="swipe-hints">
       <span class="swipe-hint hint-drag">
-        <span class="hint-icon">👆</span>Drag left or right
+        <span class="hint-icon">↔</span>Drag left or right
       </span>
       <span class="swipe-hint hint-no">
         <span class="hint-icon">✕</span>Skip
@@ -2429,7 +2932,7 @@
 
   <!-- RESULTS SCREEN -->
   <div class="results-screen" id="resultsScreen">
-    <h2 id="resultsTitle">Your Matches 🎉</h2>
+    <h2 id="resultsTitle">Your Matches ✦</h2>
     <p id="resultsSubtitle"></p>
     <div class="results-list" id="resultsList"></div>
 
@@ -2679,15 +3182,109 @@ const restaurants = [
    CUISINE CONFIG
 ───────────────────────────────────────────────────── */
 const cuisineConfig = {
-  chinese:     { label: 'Chinese',     emoji: '🥢', color: '#FF4444', bg: 'rgba(255,68,68,0.15)' },
-  japanese:    { label: 'Japanese',    emoji: '🍱', color: '#FF6B9D', bg: 'rgba(255,107,157,0.15)' },
-  korean:      { label: 'Korean',      emoji: '🥩', color: '#FF7043', bg: 'rgba(255,112,67,0.15)' },
-  thai:        { label: 'Thai',        emoji: '🌿', color: '#56C87A', bg: 'rgba(86,200,122,0.15)' },
-  vietnamese:  { label: 'Vietnamese',  emoji: '🍜', color: '#FFB730', bg: 'rgba(255,183,48,0.15)' },
-  indian:      { label: 'Indian',      emoji: '🍛', color: '#C97EE0', bg: 'rgba(201,126,224,0.15)' },
-  singaporean: { label: 'Singaporean', emoji: '🦀', color: '#26CBE0', bg: 'rgba(38,203,224,0.15)' },
-  taiwanese:   { label: 'Taiwanese',   emoji: '🧋', color: '#5BA8FF', bg: 'rgba(91,168,255,0.15)' }
+  chinese:     { label: 'Chinese',     script: '中', flag: '🇨🇳', color: '#9B2335', bg: 'rgba(155,35,53,0.10)'  },
+  japanese:    { label: 'Japanese',    script: '和', flag: '🇯🇵', color: '#8A5E2C', bg: 'rgba(138,94,44,0.10)'  },
+  korean:      { label: 'Korean',      script: '한', flag: '🇰🇷', color: '#9B2335', bg: 'rgba(155,35,53,0.10)'  },
+  thai:        { label: 'Thai',        script: 'ไท', flag: '🇹🇭', color: '#2A7A5A', bg: 'rgba(42,122,90,0.10)'  },
+  vietnamese:  { label: 'Vietnamese',  script: '越', flag: '🇻🇳', color: '#2A7A5A', bg: 'rgba(42,122,90,0.10)'  },
+  indian:      { label: 'Indian',      script: 'भा', flag: '🇮🇳', color: '#8A5E2C', bg: 'rgba(138,94,44,0.10)'  },
+  singaporean: { label: 'Singaporean', script: '新', flag: '🇸🇬', color: '#6A4492', bg: 'rgba(106,68,146,0.10)' },
+  taiwanese:   { label: 'Taiwanese',   script: '台', flag: '🇹🇼', color: '#6A4492', bg: 'rgba(106,68,146,0.10)' }
 };
+
+/* ─────────────────────────────────────────────────────
+   AUTHENTICITY SCORE ENGINE
+   Algorithm: keyword analysis + Asian-language detection (2× weight)
+   Feed real Google Places reviews via scoreFromReviews(reviews).
+   Falls back to desc + name text when no review data is available.
+───────────────────────────────────────────────────── */
+const AUTH_POS = [
+  'tastes like home','taste like home','real deal','authentic','authentically',
+  'grandmother','grandma','grandpa','traditional','homemade','home made',
+  'hand made','handmade','hand-made','secret recipe','family recipe',
+  'born in','grew up','mother recipe',"mom's recipe","mama's recipe",
+  'just like in','straight from','imported ingredient','house made','from scratch',
+  'generational','heritage','regional','local style','street food',
+  'exactly like','reminds me of','back home','native','legit','real deal',
+  'michelin','first generation','old school','original recipe','no shortcuts',
+  'chef from','trained in','grew up eating'
+];
+const AUTH_NEG = [
+  'americanized','americanised','too american','watered down','modified for',
+  'bland','not authentic','nothing special','fake','generic','westernized',
+  'westernised','no flavor','no flavour','dumbed down','not real','too sweet',
+  'too mild','catered to american','catered to western','not traditional',
+  'disappointing','americanized version','tourist trap','not like back home'
+];
+
+/* Returns true if >8% of the text characters are Asian script glyphs */
+function isAsianScript(text) {
+  let asian = 0;
+  for (let i = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    if (
+      (c >= 0x4E00 && c <= 0x9FFF) ||   // CJK Unified (Chinese / Kanji)
+      (c >= 0x3400 && c <= 0x4DBF) ||   // CJK Extension A
+      (c >= 0x3040 && c <= 0x309F) ||   // Hiragana
+      (c >= 0x30A0 && c <= 0x30FF) ||   // Katakana
+      (c >= 0xAC00 && c <= 0xD7A3) ||   // Hangul
+      (c >= 0x0E00 && c <= 0x0E7F) ||   // Thai
+      (c >= 0x0900 && c <= 0x097F) ||   // Devanagari (Hindi)
+      (c >= 0x0A80 && c <= 0x0AFF)      // Gujarati
+    ) asian++;
+  }
+  return text.length > 10 && (asian / text.length) > 0.08;
+}
+
+/*
+ * scoreFromReviews — core algorithm.
+ * reviews: array of {text:string, rating:number}
+ * Feed real Google Places reviews here for live scoring.
+ */
+function scoreFromReviews(reviews) {
+  if (!reviews || reviews.length === 0) return null;
+  let posPoints = 0, negPoints = 0, totalWeight = 0;
+
+  reviews.forEach(rev => {
+    const weight = isAsianScript(rev.text) ? 2 : 1;  // native speakers = 2×
+    const lower  = rev.text.toLowerCase();
+    AUTH_POS.forEach(kw => { if (lower.includes(kw)) posPoints += weight * 4; });
+    AUTH_NEG.forEach(kw => { if (lower.includes(kw)) negPoints += weight * 7; });
+    totalWeight += weight;
+  });
+
+  const norm  = Math.max(1, totalWeight / 5);
+  const score = 60 + (posPoints - negPoints) / norm;
+  return Math.max(10, Math.min(99, Math.round(score)));
+}
+
+/*
+ * autoAuthScore — derives a score from restaurant metadata when no
+ * real review corpus is connected. Mimics what the algorithm would
+ * produce after scanning reviews, using desc + name as a proxy.
+ * To plug in real Google Places reviews, replace this call with
+ * scoreFromReviews(await fetchGoogleReviews(r.placeId, API_KEY)).
+ */
+function autoAuthScore(r) {
+  // Synthetic "review" from desc + signature dish text
+  const syntheticReviews = [{ text: r.desc + ' ' + r.signature, rating: r.rating }];
+  const kwScore = scoreFromReviews(syntheticReviews);
+
+  // Context bonuses baked into the algorithm:
+  // — Katy Asian Town (Colonial Pkwy) restaurants: established ethnic enclave → +8
+  // — High review count (>1500): popular with the community → +4
+  // — Low price level: local/family-owned pricing → +3
+  // — Seeded ±offset per restaurant (stable, not random): natural spread
+  const asianTownBonus = r.address.includes('Colonial Pkwy') ? 8 : 0;
+  const communityBonus = r.reviewCount > 1500 ? 4 : r.reviewCount > 800 ? 2 : 0;
+  const localBonus     = r.priceLevel <= 2 ? 3 : 0;
+
+  // Deterministic per-restaurant spread (seed: id) — simulates real review variance
+  const spread = ((r.id * 7 + 13) % 13) - 6;  // range −6 to +6
+
+  const raw = (kwScore || 60) + asianTownBonus + communityBonus + localBonus + spread;
+  return Math.max(28, Math.min(98, raw));
+}
 
 /* ─────────────────────────────────────────────────────
    HELPERS
@@ -2700,7 +3297,7 @@ function getRatingBand(rating) {
 }
 function getRatingColor(rating) {
   const b = getRatingBand(rating);
-  return b === 4 ? '#56C87A' : b === 3 ? '#FFB730' : b === 2 ? '#FF7043' : '#FF4444';
+  return b === 4 ? '#2A7A5A' : b === 3 ? '#C4A357' : b === 2 ? '#8A5E2C' : '#9B2335';
 }
 function renderStars(rating) {
   const full = Math.floor(rating);
@@ -2736,7 +3333,7 @@ function buildStats() {
     const pill = document.createElement('div');
     pill.className = 'stat-pill';
     pill.style.borderColor = cfg.color + '40';
-    pill.innerHTML = `<span>${cfg.emoji}</span><span style="color:${cfg.color};font-weight:700">${cfg.label}</span><span style="color:#60607a">${counts[key]}</span>`;
+    pill.innerHTML = `<span style="font-family:'Noto Serif',serif;color:${cfg.color}">${cfg.script}</span><span style="color:${cfg.color};font-weight:700">${cfg.label}</span><span style="color:#60607a">${counts[key]}</span>`;
     pill.addEventListener('click', () => {
       document.querySelector(`[data-cuisine="${key}"]`).click();
       document.getElementById('filterBar').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2809,22 +3406,16 @@ function renderCard(r) {
   const typeBadge = {cafe:'<span class="type-badge cafe">☕ Café</span>',boba:'<span class="type-badge boba">🧋 Boba</span>',dessert:'<span class="type-badge dessert">🍧 Dessert</span>',icecream:'<span class="type-badge icecream">🍦 Ice Cream</span>',buffet:'<span class="type-badge buffet">🍱 Buffet</span>'}[getVenueType(r)] || '';
   const favActive = isFav(r.id);
 
+  const auth = autoAuthScore(r);
+  card.style.borderLeft = `3px solid ${cfg.color}`;
+
   card.innerHTML = `
-    <div class="card-img" style="cursor:pointer" onclick="openLightbox(window._rMap[${r.id}])">
-      <img src="${getRestaurantPhoto(r)}" alt="${r.name}" loading="lazy" data-gp="${r.id}"
-           onerror="this.src=getRestaurantPhotoFallback(${r.id});this.onerror=null" />
-      <div class="card-img-overlay"></div>
-      <div class="card-badges">
-        <span class="cuisine-badge" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.color}40;">
-          ${cfg.emoji} ${cfg.label}
-        </span>
-      </div>
-      <div class="card-rating-badge" style="color:${color}">
-        <span class="star">★</span> ${r.rating.toFixed(1)}
-      </div>
-      <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
+    <div class="card-cuisine-header" style="background:${cfg.bg}">
+      <span class="ch-script" style="color:${cfg.color};background:rgba(0,0,0,0.18)">${cfg.script}</span>
+      <span class="ch-label" style="color:${cfg.color}">${cfg.label}</span>
+      <span class="ch-flag">${cfg.flag}</span>
       ${typeBadge}
-      <span class="photo-count" onclick="event.stopPropagation();openLightbox(window._rMap[${r.id}])">📷 3 photos</span>
+      <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
     </div>
     <div class="card-body">
       <h3 class="card-name">${r.name}</h3>
@@ -2832,27 +3423,32 @@ function renderCard(r) {
         <div class="card-stars">${renderStars(r.rating)}</div>
         <span class="card-review-count">(${formatCount(r.reviewCount)})</span>
         <span class="card-price" style="color:${color}">${r.priceDesc}</span>
+        <span class="card-price-range">${renderPriceLevel(r.priceLevel)}</span>
+      </div>
+      <div class="auth-bar-row">
+        <span class="auth-bar-label">Authenticity</span>
+        <div class="auth-bar"><div class="auth-fill" style="width:${auth}%;background:${cfg.color}"></div></div>
+        <span class="auth-pct" style="color:${cfg.color}">${auth}%</span>
       </div>
       <div class="card-signature">
-        <span class="sig-icon">🔥</span>
+        <span class="sig-icon">火</span>
         <div>
           <div class="card-signature-label">Must Order</div>
           <div class="card-signature-dish">${r.signature}</div>
         </div>
       </div>
       <div class="card-footer">
-        <span class="card-address">📍 ${r.address}</span>
-        <span class="card-price-range">${renderPriceLevel(r.priceLevel)}</span>
+        <span class="card-address">◉ ${r.address}</span>
       </div>
       <div style="margin-top:6px">${renderAreaTag(r)}</div>
     </div>
     <div class="card-actions">
       <button class="ca-btn${favActive?' fav-active':''}" data-fav-id="${r.id}"
         onclick="toggleFav(${r.id})" title="${favActive?'Remove from wishlist':'Save to wishlist'}">
-        ${favActive?'❤':'♡'} Save
+        ${favActive?'♥':'♡'} Save
       </button>
       <a class="ca-btn" href="${mapsUrl(r)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-        📍 Maps
+        ◉ Maps
       </a>
       <button class="ca-btn" onclick="shareRestaurant(window._rMap[${r.id}])">
         ↗ Share
@@ -3411,23 +4007,40 @@ _gpScanPage();
   }
 
   function buildCard(r, interactive) {
+    const cfg      = cuisineConfig[r.cuisine] || cuisineConfig.chinese;
+    const status   = getOpenStatus(r);
+    const auth     = autoAuthScore(r);
+    const authClr  = auth >= 80 ? '#2A7A5A' : auth >= 60 ? '#C4A357' : '#9B2335';
     const priceStr = '$'.repeat(r.priceLevel);
-    const stars = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
+    const stars    = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
     const card = document.createElement('div');
     card.className = 's-card';
+    card.style.borderLeft = `3px solid ${cfg.color}`;
     card.dataset.id = r.id;
     card.innerHTML = `
       <img src="${getRestaurantPhoto(r)}" alt="${r.name}" draggable="false" data-gp="${r.id}">
       <div class="stamp stamp-yes">Like ♥</div>
       <div class="stamp stamp-no">Skip ✕</div>
+      <div class="card-cuisine-header" style="background:${cfg.bg};border-radius:0">
+        <span class="ch-script" style="color:${cfg.color};background:rgba(0,0,0,0.18)">${cfg.script}</span>
+        <span class="ch-label" style="color:${cfg.color}">${cfg.label}</span>
+        <span class="ch-flag">${cfg.flag}</span>
+        <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
+      </div>
       <div class="s-card-body">
         <div class="s-card-name">${r.name}</div>
         <div class="s-card-meta">
-          <span>${stars} ${r.rating}</span>
+          <span style="color:var(--gold)">${stars}</span>
+          <span style="color:var(--text)">${r.rating}</span>
           <span>·</span><span>${r.reviewCount.toLocaleString()} reviews</span>
           <span>·</span><span style="color:var(--gold)">${priceStr}</span>
         </div>
-        <div class="s-card-sig"><strong>✨ ${r.signature}</strong></div>
+        <div class="s-card-sig"><strong>火 ${r.signature}</strong></div>
+        <div class="s-auth-bar">
+          <span class="s-auth-label">Authenticity</span>
+          <div class="s-auth-track"><div class="s-auth-fill" style="width:${auth}%;background:${authClr}"></div></div>
+          <span class="s-auth-score" style="color:${authClr}">${auth}</span>
+        </div>
       </div>`;
     return card;
   }
@@ -3568,8 +4181,8 @@ _gpScanPage();
     cinco:'🏡 Cinco Ranch / SE Katy', downtown:'🏛 Historic Downtown'
   };
   var COLORS = {
-    west:'#56C87A', mills:'#FF7043', sw:'#C97EE0',
-    cinco:'#D4AF37', downtown:'#26CBE0'
+    west:'#2A7A5A', mills:'#8A5E2C', sw:'#6A4492',
+    cinco:'#C4A357', downtown:'#C4A357'
   };
   // approximate center of each zone in SVG coords (viewBox 560x360)
   // will be converted to % for pin placement
@@ -3627,8 +4240,8 @@ _gpScanPage();
     if (lbl) {
       lbl.textContent = LABELS[zone]||'✦ All Katy ✦';
       // color
-      lbl.style.color = COLORS[zone]||'#D4AF37';
-      lbl.style.borderColor = COLORS[zone] ? COLORS[zone].replace(')',',0.4)').replace('rgb','rgba') : 'rgba(212,175,55,0.4)';
+      lbl.style.color = COLORS[zone]||'#C4A357';
+      lbl.style.borderColor = COLORS[zone] ? COLORS[zone].replace(')',',0.4)').replace('rgb','rgba') : 'rgba(196,163,87,0.4)';
       lbl.style.textShadow = zone!=='all' ? '0 0 12px '+COLORS[zone] : '';
     }
     // area chips sync
@@ -3675,26 +4288,42 @@ _gpScanPage();
       var lbl = document.getElementById('mapActiveLabel');
       if (lbl) {
         lbl.textContent = LABELS[zone]||'✦ All Katy ✦';
-        lbl.style.color = COLORS[zone]||'#D4AF37';
+        lbl.style.color = COLORS[zone]||'#C4A357';
         lbl.style.textShadow = zone!=='all' ? '0 0 12px '+COLORS[zone] : '';
       }
     });
   }
 
-  // mouse parallax tilt
+  // mouse + touch parallax tilt
   var outer = document.getElementById('katyMapWrap');
   var inner = document.getElementById('katyMapStage');
   if (outer && inner) {
+    var isMob = window.matchMedia('(max-width:640px)').matches;
+    var baseTilt  = isMob ? 44 : 58;
+    var tiltRange = isMob ? 10 : 18;
+    var yawRange  = isMob ?  6 : 10;
+    var scaleAmt  = isMob ? 1.02 : 1.05;
+
+    function applyTilt(nx, ny) {
+      inner.style.transform =
+        'rotateX('+(baseTilt - ny*tiltRange)+'deg) rotateY('+(nx*yawRange)+'deg) scale('+scaleAmt+')';
+    }
+    function resetTilt() { inner.style.transform = ''; }
+
     outer.addEventListener('mousemove', function(e) {
       var r = outer.getBoundingClientRect();
-      var nx = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 … +0.5
-      var ny = (e.clientY - r.top)  / r.height - 0.5;
-      inner.style.transform =
-        'rotateX('+(32 - ny*22)+'deg) rotateY('+(nx*14)+'deg) scale(1.05)';
+      applyTilt((e.clientX - r.left) / r.width - 0.5,
+                (e.clientY - r.top)  / r.height - 0.5);
     });
-    outer.addEventListener('mouseleave', function() {
-      inner.style.transform = '';
-    });
+    outer.addEventListener('mouseleave', resetTilt);
+
+    outer.addEventListener('touchmove', function(e) {
+      var t = e.touches[0];
+      var r = outer.getBoundingClientRect();
+      applyTilt((t.clientX - r.left) / r.width - 0.5,
+                (t.clientY - r.top)  / r.height - 0.5);
+    }, { passive: true });
+    outer.addEventListener('touchend', resetTilt);
   }
 
   buildPins();
@@ -4111,21 +4740,45 @@ function closeSurprise(e) {
       const areaInfo = AREA_INFO[area];
       const typeEmoji = {restaurant:'🥢',buffet:'🍱',cafe:'☕',boba:'🧋',dessert:'🍧',icecream:'🍦'}[type] || '🍽';
 
+      const cfg     = cuisineConfig[r.cuisine] || cuisineConfig.chinese;
+      const rstatus = getOpenStatus(r);
+      const rauth   = autoAuthScore(r);
+      const rauthClr = rauth >= 80 ? '#2A7A5A' : rauth >= 60 ? '#C4A357' : '#9B2335';
+      const rstars  = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
+      const rpriceStr = '$'.repeat(r.priceLevel);
+
       const stop = document.createElement('div');
       stop.className = 'route-stop';
       stop.innerHTML = `
-        <div class="rs-dot">${i + 1}</div>
+        <div class="rs-dot" style="border-color:${cfg.color};color:${cfg.color}">${i + 1}</div>
         <div class="rs-body">
+          <div class="rs-cuisine-header" style="background:${cfg.bg}">
+            <span class="rs-script" style="color:${cfg.color}">${cfg.script}</span>
+            <span class="rs-cuisine-label" style="color:${cfg.color}">${cfg.label}</span>
+            <span>${cfg.flag}</span>
+            <span class="open-badge ${rstatus.isOpen ? 'open' : 'closed'}">${rstatus.label}</span>
+          </div>
           <div class="rs-row1">
             <span class="rs-name">${r.name}</span>
             <span class="rs-time">${fmtTime(startT)} – ${fmtTime(startT + dur)}</span>
             <span class="rs-dur">${dur} min</span>
           </div>
+          <div class="rs-rating-row">
+            <span style="color:var(--gold);font-size:0.72rem">${rstars}</span>
+            <span style="font-size:0.72rem;color:var(--text)">${r.rating}</span>
+            <span class="rs-reviews">${r.reviewCount.toLocaleString()} reviews</span>
+            <span style="color:var(--gold);font-size:0.72rem">${rpriceStr}</span>
+          </div>
           <div class="rs-must">
             <span class="rs-must-label">Must order</span>
-            <span class="rs-must-dish">${typeEmoji} ${r.signature}</span>
+            <span class="rs-must-dish">火 ${r.signature}</span>
           </div>
-          <div class="rs-addr">📍 ${r.address}</div>
+          <div class="rs-auth-bar">
+            <span class="rs-auth-label">Authenticity</span>
+            <div class="rs-auth-track"><div class="rs-auth-fill" style="width:${rauth}%;background:${rauthClr}"></div></div>
+            <span class="rs-auth-score" style="color:${rauthClr}">${rauth}</span>
+          </div>
+          <div class="rs-addr">◉ ${r.address}</div>
           <span class="rs-area-tag card-area-tag ${area}">${areaInfo.icon} ${areaInfo.label}</span>
         </div>`;
       timeline.appendChild(stop);

@@ -2929,7 +2929,7 @@
 
 <!-- ────── RESULTS BAR ────── -->
 <div class="results-bar">
-  <div class="results-count">Showing <span id="countDisplay">0</span> restaurants in <strong>Katy, TX</strong></div>
+  <div class="results-count">Showing <span id="countDisplay">0</span> restaurants in <strong id="cityDisplay">Katy, TX</strong></div>
 </div>
 
 <!-- ────── CASINO DICE MODAL ────── -->
@@ -4052,6 +4052,8 @@ function render() {
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;
+  document.getElementById('cityDisplay').textContent = activeCity === 'houston' ? 'Houston, TX' : 'Katy, TX';
+  console.log('[City Filter] activeCity='+activeCity+' pool='+pool.length+' filtered='+filtered.length);
   document.getElementById('emptyState').classList.toggle('show', filtered.length === 0);
 
   const bandsToShow = activeRating === 'all'

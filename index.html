@@ -1183,18 +1183,16 @@
       border: 1px solid rgba(255,255,255,0.2);
     }
 
-    /* holographic grid floor */
+    /* precision dot-grid floor */
     .holo-grid-floor {
       position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      background-image:
-        linear-gradient(rgba(196,163,87,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(196,163,87,0.06) 1px, transparent 1px);
-      background-size: 32px 32px;
-      animation: gridShift 8s linear infinite;
+      background-image: radial-gradient(circle, rgba(196,163,87,0.18) 1px, transparent 1px);
+      background-size: 28px 28px;
+      animation: gridShift 12s linear infinite;
     }
     @keyframes gridShift {
-      from { background-position: 0 0, 0 0; }
-      to   { background-position: 0 32px, 32px 0; }
+      from { background-position: 0 0; }
+      to   { background-position: 28px 28px; }
     }
 
     /* scan line sweep */
@@ -1252,11 +1250,11 @@
     /* invisible hit area */
     .hz-hit { fill: transparent; cursor: pointer; }
 
-    /* text */
+    /* text — luxury serif */
     .hz-emoji { font-size: 20px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
-    .hz-name  { font-size: 10.5px; font-weight: 700; text-anchor: middle; fill: rgba(255,255,255,0.88); font-family: sans-serif; pointer-events: none; }
-    .hz-sub   { font-size: 8px; text-anchor: middle; fill: rgba(255,255,255,0.42); font-family: sans-serif; pointer-events: none; }
-    .hz-count { font-size: 9px; text-anchor: middle; fill: rgba(196,163,87,0.9); font-family: sans-serif; font-weight: 700; pointer-events: none; }
+    .hz-name  { font-size: 10px; font-weight: 600; text-anchor: middle; fill: rgba(244,237,216,0.95); font-family: 'Noto Serif', Georgia, serif; letter-spacing: 1.2px; pointer-events: none; }
+    .hz-sub   { font-size: 7.5px; text-anchor: middle; fill: rgba(196,163,87,0.55); font-family: 'Outfit', sans-serif; letter-spacing: 0.8px; pointer-events: none; }
+    .hz-count { font-size: 8.5px; text-anchor: middle; fill: rgba(196,163,87,0.95); font-family: 'Outfit', sans-serif; font-weight: 600; letter-spacing: 0.5px; pointer-events: none; }
 
     /* HOVER state */
     .holo-zone:hover .hz-fill-west,
@@ -2027,8 +2025,8 @@
   <!-- ── KATY HOLOGRAPHIC MAP ── -->
   <div class="filter-section katy-map-section">
     <div class="filter-label map-title-row">
-      <span class="map-title-text">地 Katy District Map</span>
-      <span class="map-subtitle">click a district · drag to tilt</span>
+      <span class="map-title-text" style="font-family:'Noto Serif',Georgia,serif;letter-spacing:1.5px;font-weight:600;">地 KATY DISTRICT MAP</span>
+      <span class="map-subtitle" style="letter-spacing:0.8px;">click a district · drag to tilt</span>
     </div>
     <div class="holo-map-outer" id="katyMapWrap">
       <div class="holo-map-inner" id="katyMapStage">
@@ -2176,43 +2174,76 @@
           <!-- Fry Rd: West Katy north-south connector (upper left) -->
           <line x1="88" y1="0"   x2="88" y2="145" stroke="rgba(42,122,90,0.22)" stroke-width="30"/>
           <line x1="88" y1="0"   x2="88" y2="145" stroke="rgba(42,122,90,0.6)"  stroke-width="7.5" stroke-dasharray="18 12"/>
-          <text x="91" y="26" fill="rgba(42,122,90,0.6)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Fry Rd</text>
+          <text x="91" y="26" fill="rgba(42,122,90,0.65)" font-size="7" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="0.6" writing-mode="tb">Fry Rd</text>
           <!-- Mason Rd: left-zone north-south connector (lower left) -->
           <line x1="88" y1="145" x2="72" y2="340" stroke="rgba(42,122,90,0.22)" stroke-width="30"/>
           <line x1="88" y1="145" x2="72" y2="340" stroke="rgba(42,122,90,0.55)" stroke-width="7.5" stroke-dasharray="18 12"/>
-          <text x="58" y="200" fill="rgba(42,122,90,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Mason Rd</text>
+          <text x="58" y="200" fill="rgba(42,122,90,0.6)" font-size="7" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="0.6" writing-mode="tb">Mason Rd</text>
           <!-- Westheimer Pkwy: SW→Cinco→Downtown connector (horizontal lower) -->
           <line x1="0"   y1="238" x2="560" y2="238" stroke="rgba(196,163,87,0.22)" stroke-width="35"/>
           <line x1="0"   y1="238" x2="560" y2="238" stroke="rgba(196,163,87,0.55)" stroke-width="7.5" stroke-dasharray="22 12"/>
-          <text x="168" y="232" fill="rgba(196,163,87,0.6)" font-size="8" font-family="sans-serif" font-weight="700" letter-spacing="0.5">Westheimer Pkwy</text>
+          <text x="168" y="232" fill="rgba(196,163,87,0.65)" font-size="7.5" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="1.2">WESTHEIMER PKWY</text>
           <!-- Cinco Ranch Blvd: vertical through Cinco Ranch zone -->
           <line x1="248" y1="145" x2="256" y2="340" stroke="rgba(196,163,87,0.2)"  stroke-width="25"/>
           <line x1="248" y1="145" x2="256" y2="340" stroke="rgba(196,163,87,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
-          <text x="260" y="180" fill="rgba(196,163,87,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Cinco Ranch Blvd</text>
+          <text x="260" y="180" fill="rgba(196,163,87,0.6)" font-size="7" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="0.6" writing-mode="tb">Cinco Ranch Blvd</text>
           <!-- Pin Oak Rd: upper horizontal inside Katy Mills zone -->
           <line x1="200" y1="72"  x2="560" y2="72"  stroke="rgba(138,94,44,0.2)"  stroke-width="25"/>
           <line x1="200" y1="72"  x2="560" y2="72"  stroke="rgba(138,94,44,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
-          <text x="222" y="66" fill="rgba(138,94,44,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" letter-spacing="0.5">Pin Oak Rd</text>
+          <text x="222" y="66" fill="rgba(138,94,44,0.65)" font-size="7" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="1.2">PIN OAK RD</text>
           <!-- Avenue D: Downtown north-south connector -->
           <line x1="450" y1="145" x2="450" y2="340" stroke="rgba(196,163,87,0.2)"  stroke-width="25"/>
           <line x1="450" y1="145" x2="450" y2="340" stroke="rgba(196,163,87,0.5)"  stroke-width="6"   stroke-dasharray="18 12"/>
-          <text x="453" y="178" fill="rgba(196,163,87,0.55)" font-size="7.5" font-family="sans-serif" font-weight="700" writing-mode="tb">Avenue D</text>
+          <text x="453" y="178" fill="rgba(196,163,87,0.6)" font-size="7" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="0.6" writing-mode="tb">Avenue D</text>
           <!-- I-10 road -->
-          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,200,0.28)" stroke-width="40"/>
-          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,255,0.6)"  stroke-width="10"  stroke-dasharray="28 14"/>
-          <text x="10" y="138" fill="rgba(255,255,160,0.75)" font-size="9" font-family="sans-serif" font-weight="700" letter-spacing="1">I-10</text>
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,200,0.18)" stroke-width="40"/>
+          <line x1="0" y1="145" x2="560" y2="145" stroke="rgba(255,255,255,0.5)"  stroke-width="8"  stroke-dasharray="28 14"/>
+          <text x="10" y="138" fill="rgba(255,255,200,0.8)" font-size="8" font-family="'Outfit', sans-serif" font-weight="600" letter-spacing="2">I-10</text>
           <!-- TX-99 -->
-          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.28)"  stroke-width="30"/>
-          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.65)"  stroke-width="7.5" stroke-dasharray="18 12"/>
-          <text x="325" y="14" fill="rgba(255,200,80,0.7)" font-size="8.5" font-family="sans-serif" font-weight="600">TX-99</text>
+          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.18)"  stroke-width="30"/>
+          <line x1="322" y1="0" x2="342" y2="340" stroke="rgba(255,200,80,0.55)"  stroke-width="6" stroke-dasharray="18 12"/>
+          <text x="325" y="14" fill="rgba(255,200,80,0.75)" font-size="7.5" font-family="'Outfit', sans-serif" font-weight="500" letter-spacing="1">TX-99</text>
 
-          <!-- Compass -->
-          <g transform="translate(533,22)">
-            <circle r="15" fill="rgba(0,0,0,0.7)" stroke="rgba(196,163,87,0.5)" stroke-width="1.5"/>
-            <text text-anchor="middle" y="-3" fill="#C4A357" font-size="9" font-family="sans-serif" font-weight="900">N</text>
-            <polygon points="0,-11 2.5,-3 -2.5,-3" fill="#C4A357"/>
-            <polygon points="0,11 2.5,3 -2.5,3" fill="rgba(196,163,87,0.25)"/>
-            <line x1="-10" y1="0" x2="10" y2="0" stroke="rgba(196,163,87,0.3)" stroke-width="0.8"/>
+          <!-- Luxury Compass Rose -->
+          <g transform="translate(533,26)">
+            <!-- outer ring -->
+            <circle r="20" fill="rgba(0,0,0,0.75)" stroke="rgba(196,163,87,0.35)" stroke-width="0.8"/>
+            <circle r="17" fill="none" stroke="rgba(196,163,87,0.15)" stroke-width="0.5"/>
+            <!-- tick marks -->
+            <line x1="0" y1="-17" x2="0" y2="-14" stroke="rgba(196,163,87,0.55)" stroke-width="0.8"/>
+            <line x1="0" y1="17"  x2="0" y2="14"  stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <line x1="-17" y1="0" x2="-14" y2="0" stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <line x1="17"  y1="0" x2="14"  y2="0" stroke="rgba(196,163,87,0.35)" stroke-width="0.6"/>
+            <!-- diagonal ticks -->
+            <line x1="-12" y1="-12" x2="-10.5" y2="-10.5" stroke="rgba(196,163,87,0.2)" stroke-width="0.5"/>
+            <line x1="12"  y1="-12" x2="10.5"  y2="-10.5" stroke="rgba(196,163,87,0.2)" stroke-width="0.5"/>
+            <line x1="-12" y1="12"  x2="-10.5" y2="10.5"  stroke="rgba(196,163,87,0.2)" stroke-width="0.5"/>
+            <line x1="12"  y1="12"  x2="10.5"  y2="10.5"  stroke="rgba(196,163,87,0.2)" stroke-width="0.5"/>
+            <!-- N needle (gold) -->
+            <polygon points="0,-13 2,-3 -2,-3" fill="#C4A357"/>
+            <!-- S needle (dim) -->
+            <polygon points="0,13 2,3 -2,3" fill="rgba(196,163,87,0.2)"/>
+            <!-- E-W cross -->
+            <line x1="-12" y1="0" x2="12" y2="0" stroke="rgba(196,163,87,0.25)" stroke-width="0.7"/>
+            <!-- center gem -->
+            <circle r="2.5" fill="#C4A357"/>
+            <circle r="1.2" fill="#07070C"/>
+            <!-- N label -->
+            <text text-anchor="middle" y="-15" fill="#C4A357" font-size="6.5" font-family="'Noto Serif', Georgia, serif" font-weight="600" letter-spacing="0.5">N</text>
+          </g>
+
+          <!-- Corner ornaments -->
+          <!-- top-left -->
+          <g opacity="0.35" stroke="#C4A357" stroke-width="0.8" fill="none">
+            <line x1="4" y1="4" x2="18" y2="4"/>
+            <line x1="4" y1="4" x2="4" y2="18"/>
+            <rect x="6" y="6" width="5" height="5" stroke-width="0.5"/>
+          </g>
+          <!-- top-right -->
+          <g opacity="0.35" stroke="#C4A357" stroke-width="0.8" fill="none" transform="translate(560,0) scale(-1,1)">
+            <line x1="4" y1="4" x2="18" y2="4"/>
+            <line x1="4" y1="4" x2="4" y2="18"/>
+            <rect x="6" y="6" width="5" height="5" stroke-width="0.5"/>
           </g>
         </svg>
 

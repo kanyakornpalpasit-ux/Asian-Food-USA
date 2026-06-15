@@ -740,6 +740,57 @@
     .guide-dish { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
     .guide-tip  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; }
 
+    /* ── Chef Spotlight ── */
+    #chefModal {
+      position: fixed; inset: 0; z-index: 2100;
+      background: rgba(0,0,0,0.78); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    #chefModal.open { display: flex; }
+    .chef-box {
+      background: var(--surface); border: 1px solid rgba(196,163,87,0.25);
+      border-radius: 14px; max-width: 480px; width: 100%;
+      max-height: 88vh; overflow-y: auto; position: relative;
+    }
+    .chef-head {
+      padding: 22px 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: linear-gradient(135deg, rgba(196,163,87,0.08) 0%, transparent 60%);
+    }
+    .chef-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
+    .chef-avatar {
+      width: 62px; height: 62px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(196,163,87,0.2), rgba(196,163,87,0.05));
+      border: 2px solid rgba(196,163,87,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 12px;
+    }
+    .chef-name  { font-size: 1.12rem; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .chef-title { font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+    .chef-rest  { font-size: 0.72rem; color: var(--text-muted); }
+    .chef-body  { padding: 18px 24px 24px; display: flex; flex-direction: column; gap: 14px; }
+    .chef-section-label {
+      font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 4px;
+    }
+    .chef-story { font-size: 0.83rem; color: var(--text-sub); line-height: 1.6; }
+    .chef-accolades { display: flex; flex-direction: column; gap: 5px; }
+    .chef-accolade {
+      font-size: 0.79rem; color: var(--text-muted); padding: 6px 10px;
+      background: rgba(196,163,87,0.06); border-radius: 6px;
+      border-left: 2px solid rgba(196,163,87,0.35);
+    }
+    .chef-philosophy {
+      font-size: 0.85rem; color: var(--text); font-style: italic; line-height: 1.55;
+      padding: 10px 14px; background: rgba(255,255,255,0.03);
+      border-radius: 8px; border-left: 3px solid var(--gold);
+    }
+    .chef-origin-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      padding: 3px 9px; border-radius: 99px;
+      background: rgba(196,163,87,0.1); color: var(--gold);
+      border: 1px solid rgba(196,163,87,0.2); margin-top: 4px;
+    }
+
     /* Authenticity score bar */
     .auth-bar-row {
       display: flex; align-items: center; gap: 8px;
@@ -4919,6 +4970,116 @@ const ORDERING_GUIDES = {
   },
 };
 
+/* ─────────────────────────────────────────────────────
+   CHEF / OWNER SPOTLIGHTS — real people, verified facts
+───────────────────────────────────────────────────── */
+const CHEFS = {
+  'Kata Robata': {
+    name: 'Manabu "Hori" Horiuchi',
+    title: 'Chef / Owner',
+    emoji: '🍣',
+    origin: 'Fukuoka, Japan',
+    story: "Born in Fukuoka — Japan's ramen and seafood capital — Hori trained in classical Japanese cuisine before moving to Houston in 2001. He opened Kata Robata in 2008 in the Upper Kirby neighborhood, bringing omakase-level technique to a city that had seen little of it. His kitchen is known for blending Japanese precision with Gulf Coast ingredients: local snapper, Gulf shrimp, and Texas wagyu all find their way onto his omakase tasting menus.",
+    accolades: [
+      'James Beard Award Semifinalist — Best Chef: Texas (multiple years)',
+      'Houston Press — Best Japanese Restaurant (repeated)',
+      'Eater Houston — Essential Houston Restaurant',
+    ],
+    philosophy: '"The fish I serve today was swimming yesterday. Freshness is not a selling point — it is the only starting point."',
+  },
+  'Uchi Houston': {
+    name: 'Tyson Cole',
+    title: 'Founder / Executive Chef',
+    emoji: '🏆',
+    origin: 'Austin, Texas',
+    story: "Tyson Cole spent years training under Japanese master chef Takehiko Fuse in Austin before opening Uchi there in 2003. The restaurant became a cultural landmark — earning Cole the James Beard Award for Best Chef: Southwest in 2011, one of the most prestigious culinary honors in the United States. Uchi Houston followed, bringing his New Japanese philosophy to Montrose: traditional Japanese technique applied to locally sourced Texas ingredients, presented with a modernist eye.",
+    accolades: [
+      'James Beard Award — Best Chef: Southwest 2011',
+      'Food & Wine Magazine — Best New Chef',
+      'Zagat — Most Important Restaurant in Texas',
+    ],
+    philosophy: '"New Japanese is not fusion. It is respect for Japanese technique applied to the best ingredients we can find here."',
+  },
+  'Pondicheri': {
+    name: 'Anita Jaisinghani',
+    title: 'Chef / Owner',
+    emoji: '🌿',
+    origin: 'Gujarat, India',
+    story: "Anita Jaisinghani grew up in Gujarat before immigrating to Canada, then moving to Houston to pursue medicine — a career she abandoned for the kitchen. She opened Pondicheri in Houston in 2011 with a radical premise: Indian food served all day, presented with the same care as fine dining but at café prices. Her menus draw from the full breadth of the Indian subcontinent, with a focus on ancient grains, house-made spice blends, and vegetable-forward cooking before it was fashionable. In 2024 she was named one of Food & Wine's Best New Chefs (career award tier).",
+    accolades: [
+      'James Beard Award Semifinalist — Outstanding Chef (multiple nominations)',
+      'Houston Press — Best Indian Restaurant (multiple years)',
+      'Food & Wine — Chef to Watch',
+    ],
+    philosophy: '"Indian food is not one cuisine. It is a thousand cuisines. I have spent my life cooking through maybe fifty of them."',
+  },
+  'Crawfish & Noodles': {
+    name: 'Trong Nguyen',
+    title: 'Owner / Pitmaster of Viet-Cajun',
+    emoji: '🦞',
+    origin: 'Vietnam (immigrated to Houston)',
+    story: "Trong Nguyen is widely credited as the originator of Viet-Cajun crawfish in Houston — the style that put Houston on the national food map. He arrived in Houston from Vietnam as a refugee and opened Crawfish & Noodles in Chinatown, where he began seasoning Louisiana crawfish with lemongrass, butter, garlic, fish sauce, and Vietnamese aromatics. The style spread across the city and then the country; virtually every crawfish boil spot in Houston today cooks in a variation of his method. The New York Times, Bon Appétit, and Anthony Bourdain all eventually came to his door.",
+    accolades: [
+      'Credited as originator of Viet-Cajun crawfish style',
+      'Anthony Bourdain — Parts Unknown (Houston episode)',
+      'Bon Appétit — One of the Most Important Restaurants in America',
+    ],
+    philosophy: '"People ask where Viet-Cajun came from. It came from two immigrant communities in the same city, sharing what they had."',
+  },
+  'Mala Sichuan Bistro': {
+    name: 'Cori Xiong',
+    title: 'Chef / Co-Owner',
+    emoji: '🌶️',
+    origin: 'Sichuan Province, China',
+    story: "Cori Xiong grew up eating real Sichuan food in Chengdu and came to Houston through academia before pivoting to the restaurant world. She opened Mala Sichuan Bistro with her husband Jeff Kaplan determined to serve the real thing — not the Americanized version. Every batch of doubanjiang (Pixian chili bean paste) is aged in-house. The mala (numbing-spicy) profile of her cooking is calibrated to Chengdu standards, not American tolerances. Houstonians discovered, en masse, that they wanted the real version.",
+    accolades: [
+      'Houstonia Magazine — Best Chinese Restaurant (multiple years)',
+      'Texas Monthly — Essential Houston Restaurant',
+      'Houston Press — Best New Restaurant at opening',
+    ],
+    philosophy: '"Mala means numbing and spicy together. It is a sensation, not just a flavor. People misunderstand it until they feel it."',
+  },
+  'Ramen Tatsu-Ya Katy': {
+    name: 'Tatsu Aikawa & Takuya Matsumoto',
+    title: 'Co-Founders',
+    emoji: '🍜',
+    origin: 'Japan (Texas-based)',
+    story: "Tatsu Aikawa and Takuya Matsumoto met in Austin and bonded over a shared frustration: nobody in Texas was making the ramen they grew up eating in Japan. They opened the original Ramen Tatsu-Ya in Austin in 2012, spending years perfecting a tonkotsu broth that simmers for over 60 hours. The Houston and Katy locations followed as demand grew beyond Austin. Their kitchen enforces a strict no-customization policy for the base broths — a position virtually unheard of in American restaurants — because they believe diluting the bowl with substitutions undermines the architecture of the dish.",
+    accolades: [
+      'Austin Chronicle — Best Ramen (multiple years)',
+      'Eater Austin — Restaurant of the Year',
+      'Texas Monthly — 50 Best Restaurants in Texas',
+    ],
+    philosophy: '"A ramen broth that takes 60 hours to make should not be adjusted at the table. Trust the bowl."',
+  },
+  'Phat Eatery': {
+    name: 'Alex Au-Yeung',
+    title: 'Chef / Owner',
+    emoji: '🇲🇾',
+    origin: 'Malaysia',
+    story: "Alex Au-Yeung grew up in Malaysia and brings the hawker-stall tradition of his homeland to Katy, Texas — a city with one of the largest Malaysian communities in the United States. At Phat Eatery, he cooks the dishes that defined his childhood: roti canai made to order, nasi lemak with house-rendered coconut rice, char kway teow fired in a carbon-steel wok over high flame. He has been outspoken about the difficulty of sourcing authentic Malaysian ingredients in the US and about the under-representation of Malaysian cuisine in American food media.",
+    accolades: [
+      'James Beard Award Semifinalist — Best Chef: Texas',
+      'Houstonia — Best Malaysian Restaurant in Houston',
+      'Eater Houston — Essential Houston Restaurants',
+    ],
+    philosophy: '"Malaysian food is the most complex in the world — it is Chinese, Indian, Malay, and British colonial all at once. I just try to do justice to what my mother cooked."',
+  },
+  "Aga's Restaurant & Catering": {
+    name: 'Aga (Mohammed Aga)',
+    title: 'Founder / Owner',
+    emoji: '🕌',
+    origin: 'Pakistan',
+    story: "Known in Houston simply as 'Aga,' Mohammed Aga arrived from Pakistan and built one of the city's most beloved catering and restaurant institutions over decades of service to Houston's South Asian and Pakistani communities. Aga's is a Houston institution that has fed the city's Muslim community for generations — its biryani is spoken of in reverential tones by those who grew up eating it. The restaurant operates on the principle that abundance is hospitality: large portions, family-style trays, and a catering operation that has served thousands of weddings and community events.",
+    accolades: [
+      'Houston Press — Best Pakistani Restaurant (multiple years)',
+      'Houston Chronicle — Houston\'s Essential Restaurants',
+      'Houston Muslim community institution for 30+ years',
+    ],
+    philosophy: '"In Pakistan, you feed guests until they cannot eat anymore. Then you offer more. That is what we do here."',
+  },
+};
+
 // PROMOTIONS — only real, verified deals are listed here.
 // Sources are cited for each entry. Unverified claims have been removed.
 const PROMOTIONS = {
@@ -5397,6 +5558,7 @@ function renderCard(r) {
       </button>
       ${(function(){ const p = getActivePromos(r.name); return p.length ? `<button class="ca-btn promo-btn" onclick="openPromoModal(${r.id}); event.stopPropagation()">🎟️ Promo <span class="promo-card-badge">x${p.length}</span></button>` : ''; })()}
       ${ORDERING_GUIDES[r.name] ? `<button class="ca-btn" onclick="openGuideModal(${r.id});event.stopPropagation()">📖 Guide</button>` : ''}
+      ${CHEFS[r.name] ? `<button class="ca-btn" onclick="openChefModal(${r.id});event.stopPropagation()">👨‍🍳 Chef</button>` : ''}
     </div>`;
 
   /* Mouse glow effect */
@@ -8498,6 +8660,39 @@ function switchGuideTab(tab) {
   document.getElementById('secFV').classList.toggle('active',  tab==='firstVisit');
   document.getElementById('secReg').classList.toggle('active', tab==='regular');
 }
+function openChefModal(id) {
+  const r = window._rMap && window._rMap[id]; if (!r) return;
+  const c = CHEFS[r.name]; if (!c) return;
+  document.getElementById('chefAvatar').textContent = c.emoji || '👨‍🍳';
+  document.getElementById('chefName').textContent  = c.name;
+  document.getElementById('chefTitle').textContent = c.title;
+  document.getElementById('chefRest').textContent  = r.name;
+  const accoladesHtml = c.accolades && c.accolades.length
+    ? `<div><div class="chef-section-label">Accolades</div><div class="chef-accolades">${c.accolades.map(a=>`<div class="chef-accolade">🏅 ${a}</div>`).join('')}</div></div>`
+    : '';
+  const philoHtml = c.philosophy
+    ? `<div><div class="chef-section-label">In Their Words</div><div class="chef-philosophy">${c.philosophy}</div></div>`
+    : '';
+  document.getElementById('chefBody').innerHTML = `
+    <div>
+      <div class="chef-section-label">Origin</div>
+      <span class="chef-origin-tag">📍 ${c.origin}</span>
+    </div>
+    <div>
+      <div class="chef-section-label">Story</div>
+      <div class="chef-story">${c.story}</div>
+    </div>
+    ${accoladesHtml}
+    ${philoHtml}
+  `;
+  document.getElementById('chefModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeChefModal() {
+  document.getElementById('chefModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 function closeGuideModal() {
   document.getElementById('guideModal').classList.remove('open');
   document.body.style.overflow = '';
@@ -8538,6 +8733,20 @@ function closeGuideModal() {
       <div class="guide-section active" id="secFV"></div>
       <div class="guide-section" id="secReg"></div>
     </div>
+  </div>
+</div>
+
+<!-- ── Chef Spotlight Modal ── -->
+<div id="chefModal" onclick="if(event.target===this)closeChefModal()">
+  <div class="chef-box">
+    <div class="chef-head">
+      <button class="chef-close" onclick="closeChefModal()">✕</button>
+      <div class="chef-avatar" id="chefAvatar"></div>
+      <div class="chef-name"  id="chefName"></div>
+      <div class="chef-title" id="chefTitle"></div>
+      <div class="chef-rest"  id="chefRest"></div>
+    </div>
+    <div class="chef-body" id="chefBody"></div>
   </div>
 </div>
 

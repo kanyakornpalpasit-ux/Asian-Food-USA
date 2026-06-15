@@ -660,6 +660,86 @@
       font-size: 0.82em; font-weight: 600; opacity: 0.85;
     }
 
+    /* ── Festival banner ── */
+    .festival-banner {
+      margin: 0 0 20px; padding: 14px 16px;
+      border-radius: 12px; border: 1px solid rgba(196,163,87,0.35);
+      background: linear-gradient(135deg,rgba(139,105,20,0.22) 0%,rgba(196,163,87,0.12) 100%);
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .fb-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+    .fb-body  { flex: 1; min-width: 0; }
+    .fb-label { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 2px; }
+    .fb-title { font-size: 0.95rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .fb-tagline { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
+    .fb-tip   { font-size: 0.78rem; color: var(--text); line-height: 1.5; margin-bottom: 8px; }
+    .fb-dishes { display: flex; flex-wrap: wrap; gap: 5px; }
+    .fb-dish  { font-size: 0.7rem; padding: 3px 9px; border-radius: 20px; background: rgba(196,163,87,0.12); border: 1px solid rgba(196,163,87,0.25); color: var(--gold); }
+    .fb-dismiss { background: none; border: none; font-size: 1.1rem; color: var(--text-muted); cursor: pointer; flex-shrink: 0; padding: 0; line-height: 1; }
+    .fb-dismiss:hover { color: var(--text); }
+    .fb-live .fb-label { color: #f87171; }
+    .fb-live { border-color: rgba(248,113,113,0.3); background: linear-gradient(135deg,rgba(155,35,53,0.18) 0%,rgba(196,163,87,0.08) 100%); }
+
+    /* ── Dish glossary ── */
+    .glossary-term {
+      border-bottom: 1px dashed rgba(196,163,87,0.55);
+      cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    }
+    .glossary-term:hover { color: var(--gold); border-color: var(--gold); }
+    #glossaryModal {
+      position: fixed; inset: 0; z-index: 2100;
+      background: rgba(0,0,0,0.78); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    #glossaryModal.open { display: flex; }
+    .gl-box {
+      background: var(--surface); border: 1px solid rgba(196,163,87,0.25);
+      border-radius: 14px; max-width: 440px; width: 100%;
+      max-height: 86vh; overflow-y: auto; position: relative; padding: 24px;
+    }
+    .gl-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; }
+    .gl-name  { font-size: 1.2rem; font-weight: 800; color: var(--gold); margin-bottom: 2px; }
+    .gl-aka   { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
+    .gl-origin { display: inline-block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 2px 10px; margin-bottom: 12px; }
+    .gl-desc  { font-size: 0.86rem; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
+    .gl-section { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin: 12px 0 6px; }
+    .gl-list  { list-style: none; padding: 0; margin: 0; }
+    .gl-list li { font-size: 0.81rem; color: var(--text); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .gl-list li:last-child { border: none; }
+    .gl-list li::before { content: '→ '; color: var(--gold); }
+
+    /* ── Ordering guide ── */
+    #guideModal {
+      position: fixed; inset: 0; z-index: 2100;
+      background: rgba(0,0,0,0.78); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    #guideModal.open { display: flex; }
+    .guide-box {
+      background: var(--surface); border: 1px solid rgba(196,163,87,0.25);
+      border-radius: 14px; max-width: 500px; width: 100%;
+      max-height: 88vh; overflow-y: auto; position: relative;
+    }
+    .guide-head {
+      padding: 20px 24px 12px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .guide-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
+    .guide-rest  { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .guide-sub   { font-size: 0.72rem; color: var(--text-muted); }
+    .guide-tabs  { display: flex; gap: 8px; padding: 12px 24px 0; }
+    .guide-tab { flex: 1; padding: 9px; border: 1px solid rgba(196,163,87,0.2); border-radius: 8px; background: none; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+    .guide-tab.active { background: rgba(196,163,87,0.12); border-color: var(--gold); color: var(--gold); }
+    .guide-body { padding: 14px 24px 24px; }
+    .guide-section { display: none; }
+    .guide-section.active { display: block; }
+    .guide-intro { font-size: 0.81rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; padding: 10px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--gold); }
+    .guide-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .guide-item:last-child { border: none; }
+    .guide-num  { font-size: 0.78rem; font-weight: 800; color: var(--gold); min-width: 22px; padding-top: 1px; }
+    .guide-dish { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .guide-tip  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; }
+
     /* Authenticity score bar */
     .auth-bar-row {
       display: flex; align-items: center; gap: 8px;
@@ -4462,6 +4542,320 @@ function getRestaurantPhotoFallback(id) {
 /* ══════════════════════════════════════════════════════
    PROMOTIONS  —  verified / restaurant-sourced deals
    ══════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────
+   FESTIVALS — Asian seasonal events with dish highlights
+   windows: [startDate, endDate] — banner shows within this range
+───────────────────────────────────────────────────── */
+const FESTIVALS = [
+  { id:'lny', emoji:'🧧', label:'NOW · Happening',
+    name:'Lunar New Year', tagline:'Year of the Horse · Tết · Seollal · 农历新年',
+    cuisines:['chinese','taiwanese','vietnamese','korean'],
+    windows:[['2026-01-15','2026-02-12'],['2027-02-04','2027-03-03']],
+    tip:'Chinese, Vietnamese (Tết), and Korean (Seollal) New Year fall on the same lunar date. Restaurants often add special menus — look for longevity noodles, whole fish, dumplings, and bánh chưng.',
+    dishes:['Longevity Noodles','Dumplings (good luck)','Whole Fish (abundance)','Nian Gao','Bánh Chưng','Tteokguk (rice cake soup)','Tang Yuan'],
+    spots:['Tim Ho Wan','Ocean Palace','Mala Sichuan Bistro','Pho Binh by Night','Honey Pig KBBQ'],
+  },
+  { id:'songkran', emoji:'💦', label:'UPCOMING',
+    name:'Songkran', tagline:'Thai New Year · April 13–15',
+    cuisines:['thai'],
+    windows:[['2026-04-10','2026-04-17'],['2027-04-10','2027-04-17']],
+    tip:'Thai New Year is celebrated with water, merit-making, and special seasonal dishes. Thai restaurants may feature khao chae (chilled jasmine-scented rice) and festive curries.',
+    dishes:['Khao Chae (chilled jasmine rice)','Mango Sticky Rice','Som Tam','Grilled Whole Fish','Kaeng Massaman'],
+    spots:['Thaicoon Restaurant & Pub','Urban Thai Kitchen','Ginger Thai','Zaab Station'],
+  },
+  { id:'obon', emoji:'🏮', label:'UPCOMING',
+    name:'Obon', tagline:'Japanese Ancestor Festival · Aug 13–16',
+    cuisines:['japanese'],
+    windows:[['2026-08-08','2026-08-19'],['2027-08-08','2027-08-19']],
+    tip:'Obon is when Japanese families gather to honor ancestors with food, dance, and lanterns. Traditional foods include somen cold noodles, karaage, yakitori, and wagashi sweets.',
+    dishes:['Somen (chilled noodles)','Karaage (fried chicken)','Yakitori skewers','Wagashi sweets','Tempura'],
+    spots:['Ramen Tatsu-Ya Katy','Gyu-Kaku Japanese BBQ','Kata Robata','Kizuki Ramen & Izakaya'],
+  },
+  { id:'chuseok', emoji:'🌕', label:'UPCOMING',
+    name:'Chuseok', tagline:"Korea's Harvest Moon Festival · Sep 25–27, 2026",
+    cuisines:['korean'],
+    windows:[['2026-09-21','2026-09-30'],['2027-10-03','2027-10-11']],
+    tip:"Korea's Thanksgiving centers on family, food, and gratitude. Look for songpyeon (half-moon rice cakes), japchae, jeon (savory pancakes), galbi, and sikhye rice punch.",
+    dishes:['Songpyeon (half-moon rice cakes)','Japchae (glass noodles)','Haemul Pajeon (seafood pancake)','Galbi (short ribs)','Sikhye (sweet rice punch)'],
+    spots:['Honey Pig KBBQ','8 Ounce Korean Steak House','Bon Galbi KBBQ','Handam BBQ'],
+  },
+  { id:'midautumn', emoji:'🥮', label:'UPCOMING',
+    name:'Mid-Autumn Festival', tagline:'Moon Festival · Oct 7, 2026',
+    cuisines:['chinese','taiwanese','vietnamese'],
+    windows:[['2026-09-23','2026-10-13'],['2027-10-01','2027-10-19']],
+    tip:'Families reunite under the full moon with mooncakes, pomelo, and taro dishes. Chinese and Vietnamese bakeries often sell limited-edition mooncakes — buy early as they sell out.',
+    dishes:['Mooncakes (lotus paste or red bean)','Pomelo fruit','Taro preparations','Roast Duck','Osmanthus desserts'],
+    spots:['85C Bakery Cafe','Tim Ho Wan','Ocean Palace',"Fung's Kitchen"],
+  },
+  { id:'diwali', emoji:'🪔', label:'UPCOMING',
+    name:'Diwali', tagline:'Festival of Lights · Nov 20, 2026',
+    cuisines:['indian'],
+    windows:[['2026-11-14','2026-11-24'],['2027-11-09','2027-11-17']],
+    tip:'The Festival of Lights brings special mithai (sweets) and festive thali platters to Indian restaurants. Look for kaju katli, gulab jamun, kheer, and elaborate vegetarian spreads.',
+    dishes:['Gulab Jamun (milk solids in syrup)','Kaju Katli (cashew fudge)','Kheer (rice pudding)','Samosa (festive fillings)','Dal Baati Churma'],
+    spots:["Aga's Restaurant & Catering",'Himalaya Restaurant','Tikka Temple','Tru India'],
+  },
+];
+
+/* ─────────────────────────────────────────────────────
+   GLOSSARY — tap any underlined dish name on a card
+───────────────────────────────────────────────────── */
+const GLOSSARY = {
+  'Mapo Tofu':{ aka:'麻婆豆腐', origin:'Sichuan, China', desc:"Silken tofu and ground pork simmered in a fiery sauce of doubanjiang (fermented chili bean paste), Sichuan peppercorn, and black bean. The name means 'pockmarked old woman's tofu' after its legendary creator.", howToEat:'Eat with steamed rice to balance the heat. The numbing tingle (má) from Sichuan peppercorn is the point — don\'t try to avoid it.', variations:['Vegan version (no pork)','Japan\'s mabo doufu (milder, sweeter)','White mapo (no chili)'] },
+  'Mala':{ aka:'麻辣', origin:'Sichuan, China', desc:"'Má' means numbing (from Sichuan peppercorn) and 'là' means spicy (from chilies). Mala is the defining flavor profile of Sichuan cuisine — a tingly, lip-numbing heat unlike any other. Used in hot pots, dry pots, sauces, and noodles.", howToEat:'Start with a lower mala level if new to it. The numbness builds slowly. Milk or yogurt neutralizes the heat better than water.', variations:['Malatang (self-serve soup)','Mala dry pot (no broth)','Mala xiang guo (stir-fry)'] },
+  'Xiao Long Bao':{ aka:'XLB · Soup Dumplings · 小笼包', origin:'Shanghai, China', desc:'Delicate steamed dumplings with a thin skin wrapped around a juicy pork filling and a cube of aspic (gelled broth) that melts into soup when steamed. The #1 most-requested dumpling in the world.', howToEat:'Place on a soup spoon, bite a small hole in the top, let the soup cool for 10 seconds, then sip the broth before eating the whole dumpling. Never bite straight in — you will burn yourself.', variations:['Crab & pork XLB (蟹黃湯包)','Truffle XLB','Giant XLB (eaten with a straw)'] },
+  'Dim Sum':{ aka:'點心 · Yum Cha', origin:'Guangdong (Canton), China', desc:"Cantonese tradition of small shared dishes served with tea — 'yum cha' means 'drink tea.' Originating from teahouse culture, dim sum covers steamed, fried, and baked bite-sized dishes. Traditionally served mornings and weekend brunches from rolling carts.", howToEat:'Order tea first. Share everything — the etiquette is communal. Start with lighter steamed items (har gow, cheung fun) before moving to fried or baked dishes.', variations:['Hong Kong dim sum (cart service)','Modern dim sum (à la carte)','Taiwanese dim sum (influenced by Japanese)'] },
+  'Har Gow':{ aka:'蝦餃 · Crystal Shrimp Dumplings', origin:'Guangdong, China', desc:"The benchmark dish for any dim sum chef. Translucent rice-starch skin, pleated at least 7 times (a sign of skill), wrapping a filling of whole shrimp. The skin should be thin but not tear, with a slight chew. If the har gow is good, the kitchen is good.", howToEat:'Eat in one or two bites. Dip lightly in soy sauce with ginger — don\'t drown it.', variations:['Har gow with bamboo shoots','Har gow with chive','Modern versions with truffle or tobiko'] },
+  'Char Siu':{ aka:'叉燒 · Chinese BBQ Pork', origin:'Guangdong, China', desc:"Pork (usually shoulder or tenderloin) marinated in honey, soy, hoisin, five-spice, and red fermented tofu, then roasted on hooks in a wood-fired oven. The red lacquered exterior is iconic to Cantonese BBQ shops (siu mei).", howToEat:'Best eaten fresh over steamed rice with a drizzle of the roasting juices. Also used as a filling in bao (BBQ pork buns) and pineapple buns.', variations:['Honey roast pork (more caramelized)','Char siu bao (steamed bun)','Baked BBQ pork bun'] },
+  'Tonkotsu':{ aka:'豚骨', origin:'Fukuoka (Hakata), Japan', desc:"A rich, creamy, opaque ramen broth made by boiling pork bones at a rolling boil for 12–20 hours until the collagen and marrow emulsify into a milky white liquid. Originated in Fukuoka's Hakata district in the 1940s. The style that put Japanese ramen on the world stage.", howToEat:'Eat quickly — noodles overcook in the hot broth. Accept the free kaedama (noodle refill) when available. Customize richness (koe) at most shops.', variations:['Hakata tonkotsu (thin straight noodles)','Kumamoto (with garlic oil)','Shio tonkotsu (lighter)','Tokyo-style (thicker broth, wavy noodles)'] },
+  'Omakase':{ aka:'お任せ', origin:'Japan', desc:"'I leave it to you' in Japanese — a meal where the chef selects and prepares every course based on the day's best ingredients. Originally an extension of trust between chef and regular customers, now a formal multi-course Japanese dining experience.", howToEat:'Do not make special requests — the point is to trust the chef. Eat each piece as soon as it\'s served; nigiri is meant to be eaten immediately at optimal rice temperature.', variations:['Edomae omakase (Tokyo-style, nigiri-focused)','Kaiseki (formal multi-course, non-sushi)','Kappo (chef cooks in front of you at a counter)'] },
+  'Temaki':{ aka:'手巻き · Hand Roll', origin:'Japan', desc:'A cone-shaped sushi roll made by hand — a sheet of nori (seaweed) rolled into a cone, filled with sushi rice, fish, and toppings. Unlike maki rolls, temaki is made to order and eaten immediately (the nori goes soggy within minutes).', howToEat:'Eat immediately — do not set it down. Hold with two hands like an ice cream cone. No dipping required; the chef has already seasoned it.', variations:['Spicy tuna','Salmon avocado','Wagyu & truffle','Uni (sea urchin)'] },
+  'Yakiniku':{ aka:'焼肉', origin:'Japan (Korean-influenced)', desc:'Japanese tabletop BBQ where thin-sliced premium meats are grilled over charcoal or gas grates by the diners themselves. Descended from Korean barbecue, yakiniku has developed its own lighter, more delicate Japanese seasoning style with tare (dipping sauce) and ponzu.', howToEat:'Grill each piece 15–20 seconds per side for well-marbled cuts. Dip in tare or eat with grated daikon for lighter cuts. Order one or two pieces at a time — don\'t crowd the grill.', variations:['Gyu-Kaku style (varied cuts, table grill)','Korean KBBQ (similar but different sauces)','Yakiniku don (over rice)'] },
+  'Shabu-Shabu':{ aka:'しゃぶしゃぶ', origin:'Japan (inspired by Chinese hot pot)', desc:"Paper-thin sliced beef is swished ('shabu shabu' is the onomatopoeia) briefly in hot kombu dashi broth until just cooked, then dipped in ponzu or sesame sauce. The broth at the end becomes an intensely flavored soup.", howToEat:'Cook wagyu 5–10 seconds only — it should still be pink in the center. Vegetables and tofu can cook longer. Finish by adding noodles or rice to the enriched broth.', variations:['Wagyu shabu-shabu','Mixed seafood broth','Spicy miso variation'] },
+  'Teppanyaki':{ aka:'鉄板焼き', origin:'Japan', desc:"Cooking on a flat iron griddle (teppan). In the US, it became famous through Benihana's theatrical chef performances, but in Japan it refers simply to the cooking method. Meats, seafood, and vegetables are grilled tableside with skill and showmanship.", howToEat:'The performance is part of the experience — watch the chef\'s knife work. Sit at the counter facing the grill for the best view. Try the garlic fried rice made from the drippings.', variations:['Hibachi (American showmanship style)','Japanese teppanyaki (more refined)','Okonomiyaki on a teppan'] },
+  'Samgyeopsal':{ aka:'삼겹살 · Grilled Pork Belly', origin:'South Korea', desc:"Thick-cut uncured pork belly grilled at the table over charcoal or gas. One of Korea's most beloved everyday foods — 삼 (sam=3) 겹 (gyeop=layers) 살 (sal=meat) refers to the three layers of fat and meat visible in the cut.", howToEat:'Wrap a piece in a perilla leaf or romaine with rice, garlic, kimchi, and ssamjang (thick chili paste). Fold, don\'t roll. One bite.', variations:['Dakgalbi (spicy chicken version)','Chadolbaegi (thin beef brisket)','Samgyeopsal with kimchi wrap'] },
+  'Galbi':{ aka:'갈비 · Korean Short Ribs', origin:'South Korea', desc:"Beef or pork short ribs, marinated in soy sauce, pear (or Asian pear for tenderizing enzymes), sesame oil, garlic, and sugar. LA Galbi (cross-cut) became a Koreatown staple in Los Angeles and spread nationally.", howToEat:'Hold the bone with your hand (chopsticks or knife/fork work too). The meat should be caramelized and slightly charred at the edges. Dip in doenjang (soybean paste) for umami depth.', variations:['LA Galbi (cross-cut flanken style)','Beef short ribs (English cut)','Pork galbi (dwaeji galbi)'] },
+  'Sundubu Jjigae':{ aka:'순두부찌개 · Soft Tofu Stew', origin:'South Korea', desc:"A fiery stew with silky, unpressed tofu (sundubu) in a bright red broth made from gochugaru (Korean chili flakes), seafood or pork, and a raw egg cracked in at service. Served in a scorching stone pot, bubbling at the table.", howToEat:'Crack the egg yourself at the table and stir it into the still-bubbling stew immediately. Eat with a bowl of steamed rice and the banchan (side dishes) that come with it.', variations:['Haemul (seafood) version','Pork & kimchi version','Beef version','Vegan without egg or meat'] },
+  'Bingsu':{ aka:'빙수 · Korean Shaved Ice', origin:'South Korea', desc:"Finely shaved milk ice (not crushed ice — the texture is key) topped with sweet red bean, mochi rice cakes, fresh fruit, condensed milk, and flavored syrups. Unlike Hawaiian shave ice, bingsu uses milk-based ice that melts smoothly on the tongue.", howToEat:'Mix the toppings into the ice before eating so each spoonful has everything. Eat quickly — bingsu melts fast. The red bean is traditional; strawberry and matcha are popular modern versions.', variations:['Patbingsu (red bean classic)','Strawberry bingsu','Matcha bingsu','Mango bingsu'] },
+  'Sundubu Jjigae':{ aka:'순두부찌개', origin:'South Korea', desc:"Silky soft tofu simmered in a spicy broth with seafood or pork and finished with a raw egg. Signature Korean comfort food.", howToEat:'Stir the raw egg into the bubbling pot at the table. Eat with rice and banchan.', variations:['Seafood version','Pork & kimchi','Vegan'] },
+  'Phở':{ aka:'Pho · 𠹾', origin:'Northern Vietnam (Hanoi), early 1900s', desc:"Vietnam's national noodle soup — a clear bone broth (bò = beef, gà = chicken) simmered with charred ginger and onion, star anise, cinnamon, cloves, and cardamom for 8–12 hours, served over flat rice noodles with thin-sliced beef and a plate of fresh herbs.", howToEat:'Add bean sprouts and herbs to taste, squeeze in lime, tear in basil. A small amount of hoisin and sriracha on the side (dip the meat, don\'t pour into the broth). Drink the broth.', variations:['Phở bò (beef)','Phở gà (chicken)','Southern style (sweeter, more toppings)','Phở khô (dry noodles, broth on the side)'] },
+  'Bánh Mì':{ aka:'Banh Mi', origin:'Vietnam (French colonial influence)', desc:"A Vietnamese-French fusion sandwich: a crispy, airy French baguette (lighter than French versions, made with rice flour) filled with pickled daikon and carrot, cucumber, cilantro, jalapeño, and various proteins — pâté, grilled pork, cha lua (Vietnamese pork roll), or tofu.", howToEat:'Eat immediately — the bread softens quickly. Don\'t remove the jalapeño if you can handle some heat; it\'s integral to the flavor balance.', variations:['Bánh mì thịt (mixed meats)','Bánh mì gà (chicken)','Bánh mì chay (vegetarian)','Fried egg bánh mì (breakfast)'] },
+  'Bún Bò Huế':{ aka:'Bun Bo Hue', origin:"Huế, Central Vietnam", desc:"A spicy, lemongrass-scented beef and pork noodle soup from the old imperial capital of Huế. Thicker and rounder rice noodles than phở, with a complex broth built on lemongrass, shrimp paste, and chili oil. Topped with sliced beef shank, pork knuckle, and cubed blood cake.", howToEat:"Add banana blossoms, bean sprouts, and morning glory (rau muống). The shrimp paste (mắm ruốc) served on the side is pungent but transforms the broth — add a tiny amount.", variations:['With pork knuckle','Without blood cake (huyet)','Modern mild versions'] },
+  'Pad Thai':{ aka:'ผัดไทย', origin:'Thailand (popularized 1940s)', desc:"Stir-fried rice noodles with eggs, firm tofu, bean sprouts, and a tamarind-palm sugar-fish sauce base, topped with crushed peanuts, green onion, and lime. Contrary to popular belief, it\'s a relatively modern dish — the Thai government promoted it in the 1940s to reduce rice consumption.", howToEat:'Squeeze the lime over everything. Add the condiments in the order they come: sugar, vinegar, fish sauce, chili flakes. Customize the sweetness-sour-spice balance yourself.', variations:['Pad Thai goong (shrimp)','Pad Thai gai (chicken)','Pad Thai jay (vegan)','Pad Thai with crab'] },
+  'Tom Kha':{ aka:'ต้มข่า · Tom Kha Gai', origin:'Thailand / Laos', desc:"A creamy coconut milk soup (tom = boiled, kha = galangal) scented with galangal root, lemongrass, kaffir lime leaves, and mushrooms. Galangal gives it a piney, medicinal warmth that is distinct from ginger. With chicken (gai) it is one of Thailand's most beloved soups.", howToEat:"Do not eat the galangal slices, lemongrass stalks, or kaffir lime leaves — they are aromatics for flavoring, not meant to be chewed. Squeeze lime in at the end to brighten.", variations:['Tom Kha Gai (chicken)','Tom Kha Talay (seafood)','Vegan version (mushroom broth)','Spiced up with chili'] },
+  'Khao Soi':{ aka:'ข้าวซอย', origin:'Northern Thailand / Chiang Mai', desc:"Northern Thailand's signature dish: a creamy, mildly spicy coconut curry broth over egg noodles, topped with crispy fried egg noodles, pickled mustard greens, shallots, and lime. A unique combination of Burmese, Yunnanese, and Thai influences.", howToEat:"Stir the crispy noodles into the broth so they soften into the curry. Add the pickled mustard greens and shallots — their acidity cuts through the richness beautifully.", variations:['Khao soi gai (chicken — most common)','Khao soi neua (beef)','Vegetarian version'] },
+  'Larb':{ aka:'Laab · ลาบ', origin:'Laos / Northeast Thailand (Isaan)', desc:"The national dish of Laos and a staple of Thai Isaan cuisine: minced meat (pork, beef, or chicken) tossed with toasted rice powder, fish sauce, lime juice, fresh mint, dried chilies, and shallots. Served raw (laab dip) or cooked.", howToEat:"Eat with sticky rice — tear off a small ball, press it slightly flat, and scoop up the larb. Do not use a spoon; the sticky rice is the utensil.", variations:['Laab moo (pork)','Laab neua (beef)','Laab pet (duck)','Laab dip (raw beef, Laotian style)'] },
+  'Hainanese Chicken Rice':{ aka:'Khao Man Gai · 海南雞飯', origin:'Hainan Island, China (via Singapore/Malaysia)', desc:"Poached whole chicken in aromatic stock, served over rice cooked in chicken fat and broth, with a light ginger sauce, dark soy, and chili sauce on the side. Deceptively simple — the rice, not the chicken, is what separates great from average.", howToEat:"Eat the chicken with ginger sauce; the dark soy goes on the rice. The clear broth is a palate cleanser — drink it between bites. The chili sauce should be on everything.", variations:['Singapore-style (roasted version available)','Thai khao man gai (with salted soybeans)','Malaysian variation (more chili sauce options)'] },
+  'Biryani':{ aka:'بریانی', origin:'Persia via Mughal India', desc:"Fragrant long-grain rice (usually basmati) layered with marinated meat, caramelized onions, saffron, and whole spices, then slow-cooked in a sealed pot (dum). The aroma when the sealed pot is opened at the table is the moment. Biryani is a full meal, not a side dish.", howToEat:"Mix from the bottom to get the rice, meat, and caramelized bits together. Serve with raita (yogurt sauce) to temper the spices and mirchi ka salan (green chili gravy) for heat.", variations:['Hyderabadi dum biryani','Lucknowi biryani (more subtle)','Sindhi biryani (tangy)','Malabar biryani (Kerala)','Pakistani biryani (more oil, more aromatics)'] },
+  'Laksa':{ aka:'Curry Laksa · Assam Laksa', origin:'Peranakan (Straits Chinese), Malaysia/Singapore', desc:"A spicy noodle soup that fuses Chinese noodles with Malay spice pastes (rempah). Curry laksa has a coconut milk broth; Penang assam laksa uses tamarind and mackerel. The Peranakan community (Chinese Malay hybrid) invented it as a fusion of both cultures.", howToEat:"Stir everything together before eating — the coconut milk settles. Add sambal belacan (shrimp paste chili) for extra heat. Drink the soup separately with a spoon.", variations:['Curry laksa (coconut milk, common in KL/Singapore)','Asam laksa (tamarind-sour, Penang)','Sarawak laksa (complex spice paste, East Malaysia)'] },
+  'Char Kway Teow':{ aka:'炒粿條 · Fried Rice Noodles', origin:'Penang, Malaysia / Singapore', desc:"Flat rice noodles (kway teow) wok-fried over intense high heat in lard with dark soy, chili, egg, bean sprouts, Chinese sausage (lap cheong), and cockles. The wok hei (breath of the wok) — that smoky, caramelized flavor from a scorching-hot carbon-steel wok — is everything.", howToEat:"Eat immediately. Char kway teow does not travel well; the noodles continue to cook and the wok hei dissipates. It should be slightly charred and smoky, not oily.", variations:['With cockles (traditional)','Without cockles','Vegetarian version','Penang vs. Singapore style (differ in sweetness)'] },
+  'Crossing the Bridge Noodles':{ aka:'过桥米线 · Yunnan Rice Noodles', origin:'Yunnan Province, China', desc:"A Yunnan specialty: a bowl of boiling-hot clear broth (kept hot by a layer of oil) arrives at your table, then you add raw ingredients in a specific order — quail egg first, then thin-sliced meats, then vegetables, then rice noodles. Named after the legend of a wife who crossed a bridge daily to bring her scholar husband hot soup.", howToEat:"Add ingredients in order from most raw to quickest-cooking: egg, then meats, then vegetables, then noodles. Wait 30 seconds before eating to let everything poach gently.", variations:['Standard 8-ingredient set','Premium version with mushrooms & truffles','Spicy Yunnan variation'] },
+  'Congee':{ aka:'粥 · Jook · Cháo', origin:'China (various)', desc:"Rice cooked low and slow in a large volume of water or broth until the grains break down into a silky, thick porridge. One of Asia's oldest comfort foods — the base is nearly flavorless, which is the point. The toppings carry all the flavor.", howToEat:"Add toppings progressively: first the savory ones (century egg, pork, preserved vegetables), then condiments (sesame oil, white pepper, green onion). Eat slowly; it stays hot for a long time.", variations:['Cantonese jook (plain white, many toppings)','Japanese okayu (drier, simpler)','Korean juk (drier texture, often sweetened)','Teochew muay (served with side dishes)'] },
+  'Mango Sticky Rice':{ aka:'ข้าวเหนียวมะม่วง', origin:'Thailand', desc:"Sweet glutinous rice cooked in sweetened coconut milk, served at room temperature alongside ripe fresh mango and a drizzle of warm coconut cream on top. A deceptively simple dessert that is perfect when made with mango at peak ripeness.", howToEat:"The contrast of warm rice, cool mango, and room-temp coconut cream is the point. Eat a bite of sticky rice with a slice of mango, ensuring coconut cream in every spoonful.", variations:['With black sticky rice','With durian (Southeast Asian deluxe version)','Modern plating with mango sorbet'] },
+  'Mooncake':{ aka:'月餅 · Yuèbǐng', origin:'China', desc:"Dense, pressed cakes traditionally eaten during the Mid-Autumn Festival, filled with lotus seed paste, red bean, or mixed nuts, often with a salted egg yolk in the center representing the full moon. The pastry was allegedly used to pass secret messages during the Yuan dynasty uprising.", howToEat:"Mooncakes are very rich — traditionally cut into 4–8 wedges and shared. Pair with Chinese tea (pu-erh or oolong) to balance the sweetness. Snow skin (冰皮) mooncakes are served chilled.", variations:['Traditional baked (lotus, red bean)','Snow skin (chilled, softer)','Modern (truffle, durian, matcha, mochi)','Mini mooncakes (one per person)'] },
+};
+
+/* ─────────────────────────────────────────────────────
+   ORDERING GUIDES — first-timer & regular tips
+───────────────────────────────────────────────────── */
+const ORDERING_GUIDES = {
+  'Haidilao Hot Pot': {
+    region:'Sichuan Hot Pot', firstVisit:{
+      intro:"Hot pot is a communal meal — raw ingredients cook in a simmering broth at your table. Haidilao's service is world-famous; let the staff guide you.",
+      steps:[
+        {dish:'Choose the split broth (鸳鸯锅)',tip:"The half-and-half lets you have spicy mala on one side and mild mushroom broth on the other. Order this for your first time."},
+        {dish:'Wagyu beef & lamb shoulder',tip:"Swish paper-thin beef slices in hot broth for 10–15 seconds only — medium-rare is the goal. Lamb shoulder takes 30 seconds."},
+        {dish:'Build your dipping sauce',tip:"At the free sauce station: sesame paste + minced garlic + cilantro + sesame oil + a touch of chili oil. This is the Haidilao 'secret sauce.'"},
+        {dish:'Request the noodle performance',tip:"Ask any staff member for the hand-pulled noodle show. They'll do a full theatrical dance at your table — free, no tip needed."},
+        {dish:'Enoki mushrooms & tofu last',tip:"Add vegetables and tofu in the final 15 minutes. They soak up the enriched broth flavor beautifully."},
+      ]},
+    regular:{
+      intro:"You know the drill. Here's how to get the most out of every visit.",
+      steps:[
+        {dish:'"Meat O\'Clock" deal',tip:"Sun–Thu after 9PM: AYCE premium meats for $19.99/person. Best value in Katy. Arrive at 9PM sharp — tables fill fast."},
+        {dish:'Off-menu brain tofu',tip:"Ask in Mandarin or show the staff '脑花' — brain tofu (pig brain) is a Sichuan delicacy, incredibly silky. Not on the English menu."},
+        {dish:'DIY hand-pulled noodles',tip:"Order flour separately and ask staff to show you how to pull noodles at your own table. Kids love this."},
+        {dish:'Fried rice finale',tip:"In the last 10 minutes, pour the now-concentrated broth into a wok pot and add fried rice. The depth of flavor at this stage is incredible."},
+      ]},
+  },
+  'Tim Ho Wan': {
+    region:"World's Most Affordable Michelin-Starred Dim Sum", firstVisit:{
+      intro:"Tim Ho Wan built its name on four iconic baked/fried items called the 'Four Heavenly Kings.' Order all four immediately.",
+      steps:[
+        {dish:'Baked BBQ Pork Buns (焗叉燒包)',tip:"The signature. Flaky, slightly sweet pastry top, molten char siu inside. Order two portions — they'll go fast."},
+        {dish:'Pan-Fried Turnip Cake (蘿蔔糕)',tip:"Crispy outside, soft inside, with subtle radish sweetness. Easier to eat than it sounds — one of the most underrated dim sum dishes."},
+        {dish:'Steamed Egg Cake (馬拉糕)',tip:"A soft, airy sponge cake with a caramel top. Order this with your tea first — it's a snack while you wait for everything else."},
+        {dish:'Vermicelli Rolls (腸粉)',tip:"Silky rice noodle sheets rolled over shrimp or char siu. Ask for extra soy sauce. The texture should be smooth and barely elastic."},
+        {dish:'Order tea first',tip:"Ask for jasmine or chrysanthemum. In Cantonese tradition, tap two fingers on the table to say thank you when someone pours your tea."},
+      ]},
+    regular:{
+      intro:"The wait is still real on weekends. Here's how regulars minimize it and maximize value.",
+      steps:[
+        {dish:'Arrive at opening (10AM)',tip:"Weekend waits hit 45–60 min by 11AM. 10AM is the secret window."},
+        {dish:'Lo Mai Gai (糯米雞)',tip:"Sticky rice in a lotus leaf with chicken, sausage, and mushroom. Hidden on the menu but worth asking for — it's filling and deeply savory."},
+        {dish:'Egg tarts at the end',tip:"Order egg tarts as dessert — fresh out of the oven with a perfectly wobbly custard center."},
+        {dish:'All-in on the Four Heavenly Kings',tip:"Still worth ordering all four every time. Never skip the baked BBQ pork buns."},
+      ]},
+  },
+  'Mala Sichuan Bistro': {
+    region:'Award-Winning Sichuan', firstVisit:{
+      intro:"Tell your server it's your first time. They'll calibrate the heat levels and walk you through what 'mala' actually means.",
+      steps:[
+        {dish:'Mala Beef (水煮牛肉)',tip:"The restaurant's signature. Thin-sliced beef in a pool of chili oil and Sichuan peppercorn. The numbness (má) sneaks up on you — start with spice level 1 or 2."},
+        {dish:'Mapo Tofu',tip:"Order the classic version. The balance of doubanjiang fermented heat, silken tofu, and numbing peppercorn is perfect here. Eat over rice."},
+        {dish:'Dan Dan Noodles',tip:"A must-order. Sesame paste, chili oil, preserved vegetables (ya cai), and ground pork over noodles. Toss immediately when it arrives."},
+        {dish:'Cucumber salad',tip:"Order the smashed cucumber to start — a cool, refreshing counterpoint to everything spicy that follows."},
+      ]},
+    regular:{
+      intro:"You've built up heat tolerance. Now go deeper into the menu.",
+      steps:[
+        {dish:'Fish in chili broth (水煮魚)',tip:"Same preparation as the mala beef but with whole fish fillets. The broth at the bottom is pure Sichuan gold — pour it over rice."},
+        {dish:'Cold appetizer platter',tip:"Ask for the cold appetizer combo — pig ear, tripe, and chicken in chili oil. An acquired taste that's deeply satisfying."},
+        {dish:'Dry pot (干锅)',tip:"Order the dry pot version of any protein — less broth, more charred wok flavor. Cauliflower dry pot is unexpectedly incredible."},
+        {dish:'Spice level 4–5',tip:"If you've been eating mala for a while, push to level 4. Your palate has adapted more than you think."},
+      ]},
+  },
+  'Kata Robata': {
+    region:"James Beard–Nominated Japanese", firstVisit:{
+      intro:"Sit at the chef's counter if possible. Tell the server your budget and let them guide the progression from lighter to richer dishes.",
+      steps:[
+        {dish:'Hama Chili (Hamachi Yellowtail)',tip:"The dish that defines the restaurant: thin-sliced yellowtail with jalapeño, yuzu, and cilantro. It's light, bright, and addictive. Order it first."},
+        {dish:'Wagyu robata skewers',tip:"The live-fire robata grill adds a smokiness no oven replicates. Wagyu short rib skewers are the house specialty."},
+        {dish:'Warm sake or sake flight',tip:"Ask the sommelier for a sake recommendation. Kata Robata has one of the best sake selections in Houston."},
+        {dish:'Uni nigiri (if available)',tip:"Ask what uni (sea urchin) they have today. When fresh, it's briny-sweet and nothing else tastes like it."},
+      ]},
+    regular:{
+      intro:"You've done the greatest hits. Now explore the seasonal menu and happy hour.",
+      steps:[
+        {dish:'Happy hour seats (4–7PM Mon–Sat)',tip:"Bar/lounge only: $2 beer, $3 wine/sake, $6 martinis, $5–$9 sushi rolls. Best deal in Houston for this quality."},
+        {dish:'Chef\'s seasonal omakase',tip:"Ask about the current omakase set — it changes with the seasons and often features fish flown in directly."},
+        {dish:'A5 Wagyu nigiri',tip:"One or two pieces, no sauce. The marbling melts at body temperature. Don't chew aggressively — let it dissolve."},
+        {dish:'Dessert: mochi ice cream',tip:"A simple but perfect ending. The housemade mochi is delicate and the flavors rotate seasonally."},
+      ]},
+  },
+  'Ramen Tatsu-Ya Katy': {
+    region:'Hakata Tonkotsu Ramen', firstVisit:{
+      intro:"Pick your broth, then customize from there. The default bowl is excellent — don't over-modify on your first visit.",
+      steps:[
+        {dish:'Original Tatsu (tonkotsu)',tip:"Start with the original. Rich pork bone broth, thin straight noodles, two slices of chashu pork, a soft-boiled marinated egg, bamboo shoots, and nori."},
+        {dish:'Noodle firmness: kata (firm)',tip:"Order noodles 'kata' (firm) — they continue cooking in the hot broth. By the time you start eating, they'll be perfect."},
+        {dish:'Chashu pork add-on',tip:"Worth the extra $3. The pork belly chashu is slow-braised for hours and melts in the broth."},
+        {dish:'Free kaedama (noodle refill)',tip:"When you're near the end of your broth, say 'kaedama' for a fresh portion of noodles added to your remaining broth. Included."},
+      ]},
+    regular:{
+      intro:"You know the base bowl. Here's how to go deeper.",
+      steps:[
+        {dish:'Spicy Red (赤) Tatsu',tip:"The red miso version has a more complex, fermented depth than the original tonkotsu. Try alternating visits between the two."},
+        {dish:'Happy hour drinks (Mon–Fri 3–5PM)',tip:"Discounted cocktails, beer, and sake. Great for an early dinner strategy to beat the wait."},
+        {dish:'Gyoza add-on',tip:"The pan-fried gyoza here are underrated. Crispy bottom, juicy pork filling. Order them as a starter."},
+        {dish:'Double chashu, extra egg',tip:"The combination of double pork belly chashu + two marinated eggs is the regulars' standard customization."},
+      ]},
+  },
+  'Gyu-Kaku Japanese BBQ': {
+    region:'Japanese Yakiniku', firstVisit:{
+      intro:"Gyu-Kaku is yakiniku — tabletop Japanese BBQ. The grill in the center is yours. Pace yourself; it's easy to overorder.",
+      steps:[
+        {dish:'Harami (skirt steak)',tip:"Gyu-Kaku's best value cut. Well-marbled, deeply beefy, and forgiving to grill (hard to overcook). Marinated in house tare."},
+        {dish:'Kalbi short ribs',tip:"The Korean-influenced cross-cut short rib. Sweet soy marinade. 45 seconds per side over high heat."},
+        {dish:'Happy hour strategy',tip:"Sun–Thu 11AM–6PM & 9–10:15PM, Fri–Sat 11AM–6PM: 100+ items at happy hour prices. Plan your visit around this."},
+        {dish:'Rice and corn',tip:"Order the kimchi fried rice and Japanese corn to share. They cook well on the grill and fill out the meal."},
+      ]},
+    regular:{
+      intro:"You've mastered the grill. Here's how regulars get maximum value.",
+      steps:[
+        {dish:'Wagyu upgrade',tip:"The A5 Wagyu belly is the one splurge worth it. Cook 10 seconds per side only — the fat melts instantly."},
+        {dish:'Tasting set vs. à la carte',tip:"The group tasting set (for 2+) is consistently better value than ordering à la carte. Do the math before you order."},
+        {dish:'Crispy rice bites',tip:"Ask for the rice balls near the end — press leftover rice against the hot grill to make crispy yaki-onigiri. Not on the menu but the grill is yours."},
+      ]},
+  },
+  'Kura Revolving Sushi Bar': {
+    region:'Conveyor Belt Sushi', firstVisit:{
+      intro:"Kura is a kaitenzushi (revolving sushi) restaurant. Plates move past on a belt; touch the screen to order anything you want directly too.",
+      steps:[
+        {dish:'Grab plates from the belt',tip:"Colored plates = different prices ($3.50–$6+). Take anything that looks good as it passes."},
+        {dish:'Use the touchscreen to order',tip:"Don't rely only on the belt — the screen lets you order specific items that arrive on a mini bullet train to your table."},
+        {dish:'Salmon, tuna, and scallop nigiri',tip:"The freshest items. Kura sources fish daily. The spicy tuna roll is a crowd favorite."},
+        {dish:'Bikkura-Pon machine',tip:"Every 15 plates you eat, a capsule toy game spins — press the button and a capsule toy drops. It's automatic, no extra cost."},
+        {dish:'Hot items button',tip:"There's a separate screen section for hot foods — karaage, gyoza, miso soup, and desserts. Don't miss it."},
+      ]},
+    regular:{
+      intro:"You know how the belt works. Here's how to maximize value and timing.",
+      steps:[
+        {dish:'Arrive 11AM or after 7PM',tip:"11AM opening is the freshest fish. After 7PM, the kitchen restocks. Avoid 12–1PM and 6–7PM rushes."},
+        {dish:'Watch for seasonal specials',tip:"Kura rotates seasonal fish and collaboration menu items (anime, holiday themes). Check the announcement board when you enter."},
+        {dish:'The Bikkura-Pon strategy',tip:"Some regulars pace their orders to hit the 15-plate mark at the end of the meal so they don't have to wait mid-meal."},
+      ]},
+  },
+  'Ocean Palace': {
+    region:'Hong Kong Dim Sum', firstVisit:{
+      intro:"Ocean Palace is a traditional Cantonese dim sum palace with cart service. Carts come to you — wave down the ones that interest you.",
+      steps:[
+        {dish:'Har Gow first',tip:"Order har gow (crystal shrimp dumplings) from the first cart that passes. It benchmarks the kitchen quality. Skin should be translucent and not torn."},
+        {dish:'Siu Mai (Pork & Shrimp)',tip:"The round open-top dumpling with pork and shrimp filling, topped with orange fish roe. Two per order; they go fast from the cart."},
+        {dish:'Cheung Fun (Rice Noodle Roll)',tip:"Silky rice noodle sheets rolled over shrimp or char siu. Ask for the one with soy sauce poured tableside."},
+        {dish:'Turnip cake (蘿蔔糕)',tip:"Pan-fried slices of grated daikon radish cake. Crispy outside, soft inside. Often overlooked but one of the best dim sum dishes."},
+        {dish:'Come early',tip:"Dim sum is a morning tradition — arrive 10AM–noon for peak freshness and the widest cart selection."},
+      ]},
+    regular:{
+      intro:"You know the dim sum staples. Here's what the regulars order that tourists miss.",
+      steps:[
+        {dish:'Mamba Rewards sign-up',tip:"Sign up at oceanpalacehouston.com/rewards/ for an $8 welcome credit. Use it on a weekend brunch visit."},
+        {dish:'Tripe (牛百葉)',tip:"Braised honeycomb tripe in star anise and soy. Tender and deeply flavored — one of the great Cantonese offal dishes."},
+        {dish:'Char Siu Bao (BBQ Pork Buns)',tip:"Both the steamed and baked versions are available here. The baked version (baked, honey-glazed) is harder to find and worth ordering."},
+        {dish:'Taro dumpling (芋角)',tip:"Deep-fried purple taro shell with a crispy lace exterior and pork filling inside. Technically challenging to make — a kitchen's pride dish."},
+      ]},
+  },
+  'Uchi Houston': {
+    region:'New-Wave Japanese / James Beard', firstVisit:{
+      intro:"Uchi's menu is designed for sharing. Order 6–8 dishes for two people; the kitchen will pace them well. Tell your server if it's a special occasion.",
+      steps:[
+        {dish:'Hama Chili',tip:"The dish that made Uchi famous: thin-sliced yellowtail with ponzu, jalapeño, and crispy capers. It looks tiny but has layers of flavor. It will appear in your food memories forever."},
+        {dish:'Madai Sashimi',tip:"Japanese sea bream with yuzu kosho, olive oil, and sea salt. Ask the server to describe the fish — knowing where it's from makes it taste better."},
+        {dish:'Sake pairing',tip:"Ask for a sake flight matched to your dishes. Uchi's sake program is one of the best in Texas."},
+        {dish:'Happy hour at the bar (4–6PM daily)',tip:"$6 cocktails, $5 wine, $4 beer, $3 sake. Arrive at 4PM to guarantee a bar seat."},
+      ]},
+    regular:{
+      intro:"You've done the classics. Time to explore the rotating menu and the Oheya room.",
+      steps:[
+        {dish:'Oheya omakase ($50)',tip:"A private 12-seat room with a 10-course chef-driven menu for $50/person. Reserve weeks ahead — Wed–Sun at 5PM & 6:15PM only."},
+        {dish:'Seasonal nigiri list',tip:"Ask what fish is on the nigiri list today. Uchi gets special-sourced fish weekly — it won't be the same on any two visits."},
+        {dish:'A5 Wagyu preparation',tip:"When available, ask how the wagyu is prepared that week. The preparation changes — sometimes tataki, sometimes torched, sometimes raw."},
+      ]},
+  },
+  'Crawfish & Noodles': {
+    region:'Viet-Cajun Seafood', firstVisit:{
+      intro:"Crawfish & Noodles invented the Houston Viet-Cajun style. Order by the pound. First-timers often under-order — get more than you think you need.",
+      steps:[
+        {dish:'The house blend sauce',tip:"Ask for the 'original house delight' butter-garlic-Cajun sauce. It's the sauce that put Houston on the food map. Get it on everything."},
+        {dish:'Crawfish by the pound (in season Jan–May)',tip:"Start with 2 lbs per person. Pinch the tail, suck the head (the fat inside is the best part), peel and eat. There's no graceful way."},
+        {dish:'Garlic butter noodles',tip:"The must-order side. Egg noodles in the same garlic butter sauce. Order a bowl for the table to mop up the seafood juices."},
+        {dish:'Snow crab legs',tip:"If crawfish are off season, snow crab legs in house sauce are an excellent substitute. One cluster per person."},
+      ]},
+    regular:{
+      intro:"You can peel crawfish in your sleep. Here's what else the kitchen does well.",
+      steps:[
+        {dish:'Happy hour (Mon–Fri 3–6PM)',tip:"$1 oysters, $4 cocktails, $10 beer. Best happy hour deal in Houston Chinatown. Arrive early for bar seats."},
+        {dish:'Oysters on the half shell',tip:"The $1 oysters at happy hour are fresh Gulf oysters, shucked to order. Order a dozen minimum."},
+        {dish:'King crab upgrade',tip:"King crab legs are the premium splurge — only order when they run a special. The house sauce on king crab is transcendent."},
+        {dish:'Bring large groups',tip:"The restaurant is designed for groups of 6–10. More people = more variety of seafood ordered = better meal."},
+      ]},
+  },
+  'Phat Eatery': {
+    region:'Modern Malaysian / James Beard Nominee', firstVisit:{
+      intro:"Chef Alex Au-Yeung is a James Beard nominee. Tell your server you're new — they'll walk you through the Malaysian dishes that have no easy Western equivalent.",
+      steps:[
+        {dish:'Hainanese Chicken Rice',tip:"The benchmark dish. Poached chicken over fragrant coconut rice with ginger sauce, dark soy, and chili. Deceptively simple, extraordinarily complex."},
+        {dish:'Roti Canai',tip:"A layered, flaky flatbread made by repeatedly folding dough with butter or ghee. Tear it into pieces and dip in the curry dhal."},
+        {dish:'Beef Rendang',tip:"A slow-braised dry coconut curry — rich, complex, with over 20 spices. One of the most complex curry dishes in the world. Not spicy, but deeply aromatic."},
+        {dish:'Happy hour (3–6PM daily)',tip:"$10 cocktails, $6 wines, $5 beer. The happy hour small plates include versions of Kerabu Prawn and Sizzling Beef — order them."},
+      ]},
+    regular:{
+      intro:"You appreciate the complexity. Here's where to go deeper.",
+      steps:[
+        {dish:'Laksa',tip:"When available as a special, order it. Phat's version of the spicy coconut noodle soup is outstanding."},
+        {dish:'Nasi Lemak',tip:"Coconut rice with sambal, fried anchovies, boiled egg, cucumber, and peanuts. Malaysia's national dish; a perfect test of the kitchen."},
+        {dish:'Drink specials',tip:"The cocktail program here is underrated. Ask the bartender what's seasonal — the drinks are inspired by Malaysian ingredients."},
+      ]},
+  },
+  "Aga's Restaurant & Catering": {
+    region:"Houston's #1 Halal Pakistani-Indian", firstVisit:{
+      intro:"Aga's is Houston's most-reviewed restaurant. The biryani and kabab are the reason. Order both and a lassi to drink.",
+      steps:[
+        {dish:'Halal Biryani',tip:"The reason people drive from across Houston. Fragrant basmati, slow-cooked meat, caramelized onions, and whole spices. Choose beef, chicken, or goat."},
+        {dish:'Beef Kabab Platter',tip:"Seekh kababs (minced beef on skewers) grilled over charcoal. The smoky char is everything. Order a half platter as a starter."},
+        {dish:'Raita and chutney',tip:"Always ask for the mint chutney and raita. These are not optional — they balance the spiced rice and the richness of the meat."},
+        {dish:'Mango Lassi',tip:"The house mango lassi uses Alfonso mango pulp. It's a dessert in a glass and cools the palate between bites."},
+      ]},
+    regular:{
+      intro:"You've had the biryani. Here's the deeper menu.",
+      steps:[
+        {dish:'Nihari (Friday special)',tip:"Ask if nihari is available — slow-braised beef shank in a thick, aromatic broth. Pakistan's breakfast of kings, best eaten over the weekend."},
+        {dish:'Haleem',tip:"A thick stew of lentils, wheat, and braised beef, slow-cooked for hours until the meat breaks down. Earthy, deeply satisfying."},
+        {dish:'Catering for groups',tip:"Aga's catering menu is excellent for large gatherings. Order the biryani party tray 48 hours ahead."},
+      ]},
+  },
+};
+
 // PROMOTIONS — only real, verified deals are listed here.
 // Sources are cited for each entry. Unverified claims have been removed.
 const PROMOTIONS = {
@@ -4740,6 +5134,69 @@ function getActivePromos(restaurantName) {
 }
 
 /* ─────────────────────────────────────────────────────
+   FESTIVAL BANNER
+───────────────────────────────────────────────────── */
+let _festivalDismissed = null;
+function getActiveFestival() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (const f of FESTIVALS) {
+    for (const [s,e] of f.windows) {
+      const start = new Date(s); start.setHours(0,0,0,0);
+      const end   = new Date(e); end.setHours(23,59,59,999);
+      if (today >= start && today <= end) {
+        const peakDate = f.peak ? new Date(f.peak[0]) : start;
+        const isLive = today >= peakDate && today <= new Date(peakDate.getTime() + 3*24*60*60*1000);
+        return { ...f, isLive };
+      }
+    }
+  }
+  return null;
+}
+function renderFestivalBanner(wrap) {
+  document.getElementById('festivalBanner') && document.getElementById('festivalBanner').remove();
+  const f = getActiveFestival();
+  if (!f || _festivalDismissed === f.id) return;
+  const banner = document.createElement('div');
+  banner.id = 'festivalBanner';
+  banner.className = 'festival-banner' + (f.isLive ? ' fb-live' : '');
+  banner.innerHTML = `
+    <div class="fb-emoji">${f.emoji}</div>
+    <div class="fb-body">
+      <div class="fb-label">${f.isLive ? '🔴 Happening Now' : '📅 Coming Soon'}</div>
+      <div class="fb-title">${f.name}</div>
+      <div class="fb-tagline">${f.tagline}</div>
+      <div class="fb-tip">${f.tip}</div>
+      <div class="fb-dishes">${f.dishes.map(d=>`<span class="fb-dish">${d}</span>`).join('')}</div>
+    </div>
+    <button class="fb-dismiss" onclick="dismissFestival('${f.id}')" title="Dismiss">✕</button>`;
+  wrap.insertBefore(banner, wrap.firstChild);
+}
+function dismissFestival(id) {
+  _festivalDismissed = id;
+  const el = document.getElementById('festivalBanner');
+  if (el) el.remove();
+}
+
+/* ─────────────────────────────────────────────────────
+   GLOSSARY MARKUP — wraps known dish names in cards
+───────────────────────────────────────────────────── */
+const _GLOSSARY_KEYS = Object.keys(GLOSSARY).sort((a,b) => b.length - a.length); // longest first
+function glossaryify(text) {
+  // Strip emoji prefix then process, then put it back
+  const emojiMatch = text.match(/^(\p{Emoji_Presentation}|\p{Emoji}️)\s*/u);
+  const prefix = emojiMatch ? emojiMatch[0] : '';
+  let rest = text.slice(prefix.length);
+  for (const key of _GLOSSARY_KEYS) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const re = new RegExp(`(?<![\\w>])(${escaped})(?![\\w<])`, 'i');
+    rest = rest.replace(re, m =>
+      `<span class="glossary-term" onclick="openGlossary('${key.replace(/'/g,"\\'")}');event.stopPropagation()">${m}</span>`
+    );
+  }
+  return prefix + rest;
+}
+
+/* ─────────────────────────────────────────────────────
    REGIONAL SUBTYPE DETECTION
 ───────────────────────────────────────────────────── */
 function getRegion(r) {
@@ -4853,7 +5310,7 @@ function renderCard(r) {
         <span class="sig-icon">火</span>
         <div>
           <div class="card-signature-label">Must Order</div>
-          <div class="card-signature-dish">${r.signature}</div>
+          <div class="card-signature-dish">${glossaryify(r.signature)}</div>
         </div>
       </div>
       <div class="card-footer">
@@ -4876,6 +5333,7 @@ function renderCard(r) {
         📋 Menu
       </button>
       ${(function(){ const p = getActivePromos(r.name); return p.length ? `<button class="ca-btn promo-btn" onclick="openPromoModal(${r.id}); event.stopPropagation()">🎟️ Promo <span class="promo-card-badge">x${p.length}</span></button>` : ''; })()}
+      ${ORDERING_GUIDES[r.name] ? `<button class="ca-btn" onclick="openGuideModal(${r.id});event.stopPropagation()">📖 Guide</button>` : ''}
     </div>`;
 
   /* Mouse glow effect */
@@ -5038,6 +5496,7 @@ function isCafe(r) { return getVenueType(r) !== 'restaurant'; }
 function render() {
   const wrap = document.getElementById('gridWrap');
   wrap.innerHTML = '';
+  renderFestivalBanner(wrap);
 
   // ── Deals tab: show only restaurants with active promotions ──
   if (activeCity === 'deals') {
@@ -7925,6 +8384,61 @@ function closeProofFullscreen() {
   // kept as no-op in case any old reference remains
   return;
 }
+
+/* ── Glossary ── */
+function openGlossary(key) {
+  const g = GLOSSARY[key]; if (!g) return;
+  const varHtml = g.variations && g.variations.length
+    ? `<div class="gl-section">Common Variations</div><ul class="gl-list">${g.variations.map(v=>`<li>${v}</li>`).join('')}</ul>`
+    : '';
+  const eatHtml = g.howToEat
+    ? `<div class="gl-section">How to Eat It</div><p style="font-size:0.82rem;line-height:1.6;color:var(--text);margin:0 0 10px">${g.howToEat}</p>`
+    : '';
+  document.getElementById('glContent').innerHTML = `
+    <div class="gl-name">${key}</div>
+    ${g.aka ? `<div class="gl-aka">${g.aka}</div>` : ''}
+    <span class="gl-origin">📍 ${g.origin}</span>
+    <p class="gl-desc">${g.desc}</p>
+    ${eatHtml}${varHtml}`;
+  document.getElementById('glossaryModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeGlossary() {
+  document.getElementById('glossaryModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── Ordering Guide ── */
+function openGuideModal(id) {
+  const r = window._rMap && window._rMap[id]; if (!r) return;
+  const g = ORDERING_GUIDES[r.name]; if (!g) return;
+  document.getElementById('guideName').textContent = r.name;
+  document.getElementById('guideSub').textContent = g.region || '';
+  function buildSection(data) {
+    if (!data) return '';
+    const items = data.steps.map((s,i) => `
+      <div class="guide-item">
+        <div class="guide-num">${i+1}</div>
+        <div><div class="guide-dish">${s.dish}</div><div class="guide-tip">${s.tip}</div></div>
+      </div>`).join('');
+    return `<div class="guide-intro">${data.intro}</div>${items}`;
+  }
+  document.getElementById('secFV').innerHTML  = buildSection(g.firstVisit);
+  document.getElementById('secReg').innerHTML = buildSection(g.regular);
+  switchGuideTab('firstVisit');
+  document.getElementById('guideModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function switchGuideTab(tab) {
+  document.getElementById('tabFV').classList.toggle('active', tab==='firstVisit');
+  document.getElementById('tabReg').classList.toggle('active', tab==='regular');
+  document.getElementById('secFV').classList.toggle('active',  tab==='firstVisit');
+  document.getElementById('secReg').classList.toggle('active', tab==='regular');
+}
+function closeGuideModal() {
+  document.getElementById('guideModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 <!-- ── Promo Modal ── -->
 <div id="promoModal" onclick="if(event.target===this)closePromoModal()">
@@ -7934,6 +8448,33 @@ function closeProofFullscreen() {
     <p class="promo-modal-rest" id="promoRestName"></p>
     <p class="promo-modal-sub" id="promoRestSub"></p>
     <div id="promoItemsContainer"></div>
+  </div>
+</div>
+
+<!-- ── Glossary Modal ── -->
+<div id="glossaryModal" onclick="if(event.target===this)closeGlossary()">
+  <div class="gl-box">
+    <button class="gl-close" onclick="closeGlossary()">✕</button>
+    <div id="glContent"></div>
+  </div>
+</div>
+
+<!-- ── Ordering Guide Modal ── -->
+<div id="guideModal" onclick="if(event.target===this)closeGuideModal()">
+  <div class="guide-box">
+    <div class="guide-head">
+      <button class="guide-close" onclick="closeGuideModal()">✕</button>
+      <div class="guide-rest" id="guideName"></div>
+      <div class="guide-sub" id="guideSub"></div>
+      <div class="guide-tabs">
+        <button class="guide-tab active" id="tabFV" onclick="switchGuideTab('firstVisit')">🌱 First Visit</button>
+        <button class="guide-tab" id="tabReg" onclick="switchGuideTab('regular')">⭐ Regular</button>
+      </div>
+    </div>
+    <div class="guide-body">
+      <div class="guide-section active" id="secFV"></div>
+      <div class="guide-section" id="secReg"></div>
+    </div>
   </div>
 </div>
 

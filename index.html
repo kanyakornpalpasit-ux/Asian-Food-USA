@@ -444,63 +444,124 @@
       20%,22%,56%                 { text-shadow: none; opacity: 0.7; }
     }
 
-    /* casino table */
+    /* ── SLOT MACHINE ── */
     .casino-dice-screen { text-align: center; }
-    .casino-table {
-      background: radial-gradient(ellipse, #0b3d1f 0%, #072912 100%);
-      border: 3px solid #8B6914; border-radius: 50%;
-      width: 220px; height: 220px; margin: 0 auto 14px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 0 6px #5a4010, 0 0 40px rgba(196,163,87,0.25), inset 0 0 40px rgba(0,0,0,0.5);
-      position: relative; perspective: 600px;
+    .slot-machine {
+      background: linear-gradient(175deg, #2c1a06 0%, #1a0a00 55%, #0d0600 100%);
+      border: 3px solid #8B6914; border-radius: 20px;
+      width: 290px; margin: 0 auto 10px; overflow: hidden;
+      box-shadow: 0 0 0 1px #5a4010, 0 20px 60px rgba(0,0,0,0.8),
+                  inset 0 1px 0 rgba(255,255,255,0.08);
     }
-    .casino-shadow {
-      position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
-      width: 120px; height: 20px; border-radius: 50%;
-      background: rgba(0,0,0,0.5); filter: blur(8px);
+    .slot-machine.winning {
+      animation: slotWin 0.35s ease-in-out 4;
     }
+    @keyframes slotWin {
+      0%,100% { border-color:#8B6914; box-shadow:0 0 0 1px #5a4010,0 20px 60px rgba(0,0,0,0.8); }
+      50%     { border-color:#ffd700; box-shadow:0 0 0 2px #ffd700,0 0 50px rgba(255,215,0,0.5); }
+    }
+    /* top chase lights */
+    .slot-lights {
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 9px 14px; background: #0d0a00;
+      border-bottom: 2px solid #5a4010;
+    }
+    .slot-lights span {
+      width: 13px; height: 13px; border-radius: 50%;
+      background: #2a1a00; border: 1px solid #4a3000;
+      transition: background 0.1s, box-shadow 0.1s;
+      display: inline-block;
+    }
+    .slot-lights span.lit-r { background:#ff4444; box-shadow:0 0 7px #ff4444,0 0 14px #ff2200; }
+    .slot-lights span.lit-g { background:#44ff88; box-shadow:0 0 7px #44ff88,0 0 14px #00ff44; }
+    .slot-lights span.lit-y { background:#ffd700; box-shadow:0 0 7px #ffd700,0 0 14px #ff8c00; }
 
-    /* 3D DICE */
-    .dice-scene { width: 80px; height: 80px; perspective: 400px; cursor: pointer; }
-    .dice {
-      width: 80px; height: 80px;
-      transform-style: preserve-3d;
-      transform: rotateX(-20deg) rotateY(20deg);
-      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    /* reel area */
+    .slot-reels-area {
+      padding: 14px 14px 10px; position: relative;
+      background: radial-gradient(ellipse at center, #1a0a00 0%, #080400 100%);
+    }
+    .slot-reels {
+      display: flex; gap: 5px; height: 90px;
+      border-radius: 8px; overflow: hidden;
+      border: 2px solid #3a2500;
+      background: #000;
       position: relative;
     }
-    .dice.rolling {
-      animation: diceRoll 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* payline glow */
+    .slot-reels::after {
+      content: ''; position: absolute; left: 0; right: 0;
+      top: 50%; transform: translateY(-50%);
+      height: 30px; pointer-events: none; z-index: 3;
+      border-top: 1px solid rgba(255,60,60,0.5);
+      border-bottom: 1px solid rgba(255,60,60,0.5);
+      box-shadow: inset 0 0 8px rgba(255,60,60,0.15);
     }
-    @keyframes diceRoll {
-      0%   { transform: rotateX(-20deg) rotateY(20deg) translateY(0); }
-      15%  { transform: rotateX(200deg) rotateY(340deg) translateY(-40px); }
-      35%  { transform: rotateX(480deg) rotateY(720deg) translateY(-20px); }
-      55%  { transform: rotateX(700deg) rotateY(1060deg) translateY(-10px); }
-      70%  { transform: rotateX(820deg) rotateY(1280deg) translateY(-4px); }
-      85%  { transform: rotateX(900deg) rotateY(1420deg) translateY(-1px); }
-      100% { transform: rotateX(var(--rx,900deg)) rotateY(var(--ry,1440deg)) translateY(0); }
+    .slot-window {
+      flex: 1; overflow: hidden; position: relative;
+      border-right: 1px solid #2a1800;
     }
-    .face {
-      position: absolute; width: 80px; height: 80px;
-      border-radius: 14px; font-size: 2.2rem;
+    .slot-window:last-child { border-right: none; }
+    .slot-reel {
+      display: flex; flex-direction: column; align-items: center;
+      will-change: transform;
+    }
+    .slot-reel-item {
+      width: 100%; height: 30px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      border: 2px solid rgba(255,255,255,0.15);
-      backface-visibility: hidden;
+      font-size: 1.35rem; line-height: 1;
     }
-    .face.front  { background: linear-gradient(135deg,#c0392b,#8B0000); transform: translateZ(40px); box-shadow: inset 0 0 20px rgba(0,0,0,0.3); }
-    .face.back   { background: linear-gradient(135deg,#1a237e,#0d47a1); transform: rotateY(180deg) translateZ(40px); }
-    .face.right  { background: linear-gradient(135deg,#1b5e20,#2e7d32); transform: rotateY(90deg) translateZ(40px); }
-    .face.left   { background: linear-gradient(135deg,#4a148c,#6a1b9a); transform: rotateY(-90deg) translateZ(40px); }
-    .face.top    { background: linear-gradient(135deg,#e65100,#bf360c); transform: rotateX(90deg) translateZ(40px); }
-    .face.bottom { background: linear-gradient(135deg,#006064,#00838f); transform: rotateX(-90deg) translateZ(40px); }
+    /* top / bottom fade mask */
+    .slot-reels-mask {
+      position: absolute; inset: 0; pointer-events: none; z-index: 4;
+      background: linear-gradient(180deg,
+        rgba(8,4,0,0.85) 0%, transparent 28%,
+        transparent 72%, rgba(8,4,0,0.85) 100%);
+    }
 
-    /* idle bounce */
-    @keyframes diceIdle {
-      0%,100% { transform: rotateX(-20deg) rotateY(20deg) translateY(0); }
-      50%     { transform: rotateX(-15deg) rotateY(28deg) translateY(-6px); }
+    /* handle + spin button row */
+    .slot-footer {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px 14px; background: #0d0800;
+      border-top: 2px solid #3a2200;
     }
-    .dice.idle { animation: diceIdle 2.4s ease-in-out infinite; }
+    .slot-handle-col { display: flex; flex-direction: column; align-items: center; }
+    .slot-handle {
+      cursor: pointer; display: flex; flex-direction: column; align-items: center;
+      gap: 0; transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+      user-select: none; -webkit-user-select: none; touch-action: manipulation;
+    }
+    .slot-arm {
+      width: 7px; height: 38px;
+      background: linear-gradient(90deg, #777, #ccc 50%, #777);
+      border-radius: 4px 4px 0 0;
+    }
+    .slot-knob {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ff6666, #8B0000);
+      border: 2px solid rgba(255,120,120,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; box-shadow: 0 0 8px rgba(255,50,50,0.5);
+    }
+    .slot-handle.pulled { transform: translateY(18px) scaleX(0.96); }
+    .slot-handle.pulled .slot-knob {
+      box-shadow: 0 0 18px rgba(255,80,80,0.9), 0 0 40px rgba(255,50,50,0.5);
+    }
+    .slot-center { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .slot-spin-btn {
+      background: linear-gradient(135deg, #b8860b 0%, #ffd700 50%, #b8860b 100%);
+      color: #1a0a00; font-weight: 900; font-size: 0.88rem; letter-spacing: 0.06em;
+      border: none; border-radius: 50px; padding: 10px 28px;
+      cursor: pointer; box-shadow: 0 4px 18px rgba(255,215,0,0.35);
+      transition: transform 0.12s, box-shadow 0.12s; width: 100%;
+    }
+    .slot-spin-btn:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 28px rgba(255,215,0,0.55); }
+    .slot-spin-btn:active:not(:disabled) { transform: scale(0.97); }
+    .slot-spin-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .slot-credits {
+      font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(196,163,87,0.5); font-weight: 700;
+    }
 
     .casino-hint {
       color: rgba(196,163,87,0.7); font-size: 0.78rem; letter-spacing: 0.1em;
@@ -3322,22 +3383,38 @@
     <!-- neon sign -->
     <div class="casino-neon">✦ LUCKY ROLL ✦</div>
 
-    <!-- dice screen -->
+    <!-- slot machine screen -->
     <div class="casino-dice-screen" id="casinoDiceScreen">
-      <div class="casino-table">
-        <div class="dice-scene" id="diceScene" onclick="rollTheDice()" style="cursor:pointer">
-          <div class="dice" id="theDice">
-            <div class="face front">食</div>
-            <div class="face back">和</div>
-            <div class="face right">中</div>
-            <div class="face left">한</div>
-            <div class="face top">越</div>
-            <div class="face bottom">台</div>
+      <div class="slot-machine" id="slotMachine">
+        <!-- chase lights -->
+        <div class="slot-lights" id="slotLights">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <!-- reels -->
+        <div class="slot-reels-area">
+          <div class="slot-reels">
+            <div class="slot-window"><div class="slot-reel" id="reel1"></div></div>
+            <div class="slot-window"><div class="slot-reel" id="reel2"></div></div>
+            <div class="slot-window"><div class="slot-reel" id="reel3"></div></div>
+          </div>
+          <div class="slot-reels-mask"></div>
+        </div>
+        <!-- footer: handle + spin button -->
+        <div class="slot-footer">
+          <div class="slot-handle-col">
+            <div class="slot-handle" id="slotHandle" onclick="spinSlots()">
+              <div class="slot-arm"></div>
+              <div class="slot-knob">🎰</div>
+            </div>
+          </div>
+          <div class="slot-center">
+            <button class="slot-spin-btn" id="slotSpinBtn" onclick="spinSlots()">▶ SPIN</button>
+            <div class="slot-credits">TAP TO PICK YOUR NEXT MEAL</div>
           </div>
         </div>
-        <div class="casino-shadow"></div>
       </div>
-      <p class="casino-hint">Click the dice to roll!</p>
+      <p class="casino-hint" id="slotHint">Pull the lever or press SPIN!</p>
       <div class="casino-sparks" id="casinoSparks"></div>
     </div>
 
@@ -6740,6 +6817,59 @@ document.querySelectorAll('.quick-action-btn').forEach(btn => {
 ───────────────────────────────────────────────────── */
 var _casinoRolling = false;
 var _casinoFiltered = [];
+var _slotSpinning  = false;
+var _lightTimer    = null;
+
+var _SLOT_SYMBOLS = ['🍜','🥟','🍣','🌶️','🥩','🍛','🦞','🍱','🧋','🍚','🫕','🍤','🥗','🧆','🍙'];
+var _SLOT_ITEM_H  = 30; // px — must match .slot-reel-item height in CSS
+
+function _buildReels() {
+  ['reel1','reel2','reel3'].forEach(function(id, col) {
+    var reel = document.getElementById(id);
+    if (!reel) return;
+    reel.innerHTML = '';
+    reel.style.cssText = 'transition:none;transform:translateY(0);filter:none';
+    // 60 items gives plenty of scroll room (~1800px)
+    for (var i = 0; i < 60; i++) {
+      var div = document.createElement('div');
+      div.className = 'slot-reel-item';
+      div.textContent = _SLOT_SYMBOLS[(col * 4 + i) % _SLOT_SYMBOLS.length];
+      reel.appendChild(div);
+    }
+  });
+}
+
+function _startLights() {
+  var lights = document.getElementById('slotLights');
+  if (!lights) return;
+  var spans = lights.querySelectorAll('span');
+  var frame = 0;
+  var colors = ['lit-r','lit-y','lit-g'];
+  _lightTimer = setInterval(function() {
+    spans.forEach(function(s, i) {
+      s.className = ((i + frame) % 3 === 0) ? colors[frame % 3] : '';
+    });
+    frame++;
+  }, 100);
+}
+
+function _stopLights(win) {
+  clearInterval(_lightTimer); _lightTimer = null;
+  var lights = document.getElementById('slotLights');
+  if (!lights) return;
+  lights.querySelectorAll('span').forEach(function(s, i) {
+    s.className = win ? (i % 2 === 0 ? 'lit-y' : 'lit-g') : '';
+  });
+}
+
+function _winFlash() {
+  var machine = document.getElementById('slotMachine');
+  if (machine) {
+    machine.classList.add('winning');
+    setTimeout(function(){ machine.classList.remove('winning'); }, 1500);
+  }
+  _casinoSpawnSparks();
+}
 
 function _casinoSpawnSparks() {
     var container = document.getElementById('casinoSparks');
@@ -6791,34 +6921,113 @@ function _casinoSpawnSparks() {
     _casinoSpawnSparks();
   }
 
-function rollTheDice() {
-  if (_casinoRolling) return;
+function spinSlots() {
+  if (_slotSpinning) return;
   if (!_casinoFiltered.length) { alert('No restaurants match your filters!'); return; }
-  _casinoRolling = true;
+  _slotSpinning = true;
 
-  var dice = document.getElementById('theDice');
-  var spins = [[0,0],[0,180],[0,-90],[0,90],[-90,0],[90,0]];
-  var pick  = spins[Math.floor(Math.random() * spins.length)];
-  var fullX = 720 + pick[0];
-  var fullY = 1440 + pick[1];
+  // Animate handle pull
+  var handle = document.getElementById('slotHandle');
+  if (handle) {
+    handle.classList.add('pulled');
+    setTimeout(function(){ handle.classList.remove('pulled'); }, 380);
+  }
 
-  dice.classList.remove('idle','rolling');
-  dice.style.setProperty('--rx', fullX + 'deg');
-  dice.style.setProperty('--ry', fullY + 'deg');
-  void dice.offsetWidth;
-  dice.classList.add('rolling');
+  // Disable spin button
+  var btn = document.getElementById('slotSpinBtn');
+  if (btn) btn.disabled = true;
 
-  var hint = document.querySelector('.casino-hint');
-  if (hint) hint.textContent = '🎲 Rolling…';
+  var hint = document.getElementById('slotHint');
+  if (hint) hint.textContent = '🎰 Spinning…';
 
-  setTimeout(function() {
-    _casinoRolling = false;
-    _casinoSpawnSparks();
-    dice.classList.remove('rolling');
-    dice.style.transform = 'rotateX(' + fullX + 'deg) rotateY(' + fullY + 'deg)';
-    var r = _casinoFiltered[Math.floor(Math.random() * _casinoFiltered.length)];
-    setTimeout(function(){ _casinoShowResult(r); }, 200);
-  }, 1300);
+  _buildReels();
+  _startLights();
+
+  // Pick the restaurant now so reel 3 can show its cuisine emoji as the centre item
+  var r = _casinoFiltered[Math.floor(Math.random() * _casinoFiltered.length)];
+  var cuisineEmoji = {
+    chinese:'🥟', japanese:'🍣', korean:'🥩', thai:'🌶️',
+    vietnamese:'🍜', indian:'🍛', singaporean:'🦞', taiwanese:'🧋'
+  };
+  var winEmoji = cuisineEmoji[r.cuisine] || '🍱';
+
+  // How many items to scroll per reel (multiples of 1 item so snap is clean)
+  // Reel 3 lands so winEmoji is in the centre row (index 30 → offset 30*ITEM_H)
+  var SCROLL = [22, 27, 30]; // items scrolled before each reel locks
+
+  // Force reel3's centre slot to the winner emoji
+  var reel3 = document.getElementById('reel3');
+  if (reel3) reel3.children[SCROLL[2]].textContent = winEmoji;
+
+  var lockAt = [950, 1550, 2200]; // ms each reel locks
+
+  function spinReel(reelId, scrollItems, lockMs, onDone) {
+    var reel = document.getElementById(reelId);
+    if (!reel) { setTimeout(onDone, lockMs); return; }
+
+    var targetY   = -(scrollItems * _SLOT_ITEM_H);
+    var startTs   = null;
+    var lastY     = 0;
+    var BASE_SPD  = 720; // px/s at full speed
+
+    function step(ts) {
+      if (!startTs) startTs = ts;
+      var elapsed = ts - startTs;
+      var t = Math.min(elapsed / lockMs, 1);
+
+      // Ease: ramp up 0→0.12, full speed 0.12→0.72, ease-out 0.72→1
+      var speed;
+      if      (t < 0.12) speed = t / 0.12;
+      else if (t < 0.72) speed = 1;
+      else               speed = 1 - Math.pow((t - 0.72) / 0.28, 0.6) * 0.92;
+
+      lastY -= BASE_SPD * speed * (1 / 60);
+
+      // Clamp so we don't over-scroll past target
+      if (lastY < targetY) lastY = targetY;
+
+      reel.style.transform = 'translateY(' + lastY.toFixed(1) + 'px)';
+      reel.style.filter    = speed > 0.55 ? 'blur(' + (speed * 2.5).toFixed(1) + 'px)' : '';
+
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // Snap exactly to target, then bounce
+        reel.style.filter    = '';
+        reel.style.transform = 'translateY(' + targetY + 'px)';
+        // overshoot bounce
+        setTimeout(function() {
+          reel.style.transition = 'transform 0.18s cubic-bezier(0.34,1.56,0.64,1)';
+          reel.style.transform  = 'translateY(' + (targetY + 5) + 'px)';
+          setTimeout(function() {
+            reel.style.transition = 'transform 0.14s ease-in-out';
+            reel.style.transform  = 'translateY(' + targetY + 'px)';
+            setTimeout(function() { reel.style.transition = 'none'; onDone(); }, 150);
+          }, 180);
+        }, 20);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var doneCount = 0;
+  function onReelDone() {
+    doneCount++;
+    if (doneCount < 3) return;
+    // All three reels locked
+    _stopLights(true);
+    _winFlash();
+    if (hint) hint.textContent = '✦ Your pick is ready! ✦';
+    setTimeout(function() {
+      _slotSpinning = false;
+      if (btn) btn.disabled = false;
+      _casinoShowResult(r);
+    }, 700);
+  }
+
+  spinReel('reel1', SCROLL[0], lockAt[0], onReelDone);
+  spinReel('reel2', SCROLL[1], lockAt[1], onReelDone);
+  spinReel('reel3', SCROLL[2], lockAt[2], onReelDone);
 }
 
 function surpriseMe() {
@@ -6837,16 +7046,15 @@ function surpriseMe() {
   document.getElementById('casinoDiceScreen').style.display = 'block';
   document.getElementById('casinoReveal').style.display     = 'none';
 
-  var dice = document.getElementById('theDice');
-  dice.classList.remove('rolling');
-  dice.style.transform = '';
-  dice.style.removeProperty('--rx');
-  dice.style.removeProperty('--ry');
-  void dice.offsetWidth;
-  dice.classList.add('idle');
+  // Reset slot machine state
+  _slotSpinning = false;
+  _stopLights(false);
+  var btn = document.getElementById('slotSpinBtn');
+  if (btn) btn.disabled = false;
+  _buildReels();
 
-  var hint = document.querySelector('.casino-hint');
-  if (hint) hint.textContent = 'Click the dice to roll!';
+  var hint = document.getElementById('slotHint');
+  if (hint) hint.textContent = 'Pull the lever or press SPIN!';
 
   document.getElementById('surpriseOverlay').classList.add('open');
 }

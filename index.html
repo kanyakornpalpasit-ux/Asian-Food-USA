@@ -654,6 +654,11 @@
     }
     .open-badge.open   { background: rgba(42,122,90,0.18);  border: 1px solid rgba(42,122,90,0.45);  color: #4AAF88; }
     .open-badge.closed { background: rgba(155,35,53,0.15);  border: 1px solid rgba(155,35,53,0.40);  color: #C45068; }
+    .ch-label .region-sep { margin: 0 5px; opacity: 0.4; font-weight: 400; }
+    .ch-label .region-sub {
+      text-transform: none; letter-spacing: 0.04em;
+      font-size: 0.82em; font-weight: 600; opacity: 0.85;
+    }
 
     /* Authenticity score bar */
     .auth-bar-row {
@@ -4735,6 +4740,74 @@ function getActivePromos(restaurantName) {
 }
 
 /* ─────────────────────────────────────────────────────
+   REGIONAL SUBTYPE DETECTION
+───────────────────────────────────────────────────── */
+function getRegion(r) {
+  const t = [(r.name||''),(r.desc||''),(r.signature||'')].join(' ').toLowerCase();
+  switch (r.cuisine) {
+    case 'chinese':
+      if (/uyghur|laghman|xinjiang/.test(t))                              return 'Uyghur';
+      if (/hot pot|hotpot|火锅/.test(t))                                   return 'Hot Pot';
+      if (/malatang/.test(t))                                              return 'Malatang';
+      if (/sichuan|szechuan|mapo|mala /.test(t))                          return 'Sichuan';
+      if (/hunan/.test(t))                                                 return 'Hunan';
+      if (/yunnan|crossing.the.bridge/.test(t))                            return 'Yunnan';
+      if (/xiao long bao|soup dumpling/.test(t))                           return 'Shanghainese';
+      if (/dim sum|har gow|siu mai|cheung fun/.test(t))                    return 'Cantonese';
+      if (/cantonese|hong kong|char siu|wonton.*soup|congee|roast duck/.test(t)) return 'Cantonese';
+      if (/dongbei|northeast.*chin|cumin.*lamb/.test(t))                   return 'Dongbei';
+      if (/dumpling|hand.pulled|scallion pancake|northern.*style/.test(t)) return 'Northern';
+      if (/buffet/.test(t))                                                return 'Buffet';
+      if (/fusion|pan.asian|latin.*chin|chin.*latin|boricua/.test(t))      return 'Fusion';
+      return 'Chinese';
+    case 'japanese':
+      if (/shabu/.test(t))                                   return 'Shabu-Shabu';
+      if (/teppanyaki|hibachi/.test(t))                      return 'Teppanyaki';
+      if (/yakiniku|japanese bbq/.test(t))                   return 'Yakiniku';
+      if (/izakaya/.test(t))                                 return 'Izakaya';
+      if (/ramen|tonkotsu|hakata/.test(t))                   return 'Ramen';
+      if (/poke/.test(t))                                    return 'Poke';
+      if (/temaki|hand roll/.test(t))                        return 'Hand Roll';
+      if (/omakase|nigiri|sashimi|sushi/.test(t))            return 'Sushi';
+      if (/katsu|tonkatsu/.test(t))                          return 'Katsu';
+      if (/teishoku/.test(t))                                return 'Teishoku';
+      if (/crepe|cheesecake|cream puff|bakery|pastry/.test(t)) return 'Bakery';
+      return 'Japanese';
+    case 'korean':
+      if (/bingsu|shaved ice|soft serve|taiyaki/.test(t))    return 'Dessert';
+      if (/karaoke|norebang/.test(t))                        return 'Norebang';
+      if (/pocha|pojangmacha/.test(t))                       return 'Pojangmacha';
+      if (/fried chicken|wings/.test(t))                     return 'Fried Chicken';
+      if (/kbbq|korean bbq|galbi|samgyeopsal/.test(t))       return 'KBBQ';
+      if (/jjigae|sundubu|kalguksu|stew|soup/.test(t))       return 'Comfort Food';
+      return 'Korean';
+    case 'vietnamese':
+      if (/viet.cajun|crawfish|seafood boil/.test(t))        return 'Viet-Cajun';
+      if (/bun bo hue|central vietnamese/.test(t))           return 'Central Viet';
+      if (/banh mi/.test(t))                                 return 'Bánh Mì';
+      if (/izakaya|craft.*cocktail|modern.*viet/.test(t))    return 'Modern Viet';
+      if (/pho/.test(t))                                     return 'Phở';
+      return 'Vietnamese';
+    case 'indian':
+      if (/pakistani|seekh|karahi/.test(t))                  return 'Indo-Pakistani';
+      if (/south indian|dosa|idli|vindaloo/.test(t))         return 'South Indian';
+      return 'North Indian';
+    case 'thai':
+      if (/isaan|laab|larb/.test(t))                         return 'Isaan';
+      if (/northern thai|khao soi/.test(t))                  return 'Northern Thai';
+      return 'Central Thai';
+    case 'singaporean':
+      if (/malaysian|mamak|hawker|char kway|satay|roti canai|laksa/.test(t)) return 'Malaysian';
+      return 'Singaporean';
+    case 'taiwanese':
+      if (/lu rou fan|oyster vermicelli|three.cup/.test(t))  return 'Night Market';
+      if (/bakery|egg tart|bread|pastry/.test(t))            return 'Bakery';
+      return 'Boba';
+    default: return null;
+  }
+}
+
+/* ─────────────────────────────────────────────────────
    RENDER CARD
 ───────────────────────────────────────────────────── */
 function renderCard(r) {
@@ -4751,12 +4824,14 @@ function renderCard(r) {
   const favActive = isFav(r.id);
 
   const auth = autoAuthScore(r);
+  const region = getRegion(r);
+  const regionHtml = region ? `<span class="region-sep">·</span><span class="region-sub">${region}</span>` : '';
   card.style.borderLeft = `3px solid ${cfg.color}`;
 
   card.innerHTML = `
     <div class="card-cuisine-header" style="background:${cfg.bg}">
       <span class="ch-script" style="color:${cfg.color};background:rgba(0,0,0,0.18)">${cfg.script}</span>
-      <span class="ch-label" style="color:${cfg.color}">${cfg.label}</span>
+      <span class="ch-label" style="color:${cfg.color}">${cfg.label}${regionHtml}</span>
       <span class="ch-flag">${cfg.flag}</span>
       ${typeBadge}
       <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
@@ -5524,7 +5599,7 @@ _gpScanPage();
       <div class="stamp stamp-no">Skip ✕</div>
       <div class="card-cuisine-header" style="background:${cfg.bg};border-radius:0">
         <span class="ch-script" style="color:${cfg.color};background:rgba(0,0,0,0.18)">${cfg.script}</span>
-        <span class="ch-label" style="color:${cfg.color}">${cfg.label}</span>
+        <span class="ch-label" style="color:${cfg.color}">${cfg.label}${(()=>{const rg=getRegion(r);return rg?`<span class="region-sep">·</span><span class="region-sub">${rg}</span>`:''})()}</span>
         <span class="ch-flag">${cfg.flag}</span>
         <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
       </div>

@@ -4699,7 +4699,7 @@ function setCity(city) {
     eyebrow.innerHTML = `<span class="live-dot"></span> Asian Food Directory · ${label}`;
   }
 
-  updateHouCounts();
+  if (typeof updateHouCounts === 'function') updateHouCounts();
   render();
 }
 

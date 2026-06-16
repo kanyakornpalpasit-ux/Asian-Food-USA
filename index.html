@@ -2561,6 +2561,7 @@
 <div class="city-tab-bar">
   <button class="city-tab" id="tabKaty" onclick="setCity('katy')"><span class="tab-flag">🌿</span>Katy, TX</button>
   <button class="city-tab" id="tabHouston" onclick="setCity('houston')"><span class="tab-flag">🌆</span>Houston, TX</button>
+  <button class="city-tab" id="tabSugarland" onclick="setCity('sugarland')"><span class="tab-flag">🍬</span>Sugar Land / Stafford</button>
   <button class="city-tab" id="tabDeals" onclick="setCity('deals')"><span class="tab-flag">🎟️</span>Deals</button>
 </div>
 
@@ -3368,6 +3369,20 @@
     </div>
   </div>
   </div><!-- /houstonFilterSections -->
+
+  <!-- ══ SUGAR LAND / STAFFORD CONTENT ══ -->
+  <div id="sugarlandFilterSections" style="display:none">
+    <div class="filter-section">
+      <div class="filter-label">📍 Sugar Land · Stafford Areas</div>
+      <div class="filter-chips" id="sugarAreaChips">
+        <button class="chip active" data-sarea="all">◉ All Areas</button>
+        <button class="chip area-stafford"    data-sarea="stafford">路 Stafford · SW Fwy</button>
+        <button class="chip area-sugartown"   data-sarea="sugartown">糖 Sugar Land Town Centre</button>
+        <button class="chip area-firstcolony" data-sarea="firstcolony">園 First Colony · Hwy 6</button>
+        <button class="chip area-sienna"      data-sarea="sienna">川 Sienna · Missouri City</button>
+      </div>
+    </div>
+  </div><!-- /sugarlandFilterSections -->
 
   <div class="filter-section">
     <div class="filter-label">Cuisine Type</div>
@@ -4498,6 +4513,33 @@ const restaurants = [
   {id:644,cuisine:'taiwanese',rating:4.4,reviewCount:480,name:'Boba House Spring Branch',img:'https://images.unsplash.com/photo-1621417346980-7b3dc19b0abb?w=600&q=80',signature:'🧋 Pork Chop Milk Tea & Taro Balls',priceLevel:1,priceDesc:'$6–$14 / person',address:'1206 Blalock Rd, Houston TX 77055',desc:"A Spring Branch Taiwanese boba shop that has become the Long Point corridor's after-school gathering point — the pork chop rice plate is a surprise menu item from a boba shop, but the deep-fried bone-in pork chop marinated in soy and five-spice over rice is a Taiwanese staple that made the shop's food program as famous as its drinks, and the fresh taro ball soup is the dessert companion."},
   {id:645,cuisine:'vietnamese',rating:4.3,reviewCount:410,name:'Viet Garden Alief',img:'https://images.unsplash.com/photo-1547592166-23ac88417717?w=600&q=80',signature:'🍜 Bun Moc Pork Noodle & Chao Tom Shrimp Cake',priceLevel:1,priceDesc:'$9–$17 / person',address:'7600 Sam Houston Pkwy W, Houston TX 77072',desc:"A Sam Houston Parkway Vietnamese kitchen that specializes in the Northern Vietnamese soups most Bellaire-area restaurants overlook — the bún mọc pork noodle soup with pork meatballs, ham, and dried wood ear mushroom in a clear bone broth is the house specialty, and the chao tom shrimp cake grilled on sugarcane skewer with rice paper and herbs is the one appetizer regulars never skip."},
   {id:646,cuisine:'thai',rating:4.3,reviewCount:430,name:'Siam Garden Briar Forest',img:'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80',signature:'🥭 Mango Sticky Rice & Tom Kha Soup',priceLevel:1,priceDesc:'$10–$21 / person',address:'10800 Briar Forest Dr Ste 108, Houston TX 77042',desc:"A Briar Forest Thai kitchen in the Energy Corridor that serves the residential communities west of Beltway 8 with cooking that doesn't cut corners — the mango sticky rice with seasonal Champagne mango and coconut cream is the dessert that sells out first every day, and the tom kha coconut galangal soup with lemongrass and oyster mushroom is the warming opener the kitchen takes pride in."},
+
+  /* ── SUGAR LAND / STAFFORD ── */
+  {id:701,cuisine:'vietnamese',rating:4.4,reviewCount:2180,name:'Kim Son Restaurant',img:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80',signature:'🍜 Phở Đặc Biệt & Weekend Dim Sum Brunch',priceLevel:2,priceDesc:'$14–$32 / person',address:'12750 Southwest Fwy, Stafford TX 77477',desc:"Stafford's crown jewel since the 1980s — Kim Son is a sprawling Vietnamese-Cantonese banquet hall that has hosted generations of Houston-area families for milestone celebrations. Weekday evenings bring classic pho and bánh mì; weekend mornings transform the dining room into one of the busiest dim sum operations in Fort Bend County."},
+  {id:702,cuisine:'chinese',rating:4.5,reviewCount:1640,name:'Fung's Kitchen Stafford',img:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80',signature:'🦞 Live Dungeness Crab & Peking Duck',priceLevel:3,priceDesc:'$28–$55 / person',address:'11201 Southwest Fwy, Stafford TX 77477',desc:"Fort Bend County's destination for live seafood — the tank-to-table Dungeness crab in ginger-scallion sauce and the crackling Peking duck carved tableside draw diners from across the Houston metro. Their whole steamed fish with silky soy and ginger rivals anything in Chinatown."},
+  {id:703,cuisine:'indian',rating:4.6,reviewCount:1890,name:'Madras Pavilion',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🫓 Paper Masala Dosa & Filter Coffee',priceLevel:1,priceDesc:'$10–$20 / person',address:'3910 Kirby Dr, Sugar Land TX 77479',desc:"The Sugar Land outpost of Houston's beloved South Indian vegetarian institution. The paper-thin masala dosa stretches beyond the plate's edge, filled with spiced potato and served with coconut chutney and sambar that are made fresh every morning. The filter coffee — dark South Indian roast, frothy, served in a traditional brass tumbler set — is the ritual that ends every meal here."},
+  {id:704,cuisine:'korean',rating:4.5,reviewCount:1320,name:'Honey Pig Sugar Land',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',signature:'🥩 AYCE Samgyeopsal & Spicy Galbi',priceLevel:3,priceDesc:'$28–$50 / person',address:'15850 Southwest Fwy Suite 200, Sugar Land TX 77478',desc:"The Sugar Land outpost of the beloved Korean BBQ chain — high-energy tabletop grilling with all-you-can-eat marinated meats, endless banchan, and the house doenjang jjigae that arrives complimentary for every table. Samgyeopsal on the cast-iron dome grill is the move."},
+  {id:705,cuisine:'japanese',rating:4.3,reviewCount:2340,name:'Kura Revolving Sushi Bar',img:'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80',signature:'🍣 Conveyor Belt Sushi & Bikkura-Pon Capsule Game',priceLevel:2,priceDesc:'$15–$30 / person',address:'2190 Texas Dr Suite 120, Sugar Land TX 77479',desc:"Sugar Land's most playful dining experience — $3.25 plates of fresh sushi glide past on a conveyor belt while the touchscreen lets you order hot food and premium items delivered directly. Every five plates earns a spin of the Bikkura-Pon capsule machine."},
+  {id:706,cuisine:'japanese',rating:4.4,reviewCount:980,name:'JINYA Ramen Bar',img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80',signature:'🍜 JINYA Tonkotsu Black & Spicy Chicken Ramen',priceLevel:2,priceDesc:'$14–$26 / person',address:'16535 Southwest Fwy Suite 1100, Sugar Land TX 77479',desc:"The Fort Bend outpost of the national ramen chain built on real-deal Japanese ramen philosophy — 20-hour tonkotsu broth, housemade noodles, and the cult JINYA Tonkotsu Black with garlic oil and unctuous pork belly. The spicy chicken ramen with karaage on top is the sleeper menu item most regulars eventually discover."},
+  {id:707,cuisine:'taiwanese',rating:4.4,reviewCount:1120,name:'85°C Bakery Cafe',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',signature:'🥐 Sea Salt Coffee & Cheese Pineapple Bun',priceLevel:1,priceDesc:'$5–$14 / person',address:'18615 Southwest Fwy Suite 900, Sugar Land TX 77479',desc:"The Sugar Land branch of Taiwan's legendary café-bakery chain — sea salt cream poured over fresh espresso is the drink that turned this into a global phenomenon. Fluffy cheese pineapple buns, taro bread, and pork floss rolls baked fresh every two hours keep the display cases constantly rotating."},
+  {id:708,cuisine:'vietnamese',rating:4.3,reviewCount:890,name:'Pho Saigon Stafford',img:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80',signature:'🍜 Pho Dac Biet & Lemongrass Pork Vermicelli',priceLevel:1,priceDesc:'$10–$20 / person',address:'12520 Southwest Fwy Suite C, Stafford TX 77477',desc:"A Stafford corridor Vietnamese institution serving the Fort Bend Vietnamese community for over a decade — the pho dac biet arrives in a mahogany-dark broth with all the premium toppings, and the lemongrass pork on vermicelli is the bún bowl that wins over every first-timer who orders it on a local's recommendation."},
+  {id:709,cuisine:'thai',rating:4.4,reviewCount:760,name:'Yummy Thai Sugar Land',img:'https://images.unsplash.com/photo-1585032226651-673b9a9c3498?w=600&q=80',signature:'🌶 Pad See Ew & Panang Curry',priceLevel:2,priceDesc:'$13–$26 / person',address:'15900 City Walk Suite 140, Sugar Land TX 77479',desc:"Sugar Land Town Centre's go-to Thai kitchen — the wok-charred Pad See Ew with Chinese broccoli and egg, and the rich Panang curry with kaffir lime-infused coconut cream are the two dishes regulars talk about. The kitchen doesn't hold back on fish sauce and shrimp paste, which makes the flavor depth noticeably different from suburbanised Thai food."},
+  {id:710,cuisine:'indian',rating:4.5,reviewCount:1240,name:'Aga's Sugar Land',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🍛 Dum Biryani & Nihari (Friday Special)',priceLevel:2,priceDesc:'$14–$28 / person',address:'13700 Southwest Fwy Suite 470, Sugar Land TX 77478',desc:"The Fort Bend outpost of Houston's revered Pakistani institution — the dum biryani, sealed and slow-cooked, arrives at the table in a sealed clay vessel and the aroma when the crust breaks is half the experience. Friday nihari (slow-braised beef shank) is the ritual that brings the Fort Bend Pakistani community here every week without fail."},
+  {id:711,cuisine:'chinese',rating:4.3,reviewCount:980,name:'Dim Sum King',img:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80',signature:'🥟 Har Gow & Baked BBQ Pork Buns',priceLevel:2,priceDesc:'$14–$28 / person',address:'168 Eldridge Rd Suite 100, Sugar Land TX 77478',desc:"Fort Bend County's weekend dim sum destination — push carts roll past packed tables of families every Saturday and Sunday morning from 9 AM to 2 PM. The translucent har gow with plump whole shrimp and the freshly baked char siu bao with caramelised BBQ pork are the two dishes that sell out first at every service."},
+  {id:712,cuisine:'japanese',rating:4.5,reviewCount:2100,name:'Gyu-Kaku Japanese BBQ',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',signature:'🥩 Prime Wagyu Kalbi & Takoyaki',priceLevel:3,priceDesc:'$30–$55 / person',address:'2277 Texas Dr Suite 100, Sugar Land TX 77479',desc:"Sugar Land Town Centre's Japanese BBQ anchor — tabletop charcoal grills and high-quality cuts including prime wagyu kalbi, premium tongue, and the buttery binchotan-grilled pork belly. The takoyaki bites and edamame are the openers; the wagyu is the reason people drive across Fort Bend County."},
+  {id:713,cuisine:'korean',rating:4.2,reviewCount:680,name:'Seoul Garden KBBQ',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',signature:'🔥 Galbi & Bulgogi Combo',priceLevel:2,priceDesc:'$22–$40 / person',address:'14757 Southwest Fwy Suite B, Sugar Land TX 77478',desc:"A neighborhood Korean BBQ spot that keeps Sugar Land's Korean community coming back — the galbi short ribs are pre-marinated overnight in soy, Asian pear, and sesame, and the bulgogi cooks in seconds over the gas grill. Banchan refills are unlimited and the kimchi jjigae at meal's end is complimentary."},
+  {id:714,cuisine:'vietnamese',rating:4.4,reviewCount:1100,name:'Pho Huynh Stafford',img:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80',signature:'🍜 Bún Bò Huế & Crispy Spring Rolls',priceLevel:1,priceDesc:'$11–$21 / person',address:'11210 Southwest Fwy Suite D, Stafford TX 77477',desc:"A Stafford Vietnamese kitchen known for doing Central Vietnamese cuisine right — the bún bò Huế is made with a lemongrass-annatto broth that is noticeably richer and more aromatic than most pho, and the crispy spring rolls with ground pork, glass noodles, and wood ear mushroom are the table starter every regular orders automatically."},
+  {id:715,cuisine:'indian',rating:4.3,reviewCount:740,name:'Arya Bhavan',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🌿 Gunpowder Dosa & Coconut Chutney',priceLevel:1,priceDesc:'$10–$20 / person',address:'12940 Southwest Fwy Suite 10, Stafford TX 77477',desc:"A pure vegetarian South Indian restaurant that serves Stafford's large Tamil and Telugu communities — the gunpowder dosa (lentil-spice powder smeared on the crispy crêpe) is the signature item that sets it apart, and the coconut chutney ground fresh daily with green chili and curry leaves is the condiment the regulars specifically ask about. The Saturday special meals (thali) sell out by noon."},
+  {id:716,cuisine:'chinese',rating:4.1,reviewCount:560,name:'Canton House Sugar Land',img:'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=600&q=80',signature:'🦐 Salt & Pepper Shrimp & Cantonese Roast Duck',priceLevel:2,priceDesc:'$14–$26 / person',address:'6903 Hwy 6 N Suite 150, Sugar Land TX 77478',desc:"A long-running Cantonese restaurant on the Hwy 6 corridor serving the First Colony area's Chinese-American families — the salt and pepper shrimp with the shell left on is the perennial favourite, and the roast duck with crispy skin is carved to order. Arrive early on weekends; the wonton soup is cleared by 7 PM."},
+  {id:717,cuisine:'taiwanese',rating:4.5,reviewCount:870,name:'Gong Cha',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',signature:'🧋 Brown Sugar Milk Tea & Roasted Oolong',priceLevel:1,priceDesc:'$5–$12 / person',address:'16535 Southwest Fwy Suite 200, Sugar Land TX 77479',desc:"The Taiwan-founded global boba brand with a strong Sugar Land outpost — the signature Gong Cha milk tea with roasted oolong is the standard-bearer, and the brown sugar milk tea with fresh boba pearls draws the after-school and weekend crowd. Customisation (ice level, sweetness level, topping count) is taken seriously here."},
+  {id:718,cuisine:'singaporean',rating:4.4,reviewCount:920,name:'Uncle Chin's Restaurant',img:'https://images.unsplash.com/photo-1547592166-23ac88417717?w=600&q=80',signature:'🦞 Laksa & Roti Canai',priceLevel:2,priceDesc:'$14–$28 / person',address:'14575 Southwest Fwy Suite 100, Sugar Land TX 77478',desc:"Fort Bend County's best Singaporean-Malaysian kitchen — a rare laksa (coconut curry broth with rice noodles, prawns, and fish cake) that actually tastes like what you'd find in a Singapore hawker centre, and a roti canai made to order with flaky layers and served with dhal curry. The nasi lemak (coconut rice with sambal and anchovies) is the weekend special."},
+  {id:719,cuisine:'thai',rating:4.2,reviewCount:590,name:'Thai Corner Stafford',img:'https://images.unsplash.com/photo-1585032226651-673b9a9c3498?w=600&q=80',signature:'🍛 Green Curry & Mango Sticky Rice',priceLevel:2,priceDesc:'$12–$24 / person',address:'12550 Southwest Fwy Suite 120, Stafford TX 77477',desc:"A Stafford Thai kitchen that has been serving the Southwest Freeway corridor for years with straightforward, flavorful cooking — the green curry with Thai eggplant and kaffir lime leaves is the item that wins over anyone ordering it for the first time, and the mango sticky rice with sweet coconut cream is the dessert that turns one-time visitors into regulars."},
+  {id:720,cuisine:'chinese',rating:4.0,reviewCount:430,name:'Golden City Buffet',img:'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80',signature:'🍱 Crab Legs & Mongolian Beef Buffet',priceLevel:2,priceDesc:'$14–$22 / person',address:'14900 Hwy 6 Suite 220, Sugar Land TX 77478',desc:"Sugar Land's biggest Chinese buffet — weekend snow crab legs are the main draw, along with a hot line of Mongolian beef, orange chicken, fried rice, and sushi. Not for authenticity seekers, but the value and variety make it a consistent family destination in First Colony."},
+  {id:721,cuisine:'vietnamese',rating:4.3,reviewCount:680,name:'Café TH Stafford',img:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=600&q=80',signature:'☕ Cà Phê Đá & Bánh Mì Thịt',priceLevel:1,priceDesc:'$7–$16 / person',address:'11100 Southwest Fwy Suite F, Stafford TX 77477',desc:"A Vietnamese café-deli hybrid on the Stafford corridor that does two things perfectly: the cà phê đá (Vietnamese iced coffee with sweetened condensed milk dripped through a phin filter) and the bánh mì thịt (pork belly, pâté, pickled daikon and carrot on a crispy baguette). Open from early morning to catch the pre-work Stafford Vietnamese community crowd."},
+  {id:722,cuisine:'korean',rating:4.4,reviewCount:760,name:'Bonchon Sugar Land',img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',signature:'🍗 Soy Garlic & Spicy Korean Fried Chicken',priceLevel:2,priceDesc:'$16–$28 / person',address:'2200 Texas Dr Suite 350, Sugar Land TX 77479',desc:"The Sugar Land outpost of the Korean double-fried chicken chain — 48-hour marinated chicken deep-fried twice and glazed with either soy garlic (savory-sweet and golden) or spicy (gochujang-forward red). The wings are the signature; the drumsticks are for those who want more meat. Always pair with the pickled radish cubes and cold OB beer."},
+  {id:723,cuisine:'japanese',rating:4.6,reviewCount:1540,name:'Sushi Masa',img:'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=600&q=80',signature:'🍣 Omakase Nigiri & Wagyu Aburi',priceLevel:3,priceDesc:'$35–$80 / person',address:'2211 Austin Pkwy Suite 100, Sugar Land TX 77479',desc:"Fort Bend County's most ambitious Japanese restaurant — a genuine omakase counter where Chef Masa's team curates seasonal nigiri from Gulf snapper and local oysters to imported bluefin toro and A5 wagyu aburi (blowtorch-seared). Reservations required; the counter seats eight and fills weeks in advance on weekends."},
+  {id:724,cuisine:'indian',rating:4.5,reviewCount:1080,name:'Pondicheri Sugar Land',img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80',signature:'🍳 Kale Uttapam & Chai Flight',priceLevel:2,priceDesc:'$14–$28 / person',address:'16420 City Walk Suite B, Sugar Land TX 77479',desc:"The Fort Bend outpost of James Beard Award-winning chef Anita Jaisinghani's all-day Indian café — the kale uttapam is a modern-ancient hybrid: a South Indian fermented-batter savory pancake topped with sautéed kale, chiles, and lemon. The chai flight (three regional masala chai preparations) is the dessert course that regulars insist first-timers try before leaving."},
+  {id:725,cuisine:'chinese',rating:4.3,reviewCount:820,name:'Shun Fat Supermarket Deli',img:'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=600&q=80',signature:'🍱 BBQ Combo Plate & Roast Pork Belly',priceLevel:1,priceDesc:'$8–$16 / person',address:'4251 Hwy 6 N, Sugar Land TX 77478',desc:"The hot-food counter inside Sugar Land's most beloved Chinese grocery — the BBQ combo plate (your choice of char siu, roast duck, and crackling siu yuk pork belly over jasmine rice) is the lunch secret that Hwy 6 regulars guard jealously. Get there before noon on weekdays; the roast pork belly sells out by 1 PM without fail."},
 
 ];
 
@@ -5744,6 +5786,17 @@ function _approxGeocode(addr) {
   const a = addr.toLowerCase();
   const num = parseInt((a.match(/^(\d+)/) || [])[1] || '0');
 
+  if (/sugar\s*land|stafford/i.test(addr)) {
+    if (/southwest\s*fwy|sw\s*fwy/i.test(a))  return [29.6800, Math.max(-95.59, -95.35 - (num/1000)*0.016)];
+    if (/stafford/i.test(a))                  return [29.6800, -95.5550];
+    if (/texas\s*dr|city\s*walk|town\s*(centre|center)/i.test(a)) return [29.6030, -95.6350];
+    if (/hwy\s*6|highway\s*6/i.test(a))       return [29.6100, -95.6700];
+    if (/austin\s*pkwy/i.test(a))             return [29.6050, -95.6200];
+    if (/eldridge/i.test(a))                  return [29.6200, -95.6500];
+    if (/sienna|missouri\s*city/i.test(a))    return [29.5700, -95.5800];
+    return [29.6197, -95.6349]; // Sugar Land centre
+  }
+
   if (/katy/i.test(addr)) {
     if (/colonial pkwy/i.test(a))           return [29.7545, -95.8175];
     if (/grand cir(cle)? blvd/i.test(a))    return [29.7591, -95.8028];
@@ -5835,10 +5888,32 @@ function toggleNearMe() {
 }
 
 /* ── City pools — built once at load, never wrong ── */
-const houstonRestaurants = restaurants.filter(r => /houston\s*tx/i.test(r.address || ''));
-const katyRestaurants    = restaurants.filter(r => /katy\s*tx/i.test(r.address || ''));
-function isHouston(r) { return /houston\s*tx/i.test(r.address || ''); }
-function isKaty(r)    { return /katy\s*tx/i.test(r.address || ''); }
+const houstonRestaurants    = restaurants.filter(r => /houston\s*tx/i.test(r.address || ''));
+const katyRestaurants       = restaurants.filter(r => /katy\s*tx/i.test(r.address || ''));
+const sugarlandRestaurants  = restaurants.filter(r => /sugar\s*land\s*tx|stafford\s*tx/i.test(r.address || ''));
+function isHouston(r)    { return /houston\s*tx/i.test(r.address || ''); }
+function isKaty(r)       { return /katy\s*tx/i.test(r.address || ''); }
+function isSugarland(r)  { return /sugar\s*land\s*tx|stafford\s*tx/i.test(r.address || ''); }
+
+/* ── Sugar Land / Stafford area info ── */
+const SUGAR_AREA_INFO = {
+  stafford:    { icon:'🛣', label:'Stafford · SW Fwy',         desc:'Southwest Freeway corridor & Dulles Ave — Fort Bend County\'s legendary Vietnamese and Chinese restaurant strip.' },
+  sugartown:   { icon:'🏙', label:'Sugar Land Town Centre',    desc:'Town Centre Blvd & Texas Dr — upscale dining, chains, and date-night spots around Sugar Land Town Square.' },
+  firstcolony: { icon:'🌳', label:'First Colony · Hwy 6',      desc:'Hwy 6 / US-59 interchange & Austin Pkwy — established family restaurants serving the First Colony communities.' },
+  sienna:      { icon:'🌿', label:'Sienna · Missouri City',    desc:'Sienna Ranch Rd & Texas Pkwy — newer restaurants serving the fast-growing Sienna and Riverstone communities.' },
+};
+
+let activeSugarArea = 'all';
+
+function getSugarArea(r) {
+  const a = (r.address || '').toLowerCase();
+  if (/stafford/i.test(a) || /77477/.test(a))                           return 'stafford';
+  if (/town\s*(centre|center)|city\s*walk|texas\s*dr|2\d{3}\s*texas/i.test(a) ||
+      /77479/.test(a))                                                   return 'sugartown';
+  if (/hwy\s*6|highway\s*6|austin\s*pkwy|first\s*colony|77498|77478/.test(a)) return 'firstcolony';
+  if (/sienna|missouri\s*city|riverstone|77459/.test(a))                return 'sienna';
+  return 'firstcolony';
+}
 
 function getAreaHouston(r) {
   return getHouArea(r);
@@ -5854,39 +5929,52 @@ const HOU_AREA_INFO = {
 };
 
 function setCity(city) {
-  activeCity    = city;
-  activeArea    = 'all';
-  activeHouArea = 'all';
+  activeCity      = city;
+  activeArea      = 'all';
+  activeHouArea   = 'all';
+  activeSugarArea = 'all';
 
   // tab UI
-  document.getElementById('tabKaty').classList.toggle('active', city === 'katy');
-  document.getElementById('tabHouston').classList.toggle('active', city === 'houston');
-  document.getElementById('tabDeals').classList.toggle('active', city === 'deals');
+  document.getElementById('tabKaty').classList.toggle('active',      city === 'katy');
+  document.getElementById('tabHouston').classList.toggle('active',   city === 'houston');
+  document.getElementById('tabSugarland').classList.toggle('active', city === 'sugarland');
+  document.getElementById('tabDeals').classList.toggle('active',     city === 'deals');
 
-  // show/hide map + area sections (hidden for deals tab)
-  document.getElementById('katyFilterSections').style.display    = city === 'katy'    ? '' : 'none';
-  document.getElementById('houstonFilterSections').style.display = city === 'houston' ? '' : 'none';
+  // show/hide filter sections per city
+  document.getElementById('katyFilterSections').style.display       = city === 'katy'       ? '' : 'none';
+  document.getElementById('houstonFilterSections').style.display    = city === 'houston'    ? '' : 'none';
+  document.getElementById('sugarlandFilterSections').style.display  = city === 'sugarland'  ? '' : 'none';
 
-  // show/hide main filter bar (hide for deals tab)
+  // hide entire filter bar on Deals tab only
   document.getElementById('filterBar').style.display = city === 'deals' ? 'none' : '';
 
-  // reset katy area chips
+  // reset area chips
   document.querySelectorAll('#areaChips .chip').forEach(c => c.classList.toggle('active', c.dataset.area === 'all'));
-  // reset houston area chips
   document.querySelectorAll('#houstonAreaChips .chip').forEach(c => c.classList.toggle('active', c.dataset.harea === 'all'));
+  document.querySelectorAll('#sugarAreaChips .chip').forEach(c => c.classList.toggle('active', c.dataset.sarea === 'all'));
   // reset katy map zones
   document.querySelectorAll('.holo-zone').forEach(g => g.classList.remove('zone-active'));
 
-  // reset hero text
+  // hero eyebrow text
   const eyebrow = document.querySelector('.hero-eyebrow');
   if (eyebrow) {
-    const label = city === 'houston' ? 'Houston, Texas' : city === 'deals' ? 'Current Deals & Promotions' : 'Katy, Texas';
+    const label = { houston:'Houston, Texas', sugarland:'Sugar Land · Stafford, TX', deals:'Current Deals & Promotions' }[city] || 'Katy, Texas';
     eyebrow.innerHTML = `<span class="live-dot"></span> Asian Food Directory · ${label}`;
   }
 
   if (typeof updateHouCounts === 'function') updateHouCounts();
   render();
 }
+
+// Sugar Land area chip handler
+document.getElementById('sugarAreaChips').addEventListener('click', e => {
+  const btn = e.target.closest('[data-sarea]');
+  if (!btn) return;
+  document.querySelectorAll('#sugarAreaChips .chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  activeSugarArea = btn.dataset.sarea;
+  render();
+});
 
 /* Area detection from address string */
 const AREA_INFO = {
@@ -5934,6 +6022,11 @@ function renderAreaTag(r) {
   if (activeCity === 'houston') {
     const area = getHouArea(r);
     const info = HOU_AREA_INFO[area];
+    return `<span class="card-area-tag ${area}">${info.icon} ${info.label}</span>`;
+  }
+  if (activeCity === 'sugarland' || isSugarland(r)) {
+    const area = getSugarArea(r);
+    const info = SUGAR_AREA_INFO[area] || SUGAR_AREA_INFO.firstcolony;
     return `<span class="card-area-tag ${area}">${info.icon} ${info.label}</span>`;
   }
   const area = getArea(r);
@@ -6041,19 +6134,25 @@ function render() {
     return;
   }
 
-  const pool = activeCity === 'houston' ? houstonRestaurants : katyRestaurants;
+  const pool = activeCity === 'houston' ? houstonRestaurants
+             : activeCity === 'sugarland' ? sugarlandRestaurants
+             : katyRestaurants;
   const filtered = pool.filter(r => {
     const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
-    const typeOk    = activeType === 'all' || getVenueType(r) === activeType;
+    const typeOk    = activeType    === 'all' || getVenueType(r) === activeType;
     const areaOk    = activeCity === 'houston'
-      ? (activeHouArea === 'all' || getAreaHouston(r) === activeHouArea)
-      : (activeArea === 'all' || getArea(r) === activeArea);
+      ? (activeHouArea   === 'all' || getAreaHouston(r)  === activeHouArea)
+      : activeCity === 'sugarland'
+      ? (activeSugarArea === 'all' || getSugarArea(r)    === activeSugarArea)
+      : (activeArea      === 'all' || getArea(r)         === activeArea);
     return cuisineOk && ratingOk && typeOk && areaOk;
   });
 
   document.getElementById('countDisplay').textContent = filtered.length;
-  document.getElementById('cityDisplay').textContent = activeCity === 'houston' ? 'Houston, TX' : 'Katy, TX';
+  document.getElementById('cityDisplay').textContent =
+    activeCity === 'houston'   ? 'Houston, TX' :
+    activeCity === 'sugarland' ? 'Sugar Land / Stafford, TX' : 'Katy, TX';
   console.log('[City Filter] activeCity='+activeCity+' pool='+pool.length+' filtered='+filtered.length);
   document.getElementById('emptyState').classList.toggle('show', filtered.length === 0);
 
@@ -7241,7 +7340,9 @@ function spinSlots() {
 }
 
 function surpriseMe() {
-  const _cityPool = activeCity === 'houston' ? houstonRestaurants : katyRestaurants;
+  const _cityPool = activeCity === 'houston'   ? houstonRestaurants
+                  : activeCity === 'sugarland' ? sugarlandRestaurants
+                  : katyRestaurants;
   _casinoFiltered = _cityPool.filter(function(r) {
     var cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
     var ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);

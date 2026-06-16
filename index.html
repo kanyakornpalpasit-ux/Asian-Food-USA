@@ -852,6 +852,51 @@
       border: 1px solid rgba(196,163,87,0.2); margin-top: 4px;
     }
 
+    /* ── Near Me ── */
+    .nearme-qa {
+      background: linear-gradient(135deg, #0f3d2e, #1a6644);
+      color: #4ade80; border: 1px solid rgba(74,222,128,0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(74,222,128,0.1);
+    }
+    .nearme-qa::after { background: #062218; }
+    .nearme-qa:hover  { box-shadow: 0 8px 28px rgba(74,222,128,0.25), 0 0 12px rgba(74,222,128,0.15); }
+    .nearme-qa.locating { animation: nearmeLocating 0.9s ease-in-out infinite alternate; cursor: wait; }
+    @keyframes nearmeLocating {
+      from { box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(74,222,128,0.1); }
+      to   { box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 18px rgba(74,222,128,0.5); }
+    }
+    .nearme-qa.active {
+      background: linear-gradient(135deg, #166534, #22c55e);
+      color: #fff; border-color: transparent;
+      box-shadow: 0 6px 20px rgba(34,197,94,0.4), 0 0 0 2px rgba(34,197,94,0.3);
+      animation: nearMePulse 2s ease-in-out infinite;
+    }
+    @keyframes nearMePulse {
+      0%,100% { box-shadow: 0 6px 20px rgba(34,197,94,0.4), 0 0 0 2px rgba(34,197,94,0.3); }
+      50%     { box-shadow: 0 6px 28px rgba(34,197,94,0.6), 0 0 0 5px rgba(34,197,94,0.1); }
+    }
+    .nearme-qa.active::after { background: #14532d; }
+
+    /* distance badge on cards */
+    .dist-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.03em;
+      padding: 2px 8px; border-radius: 99px; margin-left: 6px;
+      vertical-align: middle; line-height: 1;
+    }
+    .dist-near { background: rgba(34,197,94,0.15);  color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .dist-mid  { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+    .dist-far  { background: rgba(156,163,175,0.1); color: #9ca3af; border: 1px solid rgba(156,163,175,0.2); }
+
+    /* near-me results header */
+    .nearme-banner {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; margin-bottom: 12px;
+      background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.15);
+      border-radius: 10px; font-size: 0.78rem; color: #4ade80;
+    }
+    .nearme-banner strong { color: #86efac; }
+
     /* Authenticity score bar */
     .auth-bar-row {
       display: flex; align-items: center; gap: 8px;
@@ -2531,6 +2576,9 @@
     </div>
     <div class="qa-wrap">
       <button class="quick-action-btn crawl-qa" id="openCrawlBtnFilter" onclick="openCrawl()">路 Food Crawl</button>
+    </div>
+    <div class="qa-wrap">
+      <button class="quick-action-btn nearme-qa" id="nearMeBtn" onclick="toggleNearMe()">📍 Near Me</button>
     </div>
   </div>
   <!-- ══ KATY CITY CONTENT ══ -->
@@ -5586,6 +5634,15 @@ function renderCard(r) {
   const regionHtml = region ? `<span class="region-sep">·</span><span class="region-sub">${region}</span>` : '';
   card.style.borderLeft = `3px solid ${cfg.color}`;
 
+  const distBadge = (() => {
+    if (!_nearMeActive || _distMap[r.id] === undefined) return '';
+    const d = _distMap[r.id];
+    if (d >= 9999) return '';
+    const label = d < 0.1 ? 'Here!' : d < 1 ? Math.round(d * 5280) + ' ft' : d.toFixed(1) + ' mi';
+    const cls   = d < 3 ? 'dist-near' : d < 8 ? 'dist-mid' : 'dist-far';
+    return `<span class="dist-badge ${cls}">📍 ${label}</span>`;
+  })();
+
   card.innerHTML = `
     <div class="card-cuisine-header" style="background:${cfg.bg}">
       <span class="ch-script" style="color:${cfg.color};background:rgba(0,0,0,0.18)">${cfg.script}</span>
@@ -5595,7 +5652,7 @@ function renderCard(r) {
       <span class="open-badge ${status.isOpen ? 'open' : 'closed'}">${status.label}</span>
     </div>
     <div class="card-body">
-      <h3 class="card-name">${r.name}</h3>
+      <h3 class="card-name">${r.name}${distBadge}</h3>
       <div class="card-meta">
         <div class="card-stars">${renderStars(r.rating)}</div>
         <span class="card-review-count">(${formatCount(r.reviewCount)})</span>
@@ -5667,6 +5724,115 @@ let activeType    = 'all';
 let activeArea    = 'all';
 let activeCity    = 'katy';
 let activeHouArea = 'all';
+
+/* ── Near Me state ── */
+let _nearMeActive = false;
+let _userLat = null, _userLng = null;
+let _distMap = {}; // id → miles, populated before render
+
+/* ── Haversine distance (miles) ── */
+function _haversine(lat1, lng1, lat2, lng2) {
+  const R = 3958.8, toR = Math.PI / 180;
+  const dLat = (lat2 - lat1) * toR, dLng = (lng2 - lng1) * toR;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*toR)*Math.cos(lat2*toR)*Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+/* ── Address → approximate [lat, lng] ── */
+function _approxGeocode(addr) {
+  if (!addr) return null;
+  const a = addr.toLowerCase();
+  const num = parseInt((a.match(/^(\d+)/) || [])[1] || '0');
+
+  if (/katy/i.test(addr)) {
+    if (/colonial pkwy/i.test(a))           return [29.7545, -95.8175];
+    if (/grand cir(cle)? blvd/i.test(a))    return [29.7591, -95.8028];
+    if (/grand w blvd/i.test(a))            return [29.7600, -95.8086];
+    if (/katy fwy/i.test(a))                return [29.7857, Math.min(-95.75, -96.12 + (num/1000)*0.015)];
+    if (/fm 1463/i.test(a))                 return [29.7281, -95.7581];
+    if (/spring green/i.test(a))            return [29.7760, -95.7624];
+    if (/westheimer pkwy/i.test(a))         return [29.7417, -95.7480];
+    if (/grand pkwy/i.test(a))              return [29.7410, -95.7630];
+    if (/[ns]? ?mason rd|mason rd/i.test(a))return [29.7490, -95.7890];
+    if (/cinco ranch/i.test(a))             return [29.7551, num > 30000 ? -95.730 : -95.775];
+    if (/fry rd/i.test(a))                  return [29.8000, -95.7560];
+    if (/pin oak/i.test(a))                 return [29.7441, -95.8200];
+    if (/kingsland/i.test(a))               return [29.7460, -95.7850];
+    return [29.7858, -95.8246]; // Katy centre
+  }
+
+  if (/houston/i.test(addr)) {
+    if (/bellaire blvd/i.test(a))           return [29.7040, -95.4929];
+    if (/westheimer/i.test(a))              return [29.7400, Math.max(-95.65, -95.35 - (num/1000)*0.018)];
+    if (/wilcrest/i.test(a))                return [29.7150, -95.5138];
+    if (/richmond/i.test(a))               return [29.7340, -95.4700];
+    if (/post oak/i.test(a))               return [29.7488, -95.4633];
+    if (/kirby/i.test(a))                  return [29.7300, -95.4130];
+    if (/montrose/i.test(a))               return [29.7400, -95.3920];
+    if (/washington ave/i.test(a))         return [29.7727, -95.4067];
+    if (/heights blvd/i.test(a))           return [29.7985, -95.4120];
+    if (/shepherd/i.test(a))               return [29.7650, -95.4120];
+    if (/studemon|studemont|studewood/i.test(a)) return [29.7700, -95.4100];
+    if (/yale/i.test(a))                   return [29.7920, -95.4160];
+    if (/milam/i.test(a))                  return [29.7570, -95.3700];
+    if (/main st/i.test(a))                return [29.7500, -95.3700];
+    if (/louisiana/i.test(a))              return [29.7520, -95.3730];
+    if (/navigation/i.test(a))             return [29.7450, -95.3500];
+    if (/harrisburg/i.test(a))             return [29.7400, -95.3550];
+    if (/st ?emanuel/i.test(a))            return [29.7500, -95.3600];
+    if (/gessner/i.test(a))               return [29.7250, -95.5260];
+    if (/sw fwy|southwest fwy/i.test(a))  return [29.7200, -95.4550];
+    if (/beltway|sam houston pkwy/i.test(a)) return [29.6930, -95.5250];
+    if (/beechnut/i.test(a))              return [29.6980, -95.4900];
+    if (/fondren/i.test(a))               return [29.7050, -95.5100];
+    if (/boone/i.test(a))                 return [29.7100, -95.5050];
+    if (/ranchester/i.test(a))            return [29.7050, -95.5150];
+    if (/bissonnet/i.test(a))             return [29.7100, -95.4900];
+    if (/eldridge/i.test(a))              return [29.7300, -95.5700];
+    if (/long point/i.test(a))            return [29.7830, -95.4580];
+    if (/fry rd/i.test(a))                return [29.8000, -95.7560];
+    return [29.7604, -95.3698]; // Houston centre
+  }
+  return null;
+}
+
+/* ── Toggle Near Me ── */
+function toggleNearMe() {
+  const btn = document.getElementById('nearMeBtn');
+  if (_nearMeActive) {
+    _nearMeActive = false; _userLat = _userLng = null; _distMap = {};
+    btn.classList.remove('active','locating');
+    btn.textContent = '📍 Near Me';
+    btn.disabled = false;
+    render(); return;
+  }
+  if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+  btn.classList.add('locating');
+  btn.textContent = '⌛ Locating…';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      _userLat = pos.coords.latitude;
+      _userLng = pos.coords.longitude;
+      _nearMeActive = true;
+      btn.disabled = false;
+      btn.classList.remove('locating');
+      btn.classList.add('active');
+      btn.textContent = '📍 Near Me ✓';
+      render();
+    },
+    function(err) {
+      btn.disabled = false;
+      btn.classList.remove('locating');
+      btn.textContent = '📍 Near Me';
+      const msgs = {1:'Location access was denied. Enable it in your browser settings.',
+                    2:'Could not get your location. Please try again.',
+                    3:'Location request timed out. Please try again.'};
+      alert(msgs[err.code] || 'Location unavailable.');
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+  );
+}
 
 /* ── City pools — built once at load, never wrong ── */
 const houstonRestaurants = restaurants.filter(r => /houston\s*tx/i.test(r.address || ''));
@@ -5799,6 +5965,50 @@ function render() {
   const wrap = document.getElementById('gridWrap');
   wrap.innerHTML = '';
   renderFestivalBanner(wrap);
+
+  // ── Near Me mode: all restaurants sorted by distance ──
+  if (_nearMeActive && _userLat !== null) {
+    const allRests = [...katyRestaurants, ...houstonRestaurants];
+    const filtered = allRests.filter(r => {
+      const cuisineOk = activeCuisine === 'all' || r.cuisine === activeCuisine;
+      const ratingOk  = activeRating  === 'all' || getRatingBand(r.rating) === parseInt(activeRating);
+      const typeOk    = activeType    === 'all' || getVenueType(r) === activeType;
+      return cuisineOk && ratingOk && typeOk;
+    });
+
+    // Compute distances and sort ascending
+    _distMap = {};
+    const sorted = filtered.map(r => {
+      const coords = _approxGeocode(r.address);
+      const dist = coords ? _haversine(_userLat, _userLng, coords[0], coords[1]) : 9999;
+      _distMap[r.id] = dist;
+      return { r, dist };
+    }).sort((a, b) => a.dist - b.dist);
+
+    document.getElementById('countDisplay').textContent = sorted.length;
+    document.getElementById('cityDisplay').textContent  = 'Near You';
+    document.getElementById('emptyState').classList.toggle('show', sorted.length === 0);
+    if (!sorted.length) return;
+
+    const closest = sorted[0].dist;
+    const banner = document.createElement('div');
+    banner.className = 'nearme-banner';
+    banner.innerHTML = `<span>📍</span><span>Sorted by distance from your location &nbsp;·&nbsp; <strong>Nearest: ${closest < 1 ? (closest*5280).toFixed(0)+' ft' : closest.toFixed(1)+' mi'} away</strong></span>`;
+    wrap.appendChild(banner);
+
+    const sec = document.createElement('div');
+    sec.className = 'rating-section';
+    sec.innerHTML = `
+      <div class="rating-section-header">
+        <span class="rating-badge" style="background:linear-gradient(135deg,#166534,#22c55e);color:#fff">📍 Nearest First</span>
+        <span class="rating-section-count">${sorted.length} restaurants · all areas</span>
+      </div>
+      <div class="cards-grid"></div>`;
+    const grid = sec.querySelector('.cards-grid');
+    sorted.forEach(({ r }) => grid.appendChild(renderCard(r)));
+    wrap.appendChild(sec);
+    return;
+  }
 
   // ── Deals tab: show only restaurants with active promotions ──
   if (activeCity === 'deals') {

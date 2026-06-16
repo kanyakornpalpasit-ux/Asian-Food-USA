@@ -1353,6 +1353,7 @@
     }
     .holo-map-inner {
       position: relative;
+      pointer-events: none;
       transform: rotateX(58deg) rotateZ(-0.5deg);
       transform-style: preserve-3d;
       transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
@@ -1490,7 +1491,7 @@
     }
 
     /* invisible hit area */
-    .hz-hit { fill: transparent; cursor: pointer; }
+    .hz-hit { fill: transparent; cursor: pointer; pointer-events: all; }
 
     /* text — luxury serif */
     .hz-emoji { font-size: 20px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
@@ -1537,7 +1538,7 @@
     .shz-border-firstcolony { stroke: rgba(160,52,90,0.7);   }
     .shz-border-sienna      { stroke: rgba(58,74,155,0.75);  }
 
-    .shz-hit  { fill: transparent; cursor: pointer; }
+    .shz-hit  { fill: transparent; cursor: pointer; pointer-events: all; }
     .shz-name  { font-size: 10px; font-weight: 600; text-anchor: middle; fill: rgba(244,237,216,0.95); font-family: 'Noto Serif', Georgia, serif; letter-spacing: 1.2px; pointer-events: none; }
     .shz-sub   { font-size: 7.5px; text-anchor: middle; fill: rgba(212,134,10,0.6); font-family: 'Outfit', sans-serif; letter-spacing: 0.8px; pointer-events: none; }
     .shz-count { font-size: 8.5px; text-anchor: middle; fill: rgba(212,134,10,0.95); font-family: 'Outfit', sans-serif; font-weight: 600; letter-spacing: 0.5px; pointer-events: none; }
@@ -1857,6 +1858,7 @@
       display: flex; gap: 0;
       padding: 20px 40px 0;
       border-bottom: 1px solid rgba(196,163,87,0.15);
+      position: relative; z-index: 20;
     }
     @media (max-width: 640px) { .city-tab-bar { padding: 16px 16px 0; } }
     .city-tab {
@@ -1898,6 +1900,7 @@
     }
     .hou-map-inner {
       position: relative;
+      pointer-events: none;
       transform: rotateX(58deg) rotateZ(-0.5deg);
       transform-style: preserve-3d;
       transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
@@ -1924,7 +1927,7 @@
     }
     @keyframes houScan { 0%,100%{top:0;opacity:0.6} 50%{top:100%;opacity:0.3} }
     .hou-svg { width: 100%; display: block; background: #04040e; position: relative; z-index: 1; }
-    .hou-zone { cursor: pointer; }
+    .hou-zone { cursor: pointer; pointer-events: all; }
     .hou-fill { transition: all 0.25s ease; }
     .hou-border { fill: none; stroke-width: 1.2; stroke-dasharray: 6 3; animation: dashFlow 3s linear infinite; }
     .hou-name  { font-size: 10px; font-weight: 600; text-anchor: middle; fill: rgba(244,237,216,0.92); font-family: 'Noto Serif', serif; letter-spacing: 1px; pointer-events: none; }
